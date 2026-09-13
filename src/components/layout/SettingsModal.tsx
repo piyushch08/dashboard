@@ -1,5 +1,4 @@
 import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { useDataStore } from '../../store/useDataStore';
 import { useState } from 'react';
 
@@ -12,66 +11,54 @@ export function SettingsModal() {
     setSettingsOpen(false);
   };
 
-  return (
-    <AnimatePresence>
-      {isSettingsOpen && (
-        <>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSettingsOpen(false)}
-            className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50"
-          />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md glass-panel p-6 rounded-2xl z-50 shadow-2xl border-slate-600/50"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-white">Settings</h2>
-              <button 
-                onClick={() => setSettingsOpen(false)}
-                className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Google Gemini API Key</label>
-                <input 
-                  type="password"
-                  value={localKey}
-                  onChange={(e) => setLocalKey(e.target.value)}
-                  placeholder="AIzaSy..."
-                  className="w-full bg-slate-800/80 border border-slate-600 rounded-lg py-2 px-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:border-transparent transition-all"
-                />
-                <p className="text-xs text-slate-400 mt-2">
-                  Required to extract data from uploaded images. Your key is securely stored in your browser's local storage and never sent anywhere else.
-                </p>
-              </div>
-            </div>
+  if (!isSettingsOpen) return null;
 
-            <div className="mt-8 flex justify-end gap-3">
-              <button 
-                onClick={() => setSettingsOpen(false)}
-                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-700 transition-colors"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleSave}
-                className="px-4 py-2 rounded-lg text-sm font-bold bg-neon-cyan text-slate-900 hover:bg-white transition-colors shadow-[0_0_15px_rgba(0,240,255,0.4)] hover:shadow-[0_0_20px_rgba(0,240,255,0.6)]"
-              >
-                Save Changes
-              </button>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+  return (
+    <>
+      <div 
+        onClick={() => setSettingsOpen(false)}
+        className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-50"
+      />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white border border-gray-200 p-6 rounded-xl z-50 shadow-xl">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
+          <button 
+            onClick={() => setSettingsOpen(false)}
+            className="p-1 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <X size={18} />
+          </button>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">Google Gemini API Key</label>
+          <input 
+            type="password"
+            value={localKey}
+            onChange={(e) => setLocalKey(e.target.value)}
+            placeholder="AIzaSy..."
+            className="w-full bg-white border border-gray-300 rounded-lg py-2 px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          />
+          <p className="text-xs text-gray-400 mt-1.5">
+            Required for image analysis. Stored locally in your browser only.
+          </p>
+        </div>
+
+        <div className="mt-6 flex justify-end gap-2">
+          <button 
+            onClick={() => setSettingsOpen(false)}
+            className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={handleSave}
+            className="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white hover:bg-blue-700 transition-colors"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </>
   );
 }

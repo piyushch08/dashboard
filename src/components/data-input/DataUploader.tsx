@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
-import { UploadCloud, FileType, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { UploadCloud, FileSpreadsheet, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { useDataStore } from '../../store/useDataStore';
@@ -86,15 +85,11 @@ export function DataUploader() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-8rem)]" onPaste={handlePaste}>
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="glass-panel max-w-2xl w-full p-8 rounded-3xl flex flex-col items-center gap-6"
-      >
-        <div className="text-center space-y-2">
-          <h2 className="text-3xl font-bold text-white">Import Your Data</h2>
-          <p className="text-slate-400">Upload an Excel sheet, CSV file, or an Image of a table.</p>
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-7rem)]" onPaste={handlePaste}>
+      <div className="card max-w-xl w-full p-8 flex flex-col items-center gap-6">
+        <div className="text-center space-y-1">
+          <h2 className="text-xl font-semibold text-gray-900">Import Your Data</h2>
+          <p className="text-sm text-gray-500">Upload a CSV, Excel file, or an image of a data table.</p>
         </div>
 
         <div 
@@ -102,30 +97,30 @@ export function DataUploader() {
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`w-full h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all ${
-            isDragging ? 'border-neon-cyan bg-neon-cyan/5' : 'border-slate-600 hover:border-slate-500 hover:bg-slate-800/30'
+          className={`w-full h-52 border-2 border-dashed rounded-xl flex flex-col items-center justify-center cursor-pointer transition-colors ${
+            isDragging ? 'border-primary bg-primary-light/50' : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
           }`}
         >
           {isProcessing ? (
-            <div className="flex flex-col items-center gap-4 text-neon-cyan">
-              <Loader2 size={48} className="animate-spin" />
-              <p className="font-semibold animate-pulse">Analyzing Data...</p>
+            <div className="flex flex-col items-center gap-3 text-primary">
+              <Loader2 size={36} className="animate-spin" />
+              <p className="text-sm font-medium text-gray-600">Analyzing data…</p>
             </div>
           ) : (
             <>
-              <div className="flex gap-4 mb-4 text-slate-400">
-                <FileType size={40} />
-                <ImageIcon size={40} />
-                <UploadCloud size={40} />
+              <div className="flex gap-6 mb-4 text-gray-400">
+                <FileSpreadsheet size={28} />
+                <ImageIcon size={28} />
+                <UploadCloud size={28} />
               </div>
-              <p className="text-lg font-semibold text-white">Click or drag and drop to upload</p>
-              <p className="text-sm text-slate-400 mt-1">or Ctrl+V to paste CSV text</p>
+              <p className="text-sm font-medium text-gray-700">Click or drag and drop to upload</p>
+              <p className="text-xs text-gray-400 mt-1">Ctrl+V to paste CSV text</p>
             </>
           )}
         </div>
 
         {error && (
-          <div className="w-full p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+          <div className="w-full p-3 rounded-lg bg-danger-light border border-red-200 text-danger text-sm">
             {error}
           </div>
         )}
@@ -141,7 +136,7 @@ export function DataUploader() {
             }
           }}
         />
-      </motion.div>
+      </div>
     </div>
   );
 }

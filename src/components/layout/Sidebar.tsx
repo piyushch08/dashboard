@@ -1,4 +1,3 @@
-import { motion } from 'motion/react';
 import { 
   LayoutDashboard, 
   BarChart2, 
@@ -32,78 +31,65 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   ];
 
   return (
-    <motion.aside
-      initial={{ width: 256 }}
-      animate={{ width: isOpen ? 256 : 80 }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className="h-screen sticky top-0 flex flex-col glass-panel border-r-slate-700/50 border-r z-20"
+    <aside
+      style={{ width: isOpen ? 240 : 72 }}
+      className="h-screen sticky top-0 flex flex-col bg-white border-r border-gray-200 z-20 transition-[width] duration-200"
     >
-      <div className="flex items-center justify-between p-4 h-16 border-b border-slate-700/50">
+      <div className="flex items-center justify-between px-4 h-16 border-b border-gray-100">
         {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }}
-            className="flex items-center gap-2 font-bold text-lg text-white"
-          >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-purple to-neon-cyan flex items-center justify-center">
-              <BarChart2 size={18} className="text-white" />
+          <div className="flex items-center gap-2.5 font-semibold text-gray-900">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+              <BarChart2 size={16} className="text-white" />
             </div>
             DataFlow
-          </motion.div>
+          </div>
         )}
         {!isOpen && (
-          <div className="w-8 h-8 mx-auto rounded-lg bg-gradient-to-br from-neon-purple to-neon-cyan flex items-center justify-center">
-            <BarChart2 size={18} className="text-white" />
+          <div className="w-8 h-8 mx-auto rounded-lg bg-primary flex items-center justify-center">
+            <BarChart2 size={16} className="text-white" />
           </div>
         )}
         <button 
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "p-1 rounded-md hover:bg-slate-700/50 text-slate-400 transition-colors",
-            !isOpen && "absolute -right-3 top-5 bg-slate-800 border border-slate-600 rounded-full shadow-lg"
+            "p-1 rounded-md hover:bg-gray-100 text-gray-400 transition-colors",
+            !isOpen && "absolute -right-3 top-5 bg-white border border-gray-200 rounded-full shadow-sm"
           )}
         >
-          <ChevronLeft size={18} className={cn("transition-transform duration-300", !isOpen && "rotate-180")} />
+          <ChevronLeft size={16} className={cn("transition-transform duration-200", !isOpen && "rotate-180")} />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto py-6 flex flex-col gap-2 px-3">
+      <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-3">
         {navItems.map((item, index) => (
           <button
             key={index}
             className={cn(
-              "flex items-center gap-3 px-3 py-3 rounded-xl transition-all group relative",
+              "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm",
               item.active 
-                ? "bg-slate-700/50 text-white shadow-inner" 
-                : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
+                ? "bg-primary-light text-primary font-medium" 
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
             )}
           >
-            {item.active && (
-              <motion.div 
-                layoutId="active-indicator"
-                className="absolute left-0 w-1 h-8 bg-neon-cyan rounded-r-full"
-              />
-            )}
-            <item.icon size={20} className={cn(item.active ? "text-neon-cyan" : "text-slate-400 group-hover:text-slate-200")} />
-            {isOpen && <span className="font-medium text-sm whitespace-nowrap">{item.label}</span>}
+            <item.icon size={18} />
+            {isOpen && <span className="whitespace-nowrap">{item.label}</span>}
           </button>
         ))}
       </div>
 
-      <div className="p-4 border-t border-slate-700/50 flex flex-col gap-2">
+      <div className="p-3 border-t border-gray-100 flex flex-col gap-1">
         <button 
           onClick={() => useDataStore.getState().setSettingsOpen(true)}
-          className="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors text-sm"
         >
-          <Settings size={20} />
-          {isOpen && <span className="font-medium text-sm">Settings</span>}
+          <Settings size={18} />
+          {isOpen && <span>Settings</span>}
         </button>
-        <button className="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all">
-          <LogOut size={20} />
-          {isOpen && <span className="font-medium text-sm">Logout</span>}
+        <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-danger transition-colors text-sm">
+          <LogOut size={18} />
+          {isOpen && <span>Logout</span>}
         </button>
       </div>
-    </motion.aside>
+    </aside>
   );
 }
