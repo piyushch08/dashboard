@@ -7,8 +7,6 @@ import {
 } from 'recharts';
 import { BarChart3, TrendingUp, Trash2, Hash } from 'lucide-react';
 
-const CHART_COLORS = ['#2563eb', '#7c3aed', '#0891b2', '#16a34a'];
-
 export function DynamicDashboard() {
   const { dataset, columns, clearData } = useDataStore();
 
@@ -18,7 +16,7 @@ export function DynamicDashboard() {
   const xAxisCol = catCols.length > 0 ? catCols[0].key : (numericCols.length > 0 ? numericCols[0].key : '');
   
   const kpis = useMemo(() => {
-    return numericCols.slice(0, 4).map((col, idx) => {
+    return numericCols.slice(0, 4).map((col) => {
       const total = dataset.reduce((sum, row) => sum + (Number(row[col.key]) || 0), 0);
       return {
         title: col.label,
