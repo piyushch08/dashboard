@@ -1,16 +1,16 @@
 import { 
   LayoutDashboard, 
   BarChart2, 
-  PieChart, 
-  Users, 
+  Table2, 
+  FileDown, 
   Settings, 
-  Activity,
   LogOut,
   ChevronLeft
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { useDataStore } from '../../store/useDataStore';
+import type { PageView } from '../../store/useDataStore';
 
 export function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
@@ -22,13 +22,20 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
-  const navItems = [
-    { icon: LayoutDashboard, label: 'Overview', active: true },
-    { icon: Activity, label: 'Real-time', active: false },
-    { icon: BarChart2, label: 'Analytics', active: false },
-    { icon: Users, label: 'Audience', active: false },
-    { icon: PieChart, label: 'Reports', active: false },
+  const { currentPage, setCurrentPage, dataset, clearData } = useDataStore();
+
+  const navItems: { icon: React.ElementType; label: string; page: PageView }[] = [
+    { icon: LayoutDashboard, label: 'Overview', page: 'overview' },
+    { icon: BarChart2, label: 'Analytics', page: 'analytics' },
+    { icon: Table2, label: 'Data Table', page: 'data-table' },
+    { icon: FileDown, label: 'Reports', page: 'reports' },
   ];
+
+  const handleNav = (page: PageView) => {
+    if (dataset.length > 0) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
     <aside
@@ -61,20 +68,27 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-3">
-        {navItems.map((item, index) => (
-          <button
-            key={index}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm",
-              item.active 
-                ? "bg-primary-light text-primary font-medium" 
-                : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-            )}
-          >
-            <item.icon size={18} />
-            {isOpen && <span className="whitespace-nowrap">{item.label}</span>}
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const isActive = currentPage === item.page;
+          const isDisabled = dataset.length === 0;
+          return (
+            <button
+              key={item.page}
+              onClick={() => handleNav(item.page)}
+              disabled={isDisabled}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm",
+                isActive
+                  ? "bg-primary-light text-primary font-medium" 
+                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-700",
+                isDisabled && "opacity-40 cursor-not-allowed hover:bg-transparent hover:text-gray-500"
+              )}
+            >
+              <item.icon size={18} />
+              {isOpen && <span className="whitespace-nowrap">{item.label}</span>}
+            </button>
+          );
+        })}
       </div>
 
       <div className="p-3 border-t border-gray-100 flex flex-col gap-1">
@@ -85,7 +99,10 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           <Settings size={18} />
           {isOpen && <span>Settings</span>}
         </button>
-        <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-danger transition-colors text-sm">
+        <button 
+          onClick={() => { clearData(); }}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-danger transition-colors text-sm"
+        >
           <LogOut size={18} />
           {isOpen && <span>Logout</span>}
         </button>

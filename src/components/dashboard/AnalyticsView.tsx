@@ -1,0 +1,133 @@
+import { useMemo } from 'react';
+import { useDataStore } from '../../store/useDataStore';
+import { Hash, Type, Calendar } from 'lucide-react';
+
+export function AnalyticsView() {
+  const { dataset, columns, searchQuery } = useDataStore();
+
+  const filteredData = useMemo(() => {
+    if (!searchQuery) return dataset;
+    const q = searchQuery.toLowerCase();
+    return dataset.filter(row =>
+      Object.values(row).some(val => String(val).toLowerCase().includes(q))
+    );
+  }, [dataset, searchQuery]);
+
+  const stats = useMemo(() => {
+    return columns.map(col => {
+      const values = filteredData.map(r => r[col.key]);
+      const uniqueCount = new Set(values.filter(v => v !== null && v !== undefined && v !== '')).size;
+      const nullCount = values.filter(v => v === null || v === undefined || v === '').length;
+
+      if (col.type === 'number') {
+        const nums = values.map(Number).filter(n => !isNaN(n));
+        const sum = nums.reduce((a, b) => a + b, 0);
+        const mean = nums.length > 0 ? sum / nums.length : 0;
+        const sorted = [...nums].sort((a, b) => a - b);
+        const median = sorted.length > 0 
+          ? sorted.length % 2 === 0 
+            ? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
+            : sorted[Math.floor(sorted.length / 2)]
+          : 0;
+        const min = sorted.length > 0 ? sorted[0] : 0;
+        const max = sorted.length > 0 ? sorted[sorted.length - 1] : 0;
+        const variance = nums.length > 0 ? nums.reduce((s, n) => s + Math.pow(n - mean, 2), 0) / nums.length : 0;
+        const stdDev = Math.sqrt(variance);
+
+        return { col, uniqueCount, nullCount, type: 'number' as const, sum, mean, median, min, max, stdDev };
+      }
+
+      // String / date columns
+      const topValues = Object.entries(
+        values.reduce((acc: Record<string, number>, v) => {
+          const key = String(v ?? '');
+          acc[key] = (acc[key] || 0) + 1;
+          return acc;
+        }, {})
+      ).sort((a, b) => b[1] - a[1]).slice(0, 3);
+
+      return { col, uniqueCount, nullCount, type: 'string' as const, topValues };
+    });
+  }, [columns, filteredData]);
+
+  const typeIcon = (type: string) => {
+    if (type === 'number') return <Hash size={14} className="text-primary" />;
+    if (type === 'date') return <Calendar size={14} className="text-warning" />;
+    return <Type size={14} className="text-gray-400" />;
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-xl font-semibold text-gray-900">Analytics</h1>
+        <p className="text-sm text-gray-500 mt-0.5">Column-level statistics for {filteredData.length} records</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {stats.map((s) => (
+          <div key={s.col.key} className="card p-5">
+            <div className="flex items-center gap-2 mb-3">
+              {typeIcon(s.col.type)}
+              <h3 className="text-sm font-semibold text-gray-900 truncate">{s.col.label}</h3>
+              <span className="ml-auto text-xs text-gray-400 capitalize">{s.col.type}</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Unique</span>
+                <span className="font-medium text-gray-900">{s.uniqueCount}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Missing</span>
+                <span className="font-medium text-gray-900">{s.nullCount}</span>
+              </div>
+
+              {s.type === 'number' && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Mean</span>
+                    <span className="font-medium text-gray-900">{s.mean.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Median</span>
+                    <span className="font-medium text-gray-900">{s.median.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Min</span>
+                    <span className="font-medium text-gray-900">{s.min.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Max</span>
+                    <span className="font-medium text-gray-900">{s.max.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Sum</span>
+                    <span className="font-medium text-gray-900">{s.sum.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Std Dev</span>
+                    <span className="font-medium text-gray-900">{s.stdDev.toFixed(2)}</span>
+                  </div>
+                </>
+              )}
+
+              {s.type === 'string' && (
+                <div className="col-span-2 mt-1">
+                  <span className="text-xs text-gray-400 uppercase tracking-wide">Top Values</span>
+                  <div className="mt-1 space-y-1">
+                    {s.topValues.map(([val, count]) => (
+                      <div key={val} className="flex items-center justify-between text-xs">
+                        <span className="text-gray-700 truncate max-w-[60%]">{val || '(empty)'}</span>
+                        <span className="text-gray-400">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
