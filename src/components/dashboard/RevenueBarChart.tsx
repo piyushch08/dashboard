@@ -20,15 +20,15 @@ export function RevenueBarChart() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.5 }}
-      className="glass-panel p-6 rounded-2xl flex flex-col h-[350px]"
+      className="card flex flex-col h-[350px]"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-neon-emerald/20 flex items-center justify-center">
-          <DollarSign size={18} className="text-neon-emerald" />
+        <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+          <DollarSign size={18} className="text-[#7B3FE4]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-white leading-tight">Revenue Overview</h3>
-          <p className="text-xs text-slate-400">Monthly breakdown</p>
+          <h3 className="text-lg font-bold text-slate-800 leading-tight">Revenue Overview</h3>
+          <p className="text-xs text-slate-600">Monthly breakdown</p>
         </div>
       </div>
       
@@ -53,16 +53,19 @@ export function RevenueBarChart() {
               tickFormatter={(value) => `$${value}`}
             />
             <Tooltip 
-              cursor={{ fill: '#1e293b' }}
-              contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: '#334155', borderRadius: '8px', color: '#fff' }}
-              itemStyle={{ color: '#10b981', fontSize: '14px', fontWeight: 'bold' }}
-              labelStyle={{ color: '#94a3b8', marginBottom: '4px', fontSize: '12px' }}
+              cursor={{ fill: '#f8fafc' }}
+              contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }}
+              itemStyle={{ color: '#7B3FE4', fontSize: '14px', fontWeight: 'bold' }}
+              labelStyle={{ color: '#64748b', marginBottom: '4px', fontSize: '12px' }}
             />
             <Bar 
               dataKey="revenue" 
-              fill="#10b981" 
+              fill="#7B3FE4" 
               radius={[4, 4, 0, 0]} 
               barSize={30}
+              isAnimationActive={true}
+              animationDuration={1500}
+              animationEasing="ease-in-out"
             />
           </BarChart>
         </ResponsiveContainer>

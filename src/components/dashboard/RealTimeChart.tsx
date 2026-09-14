@@ -51,27 +51,27 @@ export function RealTimeChart() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: 0.4 }}
-      className="glass-panel p-6 rounded-2xl col-span-1 lg:col-span-2 flex flex-col h-[400px]"
+      className="card col-span-1 lg:col-span-2 flex flex-col h-[400px]"
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-neon-cyan/20 flex items-center justify-center">
-            <Activity size={18} className="text-neon-cyan" />
+          <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+            <Activity size={18} className="text-[#7B3FE4]" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white leading-tight">Live Server Traffic</h3>
-            <p className="text-xs text-slate-400">Updating every 2 seconds</p>
+            <h3 className="text-lg font-bold text-slate-800 leading-tight">Live Server Traffic</h3>
+            <p className="text-xs text-slate-600">Updating every 2 seconds</p>
           </div>
         </div>
         
         <div className="flex items-center gap-4 text-xs font-medium">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(0,240,255,0.8)]"></div>
-            <span className="text-slate-300">Active Users</span>
+            <div className="w-3 h-3 rounded-full bg-[#7B3FE4]"></div>
+            <span className="text-slate-600">Active Users</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-neon-purple shadow-[0_0_8px_rgba(157,0,255,0.8)]"></div>
-            <span className="text-slate-300">Requests/sec</span>
+            <div className="w-3 h-3 rounded-full bg-[#A580F2]"></div>
+            <span className="text-slate-600">Requests/sec</span>
           </div>
         </div>
       </div>
@@ -81,15 +81,15 @@ export function RealTimeChart() {
           <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#00F0FF" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#7B3FE4" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#7B3FE4" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorReqs" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#9D00FF" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#9D00FF" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#A580F2" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#A580F2" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
             <XAxis 
               dataKey="time" 
               stroke="#64748b" 
@@ -106,14 +106,14 @@ export function RealTimeChart() {
               tickLine={false} 
             />
             <Tooltip 
-              contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: '#334155', borderRadius: '8px', color: '#fff' }}
-              itemStyle={{ color: '#fff', fontSize: '12px' }}
-              labelStyle={{ color: '#94a3b8', marginBottom: '4px', fontSize: '12px' }}
+              contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }}
+              itemStyle={{ color: '#7B3FE4', fontSize: '12px' }}
+              labelStyle={{ color: '#64748b', marginBottom: '4px', fontSize: '12px' }}
             />
             <Area 
               type="monotone" 
               dataKey="users" 
-              stroke="#00F0FF" 
+              stroke="#7B3FE4" 
               strokeWidth={3}
               fillOpacity={1} 
               fill="url(#colorUsers)" 
@@ -122,7 +122,7 @@ export function RealTimeChart() {
             <Area 
               type="monotone" 
               dataKey="requests" 
-              stroke="#9D00FF" 
+              stroke="#A580F2" 
               strokeWidth={3}
               fillOpacity={1} 
               fill="url(#colorReqs)" 

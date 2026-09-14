@@ -12,7 +12,7 @@ interface DynamicPieChartProps {
   onSliceClick?: (col: string, val: string) => void;
 }
 
-const COLORS = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#f97316', '#14b8a6', '#64748b'];
+const COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA', '#ec4899', '#f97316', '#14b8a6', '#64748b'];
 
 const SELECT_CLASS =
   'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 ' +
@@ -87,7 +87,7 @@ export function DynamicPieChart({ dataset, numericCols, catCols, onSliceClick }:
             >
               {catCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
             </select>
-            <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
           </div>
           <div className="relative">
             <label htmlFor={numId} className="sr-only">Value</label>
@@ -99,7 +99,7 @@ export function DynamicPieChart({ dataset, numericCols, catCols, onSliceClick }:
             >
               {numericCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
             </select>
-            <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
           </div>
         </div>
       </div>
@@ -115,6 +115,10 @@ export function DynamicPieChart({ dataset, numericCols, catCols, onSliceClick }:
               outerRadius="80%"
               paddingAngle={2}
               dataKey="value"
+              stroke="none"
+              isAnimationActive={true}
+              animationDuration={1500}
+              animationEasing="ease-in-out"
               onClick={(e: any) => {
                 if (e && e.name !== 'Other' && onSliceClick) {
                   onSliceClick(catKey, e.name);

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export type DataType = 'number' | 'string' | 'date';
-export type PageView = 'overview' | 'analytics' | 'data-table' | 'reports' | 'invoices';
+export type PageView = 'overview' | 'analytics' | 'data-table' | 'reports';
 
 export interface ColumnMeta {
   key: string;

@@ -100,19 +100,19 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
       >
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-0.5 bg-danger" style={{ backgroundImage: 'repeating-linear-gradient(to right, #dc2626 0, #dc2626 4px, transparent 4px, transparent 7px)' }} aria-hidden="true" />
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-slate-600">
             Mean: <span className="font-semibold text-gray-800">{mean.toFixed(2)}</span>
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-0.5 bg-warning" style={{ backgroundImage: 'repeating-linear-gradient(to right, #d97706 0, #d97706 4px, transparent 4px, transparent 7px)' }} aria-hidden="true" />
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-slate-600">
             Median: <span className="font-semibold text-gray-800">{median.toFixed(2)}</span>
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 bg-gray-200 rounded-sm" aria-hidden="true" />
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-slate-600">
             σ: <span className="font-semibold text-gray-800">{stdDev.toFixed(2)}</span>
           </span>
         </div>
@@ -147,23 +147,31 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
                 const pct = dataset.length > 0 ? ((bin.count / dataset.length) * 100).toFixed(1) : '0';
                 return (
                   <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-xl text-xs">
-                    <p className="text-gray-500 mb-1">
+                    <p className="text-slate-600 mb-1">
                       Range:{' '}
                       <span className="font-bold text-gray-900">
                         {bin.x0.toFixed(bin.x0 % 1 ? 1 : 0)} – {bin.x1.toFixed(bin.x1 % 1 ? 1 : 0)}
                       </span>
                     </p>
-                    <p className="text-gray-500">
+                    <p className="text-slate-600">
                       Count: <span className="font-bold text-primary">{bin.count}</span>
                     </p>
-                    <p className="text-gray-400">
+                    <p className="text-slate-500">
                       Share: {pct}%
                     </p>
                   </div>
                 );
               }}
             />
-            <Bar dataKey="count" fill="#4f46e5" radius={[4, 4, 0, 0]} opacity={0.85} />
+            <Bar 
+              dataKey="count" 
+              fill="#7B3FE4" 
+              radius={[4, 4, 0, 0]} 
+              opacity={0.85} 
+              isAnimationActive={true}
+              animationDuration={1500}
+              animationEasing="ease-in-out"
+            />
 
             {/* Mean reference line */}
             {meanBinLabel && (
@@ -190,7 +198,7 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
         </ResponsiveContainer>
       </div>
 
-      <p className="mt-2 text-xs text-gray-400 flex-shrink-0">
+      <p className="mt-2 text-xs text-slate-500 flex-shrink-0">
         {bins.length} bins · {dataset.length.toLocaleString()} values
       </p>
     </section>

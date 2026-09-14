@@ -53,7 +53,7 @@ export function CorrelationHeatmap({ dataset, numericCols }: CorrelationHeatmapP
   if (numericCols.length < 2) {
     return (
       <div className="card p-5 flex items-center justify-center min-h-[200px]">
-        <p className="text-sm text-gray-400 text-center">
+        <p className="text-sm text-slate-500 text-center">
           Need at least 2 numeric columns for the correlation heatmap.
         </p>
       </div>
@@ -73,7 +73,7 @@ export function CorrelationHeatmap({ dataset, numericCols }: CorrelationHeatmapP
       {/* Header */}
       <div className="mb-3">
         <h3 className="text-sm font-semibold text-gray-900">Correlation Heatmap</h3>
-        <p className="text-xs text-gray-400 mt-0.5">
+        <p className="text-xs text-slate-500 mt-0.5">
           Pearson r — ranges from <span className="text-danger font-medium">−1</span> (red) to{' '}
           <span className="text-primary font-medium">+1</span> (blue)
         </p>
@@ -81,14 +81,14 @@ export function CorrelationHeatmap({ dataset, numericCols }: CorrelationHeatmapP
 
       {/* Colour scale legend */}
       <div className="flex items-center gap-2 mb-4" aria-hidden="true">
-        <span className="text-xs text-gray-500 font-medium">−1</span>
+        <span className="text-xs text-slate-600 font-medium">−1</span>
         <div
           className="h-3 flex-1 rounded-full"
           style={{
             background: `linear-gradient(to right, ${corrToBackground(-1)}, ${corrToBackground(0)}, ${corrToBackground(1)})`,
           }}
         />
-        <span className="text-xs text-gray-500 font-medium">+1</span>
+        <span className="text-xs text-slate-600 font-medium">+1</span>
       </div>
 
       {/* Heatmap grid */}
@@ -105,7 +105,7 @@ export function CorrelationHeatmap({ dataset, numericCols }: CorrelationHeatmapP
               {numericCols.map(col => (
                 <th
                   key={col.key}
-                  className="text-xs text-gray-500 font-medium pb-1 text-center"
+                  className="text-xs text-slate-600 font-medium pb-1 text-center"
                   style={{ width: `${cellSize}px`, maxWidth: `${cellSize}px` }}
                   scope="col"
                   title={col.label}

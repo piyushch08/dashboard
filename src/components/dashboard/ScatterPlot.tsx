@@ -73,7 +73,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
   if (numericCols.length < 2) {
     return (
       <div className="card p-5 flex items-center justify-center h-[380px]">
-        <p className="text-sm text-gray-400 text-center">
+        <p className="text-sm text-slate-500 text-center">
           Need at least 2 numeric columns for scatter plot.
         </p>
       </div>
@@ -122,7 +122,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
 
       {/* Axis pickers */}
       <div className="flex items-center gap-2 mb-3 flex-shrink-0">
-        <label htmlFor={xId} className="text-xs text-gray-400 font-medium">X:</label>
+        <label htmlFor={xId} className="text-xs text-slate-500 font-medium">X:</label>
         <select
           id={xId}
           value={xColKey}
@@ -134,7 +134,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
             <option key={c.key} value={c.key}>{c.label}</option>
           ))}
         </select>
-        <label htmlFor={yId} className="text-xs text-gray-400 font-medium">Y:</label>
+        <label htmlFor={yId} className="text-xs text-slate-500 font-medium">Y:</label>
         <select
           id={yId}
           value={yColKey}
@@ -146,7 +146,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
             <option key={c.key} value={c.key}>{c.label}</option>
           ))}
         </select>
-        <span className="ml-auto text-xs text-gray-400">{scatterData.length} pts</span>
+        <span className="ml-auto text-xs text-slate-500">{scatterData.length} pts</span>
       </div>
 
       {/* Chart */}
@@ -181,11 +181,11 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
                 const { x, y } = payload[0].payload as { x: number; y: number };
                 return (
                   <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-xl text-xs">
-                    <p className="text-gray-500 mb-0.5">
+                    <p className="text-slate-600 mb-0.5">
                       {xCol?.label}:{' '}
                       <span className="font-bold text-gray-900">{x.toLocaleString()}</span>
                     </p>
-                    <p className="text-gray-500">
+                    <p className="text-slate-600">
                       {yCol?.label}:{' '}
                       <span className="font-bold text-gray-900">{y.toLocaleString()}</span>
                     </p>
@@ -198,7 +198,10 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
             <Scatter
               name="Data"
               data={scatterData}
-              fill="#4f46e5"
+              fill="#7B3FE4"
+              isAnimationActive={true}
+              animationDuration={1500}
+              animationEasing="ease-in-out"
               fillOpacity={0.65}
             />
 
@@ -220,7 +223,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
       </div>
 
       {/* Legend row */}
-      <div className="flex items-center gap-4 mt-2 flex-shrink-0 text-xs text-gray-400">
+      <div className="flex items-center gap-4 mt-2 flex-shrink-0 text-xs text-slate-500">
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-primary opacity-65" aria-hidden="true" />
           <span>Data points</span>

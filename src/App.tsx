@@ -5,15 +5,15 @@ import { AnalyticsView } from './components/dashboard/AnalyticsView';
 import { DataTableView } from './components/dashboard/DataTableView';
 import { ReportsView } from './components/dashboard/ReportsView';
 import { SettingsModal } from './components/layout/SettingsModal';
-import { InvoicesDashboard } from './components/invoices/InvoicesDashboard';
 import { useDataStore } from './store/useDataStore';
+
+import { motion } from 'motion/react';
 
 function App() {
   const { dataset, currentPage } = useDataStore();
 
   const renderPage = () => {
-    // We can allow invoices to render even without a dataset for testing
-    if (dataset.length === 0 && currentPage !== 'invoices') return <DataUploader />;
+    if (dataset.length === 0) return <DataUploader />;
 
     switch (currentPage) {
       case 'overview': return <DynamicDashboard />;
@@ -24,15 +24,18 @@ function App() {
     }
   };
 
-  // Render the full-screen invoices dashboard without the standard sidebar layout
-  if (currentPage === 'invoices') {
-    return <InvoicesDashboard />;
-  }
-
   return (
     <DashboardLayout>
       <SettingsModal />
-      {renderPage()}
+      <motion.div
+        key={dataset.length === 0 ? 'uploader' : currentPage}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+        className="h-full"
+      >
+        {renderPage()}
+      </motion.div>
     </DashboardLayout>
   );
 }

@@ -86,7 +86,7 @@ export function SettingsModal() {
             ref={closeRef}
             onClick={() => setSettingsOpen(false)}
             aria-label="Close settings"
-            className="p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-md text-slate-500 hover:text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <X size={18} aria-hidden="true" />
           </button>
@@ -108,9 +108,9 @@ export function SettingsModal() {
             placeholder="AIzaSy..."
             autoComplete="off"
             aria-describedby={descId}
-            className="w-full bg-white border border-gray-300 rounded-lg py-2 px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+            className="w-full bg-white border border-gray-300 rounded-lg py-2 px-3 text-sm text-gray-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
           />
-          <p id={descId} className="text-xs text-gray-400 mt-1.5">
+          <p id={descId} className="text-xs text-slate-500 mt-1.5">
             Required for image analysis. Stored locally in your browser only.
           </p>
         </div>

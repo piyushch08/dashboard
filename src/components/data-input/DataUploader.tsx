@@ -2,6 +2,7 @@ import { useState, useRef, useId } from 'react';
 import { UploadCloud, FileSpreadsheet, Image as ImageIcon, Loader2, AlertCircle } from 'lucide-react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import { motion } from 'motion/react';
 import { useDataStore } from '../../store/useDataStore';
 import { extractDataFromImage, inferDataTypes, sanitizeData } from '../../utils/dataProcessor';
 
@@ -97,38 +98,53 @@ export function DataUploader() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center h-[calc(100vh-7rem)]"
+      className="flex flex-col items-center justify-center min-h-[calc(100vh-7rem)] p-4"
       onPaste={handlePaste}
     >
-      <div className="card max-w-xl w-full p-8 flex flex-col items-center gap-6">
-        {/* Header */}
-        <div className="text-center space-y-1">
-          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md">
-            <UploadCloud size={28} className="text-white" aria-hidden="true" />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="card max-w-3xl w-full p-8 md:p-12 flex flex-col md:flex-row items-center gap-10"
+      >
+        {/* Header Information */}
+        <div className="flex-1 space-y-4 text-center md:text-left">
+          <div className="w-16 h-16 mx-auto md:mx-0 rounded-2xl bg-[#f3f0ff] flex items-center justify-center shadow-sm">
+            <UploadCloud size={32} className="text-[#7B3FE4]" aria-hidden="true" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">Import Your Data</h2>
-          <p className="text-sm text-gray-500">
-            Upload a CSV, Excel file, or an image of a data table.
-          </p>
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Import Your Data</h2>
+            <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+              Upload a CSV, Excel file, or an image of a data table. We'll automatically process, clean, and visualize your data to help you uncover insights instantly.
+            </p>
+          </div>
+          <div className="pt-2 hidden md:block">
+            <ul className="text-xs text-slate-600 space-y-2 text-left">
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#7B3FE4]"></span> Supports CSV up to 50MB</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#7B3FE4]"></span> Supports XLSX / XLS</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#7B3FE4]"></span> AI Vision for Data Tables</li>
+            </ul>
+          </div>
         </div>
 
         {/* Drop zone */}
-        <div
-          role="button"
-          tabIndex={0}
-          aria-label="Upload file drop zone — click or press Enter to browse, or drag and drop a file"
-          aria-describedby={`${hintId}${error ? ` ${errorId}` : ''}`}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-          onKeyDown={handleDropZoneKeyDown}
-          className={`w-full h-52 border-2 border-dashed rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
-            isDragging
-              ? 'border-primary bg-primary-light/60 scale-[1.01]'
-              : 'border-gray-300 hover:border-primary/50 hover:bg-slate-50'
-          }`}
-        >
+        <div className="flex-1 w-full">
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label="Upload file drop zone — click or press Enter to browse, or drag and drop a file"
+            aria-describedby={`${hintId}${error ? ` ${errorId}` : ''}`}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            onKeyDown={handleDropZoneKeyDown}
+            className={`w-full h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group ${
+              isDragging
+                ? 'border-[#7B3FE4] bg-[#f3f0ff] scale-[1.02] shadow-md'
+                : 'border-slate-300 hover:border-[#7B3FE4] hover:bg-[#f3f0ff]/50'
+            }`}
+          >
           {isProcessing ? (
             <div className="flex flex-col items-center gap-3 text-primary">
               <Loader2 size={36} className="animate-spin" aria-hidden="true" />
@@ -137,29 +153,32 @@ export function DataUploader() {
             </div>
           ) : (
             <>
-              <div className="flex gap-6 mb-4">
-                <div className="p-3 rounded-xl bg-slate-100 text-gray-400 hover:text-primary transition-colors">
+              <div className="flex gap-4 mb-5">
+                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#7B3FE4] group-hover:bg-white transition-all shadow-sm">
                   <FileSpreadsheet size={24} aria-hidden="true" />
                 </div>
-                <div className="p-3 rounded-xl bg-slate-100 text-gray-400 hover:text-primary transition-colors">
-                  <ImageIcon size={24} aria-hidden="true" />
-                </div>
-                <div className="p-3 rounded-xl bg-slate-100 text-gray-400 hover:text-primary transition-colors">
+                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#7B3FE4] group-hover:bg-white transition-all shadow-sm translate-y-2">
                   <UploadCloud size={24} aria-hidden="true" />
                 </div>
+                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#7B3FE4] group-hover:bg-white transition-all shadow-sm">
+                  <ImageIcon size={24} aria-hidden="true" />
+                </div>
               </div>
-              <p className="text-sm font-medium text-gray-700">
-                Click or drag and drop to upload
+              <p className="text-sm font-bold text-slate-700">
+                Click or drag & drop
               </p>
-              <p id={hintId} className="text-xs text-gray-400 mt-1">
-                CSV, Excel (.xlsx/.xls), or image — also <kbd className="px-1 py-0.5 bg-gray-100 rounded text-xs font-mono">Ctrl+V</kbd> to paste CSV text
+              <p id={hintId} className="text-xs text-slate-600 mt-2 text-center px-4 leading-relaxed">
+                CSV, Excel, or Image <br/>
+                <span className="inline-flex items-center gap-1 mt-1">
+                  Or use <kbd className="px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-[10px] font-mono shadow-sm">Ctrl+V</kbd> to paste
+                </span>
               </p>
             </>
           )}
         </div>
 
-        {/* Error message — live region */}
-        <div aria-live="assertive" aria-atomic="true" className={error ? 'w-full' : 'sr-only'}>
+        {/* Error message */}
+        <div aria-live="assertive" aria-atomic="true" className={error ? 'w-full mt-4' : 'sr-only'}>
           {error && (
             <div
               id={errorId}
@@ -185,7 +204,8 @@ export function DataUploader() {
             }
           }}
         />
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

@@ -35,14 +35,14 @@ export function KpiCard({
 
   return (
     <article
-      className="kpi-card glass-panel p-5 flex flex-col justify-between gap-3 min-h-[140px] border-l-4 border-l-primary/40 hover:border-l-primary hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 overflow-hidden relative group"
+      className="kpi-card card flex flex-col justify-between min-h-[140px] group"
       aria-label={`${title}: ${value}, ${isNeutral ? 'unchanged' : (isPositive ? 'up' : 'down') + ' ' + Math.abs(change) + '%'}`}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none" />
       {/* Row 1: title + icon */}
       <div className="flex justify-between items-start relative z-10">
         <div className="flex flex-col gap-1 min-w-0">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider truncate" aria-hidden="true">
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate" aria-hidden="true">
             {title}
           </span>
           <span className="text-2xl font-bold text-gray-900 tracking-tight" aria-hidden="true">
@@ -100,7 +100,7 @@ export function KpiCard({
           className={cn(
             'flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md',
             isNeutral
-              ? 'bg-slate-100 text-gray-400'
+              ? 'bg-slate-100 text-slate-500'
               : isPositive
               ? 'bg-success-light text-success'
               : 'bg-danger-light text-danger',
@@ -109,7 +109,7 @@ export function KpiCard({
           {!isNeutral && (isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />)}
           <span>{isNeutral ? '—' : `${Math.abs(change)}%`}</span>
         </div>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-slate-500">
           {sparkData ? 'trend' : 'vs avg'}
         </span>
       </div>

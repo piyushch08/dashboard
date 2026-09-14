@@ -16,19 +16,19 @@ export function RecentActivityTable() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.7 }}
-      className="glass-panel p-6 rounded-2xl col-span-1 lg:col-span-3 flex flex-col"
+      className="card col-span-1 lg:col-span-3 flex flex-col"
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-neon-purple/20 flex items-center justify-center">
-            <List size={18} className="text-neon-purple" />
+          <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+            <List size={18} className="text-[#7B3FE4]" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white leading-tight">Recent Activity</h3>
-            <p className="text-xs text-slate-400">Latest transactions and events</p>
+            <h3 className="text-lg font-bold text-slate-800 leading-tight">Recent Activity</h3>
+            <p className="text-xs text-slate-600">Latest transactions and events</p>
           </div>
         </div>
-        <button className="text-xs font-semibold text-neon-cyan hover:text-white transition-colors">
+        <button className="text-xs font-semibold text-[#7B3FE4] hover:text-[#6c32d4] transition-colors">
           View All
         </button>
       </div>
@@ -36,41 +36,41 @@ export function RecentActivityTable() {
       <div className="w-full overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[600px]">
           <thead>
-            <tr className="border-b border-slate-700/50">
-              <th className="pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider pl-2">Transaction</th>
-              <th className="pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">User</th>
-              <th className="pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Action</th>
-              <th className="pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Amount</th>
-              <th className="pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-              <th className="pb-3 text-xs font-semibold text-slate-400 uppercase tracking-wider text-right pr-2">Date</th>
+            <tr className="border-b border-slate-200">
+              <th className="pb-3 text-xs font-semibold text-slate-600 uppercase tracking-wider pl-2">Transaction</th>
+              <th className="pb-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">User</th>
+              <th className="pb-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Action</th>
+              <th className="pb-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Amount</th>
+              <th className="pb-3 text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+              <th className="pb-3 text-xs font-semibold text-slate-600 uppercase tracking-wider text-right pr-2">Date</th>
             </tr>
           </thead>
           <tbody>
             {activityData.map((row) => (
               <tr 
                 key={row.id} 
-                className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors group"
+                className="border-b border-slate-100 hover:bg-slate-50 transition-colors group"
               >
-                <td className="py-4 pl-2 text-sm font-medium text-slate-300 group-hover:text-neon-cyan transition-colors">{row.id}</td>
-                <td className="py-4 text-sm text-white flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold">
+                <td className="py-4 pl-2 text-sm font-medium text-slate-700 group-hover:text-[#7B3FE4] transition-colors">{row.id}</td>
+                <td className="py-4 text-sm text-slate-800 flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">
                     {row.user.charAt(0)}
                   </div>
                   {row.user}
                 </td>
-                <td className="py-4 text-sm text-slate-300">{row.action}</td>
-                <td className="py-4 text-sm font-semibold text-white">{row.amount}</td>
+                <td className="py-4 text-sm text-slate-600">{row.action}</td>
+                <td className="py-4 text-sm font-semibold text-slate-800">{row.amount}</td>
                 <td className="py-4">
                   <span className={cn(
                     "text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider",
-                    row.status === 'Completed' ? "bg-neon-emerald/20 text-neon-emerald" : 
-                    row.status === 'Pending' ? "bg-yellow-500/20 text-yellow-500" : 
-                    "bg-red-500/20 text-red-400"
+                    row.status === 'Completed' ? "bg-emerald-100 text-emerald-700" : 
+                    row.status === 'Pending' ? "bg-amber-100 text-amber-700" : 
+                    "bg-red-100 text-red-700"
                   )}>
                     {row.status}
                   </span>
                 </td>
-                <td className="py-4 pr-2 text-sm text-slate-400 text-right">{row.date}</td>
+                <td className="py-4 pr-2 text-sm text-slate-600 text-right">{row.date}</td>
               </tr>
             ))}
           </tbody>

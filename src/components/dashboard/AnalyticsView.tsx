@@ -20,8 +20,8 @@ const TYPE_CONFIG = {
   string: {
     icon: Type,
     label: 'Text',
-    className: 'bg-slate-100 text-gray-500 border-gray-200',
-    iconClass: 'text-gray-400',
+    className: 'bg-slate-100 text-slate-600 border-gray-200',
+    iconClass: 'text-slate-500',
   },
 } as const;
 
@@ -84,7 +84,7 @@ export function AnalyticsView() {
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
         <div>
           <h1 className="text-xl font-semibold text-gray-900">Analytics</h1>
-          <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
+          <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
             Column-level statistics for {filteredData.length.toLocaleString()} records
           </p>
         </div>
@@ -99,7 +99,7 @@ export function AnalyticsView() {
             onClick={() => setActiveTab('stats')}
             aria-pressed={activeTab === 'stats'}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
-              activeTab === 'stats' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              activeTab === 'stats' ? 'bg-white text-primary shadow-sm' : 'text-slate-600 hover:text-gray-700'
             }`}
           >
             <LayoutGrid size={12} aria-hidden="true" />
@@ -112,7 +112,7 @@ export function AnalyticsView() {
             aria-disabled={numericCols.length < 2}
             title={numericCols.length < 2 ? 'Need at least 2 numeric columns' : 'Correlation heatmap'}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
-              activeTab === 'heatmap' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              activeTab === 'heatmap' ? 'bg-white text-primary shadow-sm' : 'text-slate-600 hover:text-gray-700'
             }`}
           >
             <Grid3x3 size={12} aria-hidden="true" />
@@ -153,7 +153,7 @@ export function AnalyticsView() {
 
                 {/* Completeness bar */}
                 <div className="mb-4">
-                  <div className="flex justify-between text-xs text-gray-400 mb-1">
+                  <div className="flex justify-between text-xs text-slate-500 mb-1">
                     <span>Completeness</span>
                     <span className="font-medium text-gray-600">{fillPct}%</span>
                   </div>
@@ -175,11 +175,11 @@ export function AnalyticsView() {
                 {/* Stats grid */}
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Unique</span>
+                    <span className="text-slate-600">Unique</span>
                     <span className="font-medium text-gray-900">{s.uniqueCount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Missing</span>
+                    <span className="text-slate-600">Missing</span>
                     <span className={`font-medium ${s.nullCount > 0 ? 'text-warning' : 'text-gray-900'}`}>
                       {s.nullCount}
                     </span>
@@ -188,27 +188,27 @@ export function AnalyticsView() {
                   {s.type === 'number' && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Mean</span>
+                        <span className="text-slate-600">Mean</span>
                         <span className="font-medium text-gray-900">{s.mean.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Median</span>
+                        <span className="text-slate-600">Median</span>
                         <span className="font-medium text-gray-900">{s.median.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Min</span>
+                        <span className="text-slate-600">Min</span>
                         <span className="font-medium text-gray-900">{s.min.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Max</span>
+                        <span className="text-slate-600">Max</span>
                         <span className="font-medium text-gray-900">{s.max.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Sum</span>
+                        <span className="text-slate-600">Sum</span>
                         <span className="font-medium text-gray-900">{s.sum.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Std Dev</span>
+                        <span className="text-slate-600">Std Dev</span>
                         <span className="font-medium text-gray-900">{s.stdDev.toFixed(2)}</span>
                       </div>
                     </>
@@ -216,7 +216,7 @@ export function AnalyticsView() {
 
                   {s.type === 'string' && (
                     <div className="col-span-2 mt-1">
-                      <span className="text-xs text-gray-400 uppercase tracking-wide font-medium">Top Values</span>
+                      <span className="text-xs text-slate-500 uppercase tracking-wide font-medium">Top Values</span>
                       <div className="mt-2 space-y-1.5">
                         {s.topValues.map(([val, count]) => {
                           const pct = s.total > 0 ? Math.round((count / s.total) * 100) : 0;
@@ -224,7 +224,7 @@ export function AnalyticsView() {
                             <div key={val}>
                               <div className="flex items-center justify-between text-xs mb-0.5">
                                 <span className="text-gray-700 truncate max-w-[60%]">{val || '(empty)'}</span>
-                                <span className="text-gray-400">{count} <span className="text-gray-300">({pct}%)</span></span>
+                                <span className="text-slate-500">{count} <span className="text-gray-300">({pct}%)</span></span>
                               </div>
                               <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
                                 <div

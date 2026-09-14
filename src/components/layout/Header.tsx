@@ -1,8 +1,12 @@
-import { Search, Bell, User, X, ChevronDown } from 'lucide-react';
+import { Search, Bell, User, X, ChevronDown, Menu } from 'lucide-react';
 import { useDataStore } from '../../store/useDataStore';
 import { useState, useRef, useEffect, useId } from 'react';
 
-export function Header() {
+interface HeaderProps {
+  onOpenSidebar?: () => void;
+}
+
+export function Header({ onOpenSidebar }: HeaderProps) {
   const { searchQuery, setSearchQuery, dataset, clearData, setSettingsOpen } = useDataStore();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -57,13 +61,22 @@ export function Header() {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <header className="h-14 bg-white border-b border-gray-200/80 sticky top-0 z-10 flex items-center justify-between px-6">
+    <header className="h-14 bg-white border-b border-slate-200/80 sticky top-0 z-10 flex items-center justify-between px-4 sm:px-6">
+      {/* Mobile Menu Button */}
+      <button 
+        onClick={onOpenSidebar}
+        className="md:hidden p-2 -ml-2 mr-2 text-slate-600 hover:text-slate-700 transition-colors rounded-lg hover:bg-slate-100"
+        aria-label="Open sidebar"
+      >
+        <Menu size={20} />
+      </button>
+
       {/* Search */}
       <div className="flex-1 max-w-sm relative hidden sm:block">
         <label htmlFor={searchId} className="sr-only">
           {hasData ? 'Filter data records' : 'Search'}
         </label>
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} aria-hidden="true" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} aria-hidden="true" />
         <input
           id={searchId}
           type="search"
@@ -71,13 +84,13 @@ export function Header() {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={hasData ? 'Filter data...' : 'Search...'}
           aria-label={hasData ? 'Filter data records' : 'Search'}
-          className="w-full bg-slate-50 border border-gray-200 rounded-lg py-1.5 pl-9 pr-8 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+          className="w-full bg-slate-50 border border-gray-200 rounded-lg py-1.5 pl-9 pr-8 text-sm text-gray-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
             aria-label="Clear search"
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-gray-600 transition-colors"
           >
             <X size={14} aria-hidden="true" />
           </button>
@@ -101,7 +114,7 @@ export function Header() {
             aria-expanded={showNotifications}
             aria-haspopup="true"
             aria-controls={notifId}
-            className="relative p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-slate-100"
+            className="relative p-2 text-slate-500 hover:text-gray-600 transition-colors rounded-lg hover:bg-slate-100"
           >
             <Bell size={18} aria-hidden="true" />
             {unreadCount > 0 && (
@@ -136,7 +149,7 @@ export function Header() {
                     className={`px-4 py-3 border-b border-gray-50 last:border-0 ${!n.read ? 'bg-primary-light/40' : ''}`}
                   >
                     <p className="text-sm text-gray-700">{n.text}</p>
-                    {n.time && <p className="text-xs text-gray-400 mt-0.5">{n.time}</p>}
+                    {n.time && <p className="text-xs text-slate-500 mt-0.5">{n.time}</p>}
                   </li>
                 ))}
               </ul>
@@ -167,7 +180,7 @@ export function Header() {
               <span className="text-sm font-medium text-gray-900 leading-tight">Admin</span>
               <ChevronDown
                 size={14}
-                className={`text-gray-400 transition-transform duration-200 ${showProfile ? 'rotate-180' : ''}`}
+                className={`text-slate-500 transition-transform duration-200 ${showProfile ? 'rotate-180' : ''}`}
                 aria-hidden="true"
               />
             </div>
@@ -182,7 +195,7 @@ export function Header() {
             >
               <div className="px-4 py-3 border-b border-gray-100">
                 <p className="text-sm font-medium text-gray-900">Admin User</p>
-                <p className="text-xs text-gray-400">admin@dataflow.app</p>
+                <p className="text-xs text-slate-500">admin@dataflow.app</p>
               </div>
               <div className="py-1">
                 <button

@@ -109,7 +109,7 @@ export function BoxPlotSummary({ dataset, numericCols }: BoxPlotProps) {
           >
             {numericCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
           </select>
-          <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+          <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
         </div>
       </div>
 
@@ -169,7 +169,7 @@ export function BoxPlotSummary({ dataset, numericCols }: BoxPlotProps) {
       </div>
 
       {/* X axis labels */}
-      <div className="relative h-5 text-xs text-gray-400 select-none">
+      <div className="relative h-5 text-xs text-slate-500 select-none">
         <span className="absolute" style={{ left: `${pct(stats.min)}%`, transform: 'translateX(-50%)' }}>
           {fmtNum(stats.min)}
         </span>
@@ -198,14 +198,14 @@ export function BoxPlotSummary({ dataset, numericCols }: BoxPlotProps) {
           { label: 'Max',    value: fmtNum(stats.max)    },
         ].map(({ label, value }) => (
           <div key={label} className="text-center">
-            <p className="text-xs text-gray-400">{label}</p>
+            <p className="text-xs text-slate-500">{label}</p>
             <p className="text-sm font-bold text-gray-900 tabular-nums">{value}</p>
           </div>
         ))}
       </div>
 
       {/* IQR + outlier summary */}
-      <div className="flex items-center gap-4 text-xs text-gray-400 pt-1">
+      <div className="flex items-center gap-4 text-xs text-slate-500 pt-1">
         <span>IQR: <span className="font-semibold text-gray-700">{fmtNum(iqr)}</span></span>
         <span className="flex items-center gap-1">
           <span className="w-2.5 h-2.5 rounded-full bg-danger/70 border border-danger inline-block" aria-hidden="true" />

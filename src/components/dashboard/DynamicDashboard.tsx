@@ -34,8 +34,8 @@ const CHART_TABS: { type: ChartType; label: string; Icon: React.ElementType }[] 
   { type: 'area', label: 'Area', Icon: Activity },
 ];
 
-const BAR_COLORS = ['#4f46e5', '#7c3aed', '#059669', '#d97706', '#0891b2', '#9333ea'];
-const ACTIVE_COLOR = '#7c3aed';
+const BAR_COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA'];
+const ACTIVE_COLOR = '#7B3FE4';
 
 const TOOLTIP_STYLE = {
   backgroundColor: '#fff',
@@ -183,7 +183,7 @@ export function DynamicDashboard() {
         <div className="flex items-center gap-3">
           <div>
             <h1 className="text-xl font-semibold text-gray-900">Data Insights</h1>
-            <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
+            <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
               {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
             </p>
           </div>
@@ -210,7 +210,7 @@ export function DynamicDashboard() {
           role="status"
           aria-label={`Active filter: ${activeFilter.label} equals ${activeFilter.value}`}
         >
-          <span className="text-xs text-gray-500 font-medium">Filtered by:</span>
+          <span className="text-xs text-slate-600 font-medium">Filtered by:</span>
           <div className="flex items-center gap-1.5 bg-primary-light border border-primary-border rounded-full px-3 py-1">
             <span className="text-xs text-primary/70">{activeFilter.label}</span>
             <span className="text-xs text-primary">=</span>
@@ -223,7 +223,7 @@ export function DynamicDashboard() {
               <XIcon size={11} aria-hidden="true" />
             </button>
           </div>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-slate-500">
             {filteredData.length.toLocaleString()} of {dataset.length.toLocaleString()} records
           </span>
         </div>
@@ -236,31 +236,31 @@ export function DynamicDashboard() {
           
           {/* High-level dataset metadata */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="glass-panel p-4 flex items-center justify-between border-l-4 border-l-indigo-400 group hover:shadow-lg transition-all duration-300">
+            <div className="card flex items-center justify-between group hover:shadow-md transition-all duration-300">
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Total Records</p>
-                <p className="text-2xl font-bold text-white tracking-tight">{dataset.length.toLocaleString()}</p>
+                <p className="text-xs text-slate-600 font-bold mb-1">Total Records</p>
+                <p className="text-2xl font-bold text-[#7B3FE4]">{dataset.length.toLocaleString()}</p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
-                <Database size={24} className="text-indigo-400" />
+              <div className="w-12 h-12 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+                <Database size={24} className="text-[#7B3FE4]" />
               </div>
             </div>
-            <div className="glass-panel p-4 flex items-center justify-between border-l-4 border-l-emerald-400 group hover:shadow-lg transition-all duration-300">
+            <div className="card flex items-center justify-between group hover:shadow-md transition-all duration-300">
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Total Columns</p>
-                <p className="text-2xl font-bold text-white tracking-tight">{columns.length}</p>
+                <p className="text-xs text-slate-600 font-bold mb-1">Total Columns</p>
+                <p className="text-2xl font-bold text-[#7B3FE4]">{columns.length}</p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                <Columns size={24} className="text-emerald-400" />
+              <div className="w-12 h-12 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+                <Columns size={24} className="text-[#7B3FE4]" />
               </div>
             </div>
-            <div className="glass-panel p-4 flex items-center justify-between border-l-4 border-l-violet-400 group hover:shadow-lg transition-all duration-300">
+            <div className="card flex items-center justify-between group hover:shadow-md transition-all duration-300">
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Data Health</p>
-                <p className="text-2xl font-bold text-white tracking-tight">{completeness.toFixed(1)}%</p>
+                <p className="text-xs text-slate-600 font-bold mb-1">Data Health</p>
+                <p className="text-2xl font-bold text-[#7B3FE4]">{completeness.toFixed(1)}%</p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
-                <CheckCircle2 size={24} className="text-violet-400" />
+              <div className="w-12 h-12 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+                <CheckCircle2 size={24} className="text-[#7B3FE4]" />
               </div>
             </div>
           </div>
@@ -303,7 +303,7 @@ export function DynamicDashboard() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 ${
                     chartType === type
                       ? 'bg-primary text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-800 hover:bg-slate-100'
+                      : 'text-slate-600 hover:text-gray-800 hover:bg-slate-100'
                   }`}
                 >
                   <Icon size={12} aria-hidden="true" />
@@ -314,7 +314,7 @@ export function DynamicDashboard() {
 
             {/* Axis pickers */}
             <div className="flex items-center gap-1.5 relative">
-              <span className="text-xs text-gray-500 font-semibold">X:</span>
+              <span className="text-xs text-slate-600 font-semibold">X:</span>
               <div className="relative">
                 <select
                   value={resolvedXKey}
@@ -324,12 +324,12 @@ export function DynamicDashboard() {
                 >
                   {allXCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
                 </select>
-                <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" aria-hidden="true" />
+                <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" aria-hidden="true" />
               </div>
             </div>
 
             <div className="flex items-center gap-1.5">
-              <span className="text-xs text-gray-500 font-semibold">Y:</span>
+              <span className="text-xs text-slate-600 font-semibold">Y:</span>
               <div className="relative">
                 <select
                   value={resolvedYKey}
@@ -339,12 +339,12 @@ export function DynamicDashboard() {
                 >
                   {numericCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
                 </select>
-                <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" aria-hidden="true" />
+                <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" aria-hidden="true" />
               </div>
             </div>
 
             {/* Contextual hint */}
-            <div className="ml-auto text-xs text-gray-400 flex items-center gap-1.5">
+            <div className="ml-auto text-xs text-slate-500 flex items-center gap-1.5">
               {chartType === 'bar' ? (
                 <><BarChart3 size={11} aria-hidden="true" /><span>Click a bar to filter all charts</span></>
               ) : (
@@ -386,6 +386,9 @@ export function DynamicDashboard() {
                       radius={[5, 5, 0, 0]}
                       onClick={handleBarClick}
                       style={{ cursor: 'pointer' }}
+                      isAnimationActive={true}
+                      animationDuration={1500}
+                      animationEasing="ease-in-out"
                     >
                       {chartData.map((entry, idx) => (
                         <Cell
@@ -416,10 +419,13 @@ export function DynamicDashboard() {
                     <Line
                       type="monotone"
                       dataKey={resolvedYKey}
-                      stroke="#4f46e5"
+                      stroke="#7B3FE4"
                       strokeWidth={2.5}
-                      dot={{ r: 3, fill: '#4f46e5', strokeWidth: 0 }}
+                      dot={{ r: 3, fill: '#7B3FE4', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
+                      isAnimationActive={true}
+                      animationDuration={1500}
+                      animationEasing="ease-in-out"
                     />
                   </LineChart>
                 ) : (
@@ -429,8 +435,8 @@ export function DynamicDashboard() {
                   >
                     <defs>
                       <linearGradient id={`areaGrad-${mainChartId}`} x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%"  stopColor="#4f46e5" stopOpacity={0.28} />
-                        <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+                        <stop offset="5%"  stopColor="#7B3FE4" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#7B3FE4" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -448,12 +454,15 @@ export function DynamicDashboard() {
                     <Area
                       type="monotone"
                       dataKey={resolvedYKey}
-                      stroke="#4f46e5"
+                      stroke="#7B3FE4"
                       strokeWidth={2.5}
                       fillOpacity={1}
                       fill={`url(#areaGrad-${mainChartId})`}
-                      dot={{ r: 2.5, fill: '#4f46e5', strokeWidth: 0 }}
+                      dot={{ r: 2.5, fill: '#7B3FE4', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
+                      isAnimationActive={true}
+                      animationDuration={1500}
+                      animationEasing="ease-in-out"
                     />
                   </AreaChart>
                 )}
@@ -466,7 +475,7 @@ export function DynamicDashboard() {
                 <ScatterPlot dataset={deferredFilteredData} numericCols={numericCols} />
               </div>
             ) : (
-              <div className="lg:col-span-2 card p-5 flex items-center justify-center text-gray-400 text-sm h-[380px]">
+              <div className="lg:col-span-2 card p-5 flex items-center justify-center text-slate-500 text-sm h-[380px]">
                 Need ≥ 2 numeric columns for scatter plot.
               </div>
             )}
@@ -519,19 +528,19 @@ export function DynamicDashboard() {
           <div className="mt-4 card overflow-hidden mb-6">
             <div className="px-5 py-3.5 border-b border-gray-100 bg-slate-50 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-900">Recent Data Records</h3>
-              <span className="text-xs text-gray-400">Showing first 10 of {filteredData.length.toLocaleString()}</span>
+              <span className="text-xs text-slate-500">Showing first 10 of {filteredData.length.toLocaleString()}</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
                 <thead>
                   <tr className="border-b border-gray-200 bg-white">
                     {columns.slice(0, 8).map(c => (
-                      <th key={c.key} className="px-4 py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                      <th key={c.key} className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                         {c.label}
                       </th>
                     ))}
                     {columns.length > 8 && (
-                      <th className="px-4 py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">...</th>
+                      <th className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">...</th>
                     )}
                   </tr>
                 </thead>
@@ -544,7 +553,7 @@ export function DynamicDashboard() {
                         </td>
                       ))}
                       {columns.length > 8 && (
-                        <td className="px-4 py-3 text-gray-400 italic">+{columns.length - 8} more</td>
+                        <td className="px-4 py-3 text-slate-500 italic">+{columns.length - 8} more</td>
                       )}
                     </tr>
                   ))}

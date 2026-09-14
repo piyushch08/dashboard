@@ -5,10 +5,10 @@ import { Globe } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const data = [
-  { name: 'Organic Search', value: 400, color: '#00F0FF' },
-  { name: 'Social Media', value: 300, color: '#9D00FF' },
-  { name: 'Direct Traffic', value: 300, color: '#FF007F' },
-  { name: 'Referral', value: 200, color: '#10b981' },
+  { name: 'Organic Search', value: 45, color: '#7B3FE4' },
+  { name: 'Direct', value: 25, color: '#A580F2' },
+  { name: 'Social', value: 20, color: '#CBD5E1' },
+  { name: 'Referral', value: 10, color: '#C9B6F8' },
 ];
 
 export function TrafficSourcePieChart() {
@@ -17,15 +17,15 @@ export function TrafficSourcePieChart() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.6 }}
-      className="glass-panel p-6 rounded-2xl flex flex-col h-[350px]"
+      className="card flex flex-col h-[350px]"
     >
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-8 h-8 rounded-lg bg-neon-pink/20 flex items-center justify-center">
-          <Globe size={18} className="text-neon-pink" />
+        <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
+          <Globe size={18} className="text-[#7B3FE4]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-white leading-tight">Traffic Sources</h3>
-          <p className="text-xs text-slate-400">User acquisition channels</p>
+          <h3 className="text-lg font-bold text-slate-800 leading-tight">Traffic Sources</h3>
+          <p className="text-xs text-slate-600">Distribution by channel</p>
         </div>
       </div>
       
@@ -42,6 +42,9 @@ export function TrafficSourcePieChart() {
                 paddingAngle={5}
                 dataKey="value"
                 stroke="none"
+                isAnimationActive={true}
+                animationDuration={1500}
+                animationEasing="ease-in-out"
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -69,7 +72,7 @@ export function TrafficSourcePieChart() {
               ></div>
               <div className="flex flex-col">
                 <span className="text-xs font-semibold text-slate-200">{item.name}</span>
-                <span className="text-[10px] text-slate-500">{item.value} users</span>
+                <span className="text-[10px] text-slate-600">{item.value} users</span>
               </div>
             </div>
           ))}

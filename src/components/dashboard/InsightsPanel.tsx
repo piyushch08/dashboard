@@ -53,7 +53,7 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
           <Lightbulb size={14} className="text-warning" />
         </div>
         <h3 className="text-sm font-semibold text-gray-900">Auto Insights</h3>
-        <span className="ml-auto text-xs text-gray-400 tabular-nums">
+        <span className="ml-auto text-xs text-slate-500 tabular-nums">
           {insights.length} finding{insights.length !== 1 ? 's' : ''}
         </span>
       </div>
@@ -61,7 +61,7 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
       {/* Insights list — scrollable */}
       <div className="flex-1 overflow-y-auto flex flex-col gap-2 pr-0.5">
         {insights.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-400 text-xs text-center gap-2">
+          <div className="flex flex-col items-center justify-center h-full text-slate-500 text-xs text-center gap-2">
             <Info size={24} />
             <span>Upload a dataset with numeric columns to see insights.</span>
           </div>
@@ -95,7 +95,7 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
       </div>
 
       {/* Footer note */}
-      <p className="mt-3 text-xs text-gray-400 flex-shrink-0 leading-relaxed">
+      <p className="mt-3 text-xs text-slate-500 flex-shrink-0 leading-relaxed">
         Insights computed from {dataset.length.toLocaleString()} records in real time.
       </p>
     </section>

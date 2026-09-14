@@ -12,7 +12,7 @@ interface MultiSeriesChartProps {
   numericCols: ColumnMeta[];
 }
 
-const SERIES_COLORS = ['#4f46e5', '#059669', '#d97706', '#dc2626', '#0891b2', '#9333ea'];
+const SERIES_COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA'];
 
 const TOOLTIP_STYLE = {
   backgroundColor: '#fff',
@@ -72,7 +72,7 @@ export function MultiSeriesChart({ dataset, xColKey, numericCols }: MultiSeriesC
               onClick={() => setChartMode(mode)}
               aria-pressed={chartMode === mode}
               className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all capitalize ${
-                chartMode === mode ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-gray-600'
+                chartMode === mode ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-gray-600'
               }`}
             >
               {mode}
@@ -91,7 +91,7 @@ export function MultiSeriesChart({ dataset, xColKey, numericCols }: MultiSeriesC
               onClick={() => toggleSeries(col.key)}
               aria-pressed={active}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-all ${
-                active ? 'text-white border-transparent' : 'bg-white border-gray-200 text-gray-400'
+                active ? 'text-white border-transparent' : 'bg-white border-gray-200 text-slate-500'
               }`}
               style={active ? { backgroundColor: color, borderColor: color } : {}}
             >

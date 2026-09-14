@@ -60,7 +60,7 @@ export function DataTableView() {
     <div className="flex flex-col gap-4">
       <div>
         <h1 className="text-xl font-semibold text-gray-900">Data Table</h1>
-        <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
+        <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
           {filteredData.length} rows{searchQuery ? ' (filtered)' : ''}
         </p>
       </div>
@@ -81,7 +81,7 @@ export function DataTableView() {
               <tr className="border-b border-gray-200 bg-slate-50">
                 <th
                   scope="col"
-                  className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider w-12"
+                  className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-12"
                 >
                   #
                 </th>
@@ -95,7 +95,7 @@ export function DataTableView() {
                         ? sortAsc ? 'ascending' : 'descending'
                         : 'none'
                     }
-                    className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-800 hover:bg-slate-100 select-none transition-colors"
+                    className="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:text-gray-800 hover:bg-slate-100 select-none transition-colors"
                   >
                     <div className="flex items-center gap-1.5">
                       {col.label}
@@ -131,7 +131,7 @@ export function DataTableView() {
                 <tr>
                   <td
                     colSpan={columns.length + 1}
-                    className="px-4 py-12 text-center text-gray-400"
+                    className="px-4 py-12 text-center text-slate-500"
                   >
                     <div className="flex flex-col items-center gap-2">
                       <span className="text-2xl">🔍</span>
@@ -150,10 +150,10 @@ export function DataTableView() {
             className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-slate-50/60"
             aria-label="Table pagination"
           >
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-slate-600">
               Page <span className="font-medium text-gray-700">{page + 1}</span> of{' '}
               <span className="font-medium text-gray-700">{totalPages}</span>
-              <span className="hidden sm:inline ml-1 text-gray-400">
+              <span className="hidden sm:inline ml-1 text-slate-500">
                 ({filteredData.length} total rows)
               </span>
             </span>
@@ -162,7 +162,7 @@ export function DataTableView() {
                 onClick={() => setPage(0)}
                 disabled={page === 0}
                 aria-label="First page"
-                className="px-2 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="px-2 py-1.5 rounded-md text-xs font-medium text-slate-600 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 «
               </button>
@@ -170,7 +170,7 @@ export function DataTableView() {
                 onClick={() => setPage(Math.max(0, page - 1))}
                 disabled={page === 0}
                 aria-label="Previous page"
-                className="p-1.5 rounded-md hover:bg-gray-200 text-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-md hover:bg-gray-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft size={16} aria-hidden="true" />
               </button>
@@ -198,7 +198,7 @@ export function DataTableView() {
                       "w-8 h-8 rounded-md text-xs font-medium transition-colors",
                       page === pageNum
                         ? "bg-primary text-white shadow-sm"
-                        : "text-gray-500 hover:bg-gray-200"
+                        : "text-slate-600 hover:bg-gray-200"
                     )}
                   >
                     {pageNum + 1}
@@ -210,7 +210,7 @@ export function DataTableView() {
                 onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
                 disabled={page >= totalPages - 1}
                 aria-label="Next page"
-                className="p-1.5 rounded-md hover:bg-gray-200 text-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-md hover:bg-gray-200 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronRight size={16} aria-hidden="true" />
               </button>
@@ -218,7 +218,7 @@ export function DataTableView() {
                 onClick={() => setPage(totalPages - 1)}
                 disabled={page >= totalPages - 1}
                 aria-label="Last page"
-                className="px-2 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="px-2 py-1.5 rounded-md text-xs font-medium text-slate-600 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 »
               </button>
