@@ -39,35 +39,40 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
 
   return (
     <aside
+      aria-label="Main navigation"
       style={{ width: isOpen ? 240 : 72 }}
-      className="h-screen sticky top-0 flex flex-col bg-white border-r border-gray-200 z-20 transition-[width] duration-200"
+      className="h-screen sticky top-0 flex flex-col bg-white border-r border-gray-200/80 z-20 transition-[width] duration-200"
     >
+      {/* Logo / branding */}
       <div className="flex items-center justify-between px-4 h-16 border-b border-gray-100">
         {isOpen && (
           <div className="flex items-center gap-2.5 font-semibold text-gray-900">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <BarChart2 size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
+              <BarChart2 size={16} className="text-white" aria-hidden="true" />
             </div>
-            DataFlow
+            <span>DataFlow</span>
           </div>
         )}
         {!isOpen && (
-          <div className="w-8 h-8 mx-auto rounded-lg bg-primary flex items-center justify-center">
-            <BarChart2 size={16} className="text-white" />
+          <div className="w-8 h-8 mx-auto rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
+            <BarChart2 size={16} className="text-white" aria-hidden="true" />
           </div>
         )}
-        <button 
+        <button
           onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           className={cn(
-            "p-1 rounded-md hover:bg-gray-100 text-gray-400 transition-colors",
+            "p-1 rounded-md hover:bg-gray-100 text-gray-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
             !isOpen && "absolute -right-3 top-5 bg-white border border-gray-200 rounded-full shadow-sm"
           )}
         >
-          <ChevronLeft size={16} className={cn("transition-transform duration-200", !isOpen && "rotate-180")} />
+          <ChevronLeft size={16} className={cn("transition-transform duration-200", !isOpen && "rotate-180")} aria-hidden="true" />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-3">
+      {/* Nav items */}
+      <nav className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-3" aria-label="Page navigation">
         {navItems.map((item) => {
           const isActive = currentPage === item.page;
           const isDisabled = dataset.length === 0;
@@ -75,35 +80,50 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
             <button
               key={item.page}
               onClick={() => handleNav(item.page)}
+              aria-disabled={isDisabled}
+              aria-current={isActive ? 'page' : undefined}
+              title={!isOpen ? item.label : undefined}
               disabled={isDisabled}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm",
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-sm w-full text-left",
                 isActive
-                  ? "bg-primary-light text-primary font-medium" 
-                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-700",
+                  ? "bg-primary-light text-primary font-medium shadow-sm"
+                  : "text-gray-500 hover:bg-slate-100 hover:text-gray-800",
                 isDisabled && "opacity-40 cursor-not-allowed hover:bg-transparent hover:text-gray-500"
               )}
             >
-              <item.icon size={18} />
-              {isOpen && <span className="whitespace-nowrap">{item.label}</span>}
+              <item.icon
+                size={18}
+                aria-hidden="true"
+                className={cn(
+                  "flex-shrink-0",
+                  isActive ? "text-primary" : "text-gray-400"
+                )}
+              />
+              {isOpen && <span className="whitespace-nowrap truncate">{item.label}</span>}
             </button>
           );
         })}
-      </div>
+      </nav>
 
+      {/* Bottom actions */}
       <div className="p-3 border-t border-gray-100 flex flex-col gap-1">
-        <button 
+        <button
           onClick={() => useDataStore.getState().setSettingsOpen(true)}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors text-sm"
+          title={!isOpen ? 'Settings' : undefined}
+          aria-label="Open settings"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-slate-100 hover:text-gray-800 transition-colors text-sm w-full text-left"
         >
-          <Settings size={18} />
+          <Settings size={18} aria-hidden="true" className="flex-shrink-0" />
           {isOpen && <span>Settings</span>}
         </button>
-        <button 
+        <button
           onClick={() => { clearData(); }}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-danger transition-colors text-sm"
+          title={!isOpen ? 'Clear data & logout' : undefined}
+          aria-label="Clear data and logout"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-danger transition-colors text-sm w-full text-left"
         >
-          <LogOut size={18} />
+          <LogOut size={18} aria-hidden="true" className="flex-shrink-0" />
           {isOpen && <span>Logout</span>}
         </button>
       </div>

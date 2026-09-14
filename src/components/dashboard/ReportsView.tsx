@@ -1,11 +1,50 @@
 import { useDataStore } from '../../store/useDataStore';
 import { Download, FileSpreadsheet, FileText, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import * as XLSX from 'xlsx';
+
+interface ExportCardProps {
+  id: string;
+  label: string;
+  description: string;
+  icon: React.ElementType;
+  activeIcon: React.ElementType;
+  isActive: boolean;
+  onClick: () => void;
+  colorClass: string;
+  bgClass: string;
+}
+
+function ExportCard({ id, label, description, icon: Icon, activeIcon: ActiveIcon, isActive, onClick, colorClass, bgClass }: ExportCardProps) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={`${label}${isActive ? ' — downloaded successfully' : ''}`}
+      className="card p-5 flex flex-col items-center gap-3 hover:border-primary/30 transition-all cursor-pointer text-center group w-full"
+    >
+      <div className={`p-3 rounded-xl transition-colors duration-200 ${isActive ? 'bg-success-light' : `${bgClass} group-hover:${colorClass.replace('text-', 'bg-').replace('/80', '/15')}`}`}>
+        {isActive
+          ? <ActiveIcon size={24} className="text-success" aria-hidden="true" />
+          : <Icon size={24} className={`${colorClass} transition-colors`} aria-hidden="true" />
+        }
+      </div>
+      <div>
+        <p className="text-sm font-semibold text-gray-900">{label}</p>
+        <p className="text-xs text-gray-400 mt-0.5">{description}</p>
+      </div>
+      {isActive && (
+        <span role="status" className="sr-only">
+          {label} downloaded successfully
+        </span>
+      )}
+    </button>
+  );
+}
 
 export function ReportsView() {
   const { dataset, columns } = useDataStore();
   const [exported, setExported] = useState<string | null>(null);
+  const tableId = useId();
 
   const exportCSV = () => {
     const headers = columns.map(c => c.label).join(',');
@@ -44,12 +83,11 @@ export function ReportsView() {
 
   const flash = (id: string) => {
     setExported(id);
-    setTimeout(() => setExported(null), 2000);
+    setTimeout(() => setExported(null), 2500);
   };
 
   const numericCols = columns.filter(c => c.type === 'number');
 
-  // Generate a simple text summary
   const summary = numericCols.map(col => {
     const nums = dataset.map(r => Number(r[col.key])).filter(n => !isNaN(n));
     const sum = nums.reduce((a, b) => a + b, 0);
@@ -66,73 +104,86 @@ export function ReportsView() {
         <p className="text-sm text-gray-500 mt-0.5">Export your data or view a summary report</p>
       </div>
 
-      {/* Export buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <button 
-          onClick={exportCSV}
-          className="card p-5 flex flex-col items-center gap-3 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer text-center"
-        >
-          {exported === 'csv' ? <Check size={24} className="text-success" /> : <FileText size={24} className="text-gray-400" />}
-          <div>
-            <p className="text-sm font-medium text-gray-900">Export CSV</p>
-            <p className="text-xs text-gray-400 mt-0.5">Comma-separated values</p>
-          </div>
-        </button>
-
-        <button 
-          onClick={exportExcel}
-          className="card p-5 flex flex-col items-center gap-3 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer text-center"
-        >
-          {exported === 'xlsx' ? <Check size={24} className="text-success" /> : <FileSpreadsheet size={24} className="text-gray-400" />}
-          <div>
-            <p className="text-sm font-medium text-gray-900">Export Excel</p>
-            <p className="text-xs text-gray-400 mt-0.5">.xlsx spreadsheet</p>
-          </div>
-        </button>
-
-        <button 
-          onClick={exportJSON}
-          className="card p-5 flex flex-col items-center gap-3 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer text-center"
-        >
-          {exported === 'json' ? <Check size={24} className="text-success" /> : <Download size={24} className="text-gray-400" />}
-          <div>
-            <p className="text-sm font-medium text-gray-900">Export JSON</p>
-            <p className="text-xs text-gray-400 mt-0.5">Raw JSON format</p>
-          </div>
-        </button>
-      </div>
-
-      {/* Summary report */}
-      {summary.length > 0 && (
-        <div className="card overflow-hidden">
-          <div className="px-5 py-3 border-b border-gray-100 bg-gray-50">
-            <h3 className="text-sm font-semibold text-gray-900">Summary Report</h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-2.5 text-left text-xs font-medium text-gray-500 uppercase">Column</th>
-                  <th className="px-5 py-2.5 text-right text-xs font-medium text-gray-500 uppercase">Sum</th>
-                  <th className="px-5 py-2.5 text-right text-xs font-medium text-gray-500 uppercase">Mean</th>
-                  <th className="px-5 py-2.5 text-right text-xs font-medium text-gray-500 uppercase">Min</th>
-                  <th className="px-5 py-2.5 text-right text-xs font-medium text-gray-500 uppercase">Max</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {summary.map(s => (
-                  <tr key={s.label} className="hover:bg-gray-50">
-                    <td className="px-5 py-2.5 font-medium text-gray-900">{s.label}</td>
-                    <td className="px-5 py-2.5 text-right text-gray-700">{s.sum}</td>
-                    <td className="px-5 py-2.5 text-right text-gray-700">{s.mean}</td>
-                    <td className="px-5 py-2.5 text-right text-gray-700">{String(s.min)}</td>
-                    <td className="px-5 py-2.5 text-right text-gray-700">{String(s.max)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      {/* Export cards */}
+      <section aria-label="Export options">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <ExportCard
+            id="csv"
+            label="Export CSV"
+            description="Comma-separated values"
+            icon={FileText}
+            activeIcon={Check}
+            isActive={exported === 'csv'}
+            onClick={exportCSV}
+            colorClass="text-primary/80"
+            bgClass="bg-primary-light"
+          />
+          <ExportCard
+            id="xlsx"
+            label="Export Excel"
+            description=".xlsx spreadsheet"
+            icon={FileSpreadsheet}
+            activeIcon={Check}
+            isActive={exported === 'xlsx'}
+            onClick={exportExcel}
+            colorClass="text-success"
+            bgClass="bg-success-light"
+          />
+          <ExportCard
+            id="json"
+            label="Export JSON"
+            description="Raw JSON format"
+            icon={Download}
+            activeIcon={Check}
+            isActive={exported === 'json'}
+            onClick={exportJSON}
+            colorClass="text-accent"
+            bgClass="bg-accent-light"
+          />
         </div>
+      </section>
+
+      {/* Summary report table */}
+      {summary.length > 0 && (
+        <section aria-label="Summary report">
+          <div className="card overflow-hidden">
+            <div className="px-5 py-3.5 border-b border-gray-100 bg-slate-50 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-900">Summary Report</h3>
+              <span className="text-xs text-gray-400">{numericCols.length} numeric columns</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table
+                id={tableId}
+                className="w-full text-sm"
+                aria-label="Numeric column summary statistics"
+              >
+                <caption className="sr-only">
+                  Summary statistics for {numericCols.length} numeric columns across {dataset.length} records
+                </caption>
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th scope="col" className="px-5 py-2.5 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Column</th>
+                    <th scope="col" className="px-5 py-2.5 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">Sum</th>
+                    <th scope="col" className="px-5 py-2.5 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">Mean</th>
+                    <th scope="col" className="px-5 py-2.5 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">Min</th>
+                    <th scope="col" className="px-5 py-2.5 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">Max</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {summary.map(s => (
+                    <tr key={s.label} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-5 py-3 font-medium text-gray-900">{s.label}</td>
+                      <td className="px-5 py-3 text-right text-gray-700 tabular-nums">{s.sum}</td>
+                      <td className="px-5 py-3 text-right text-gray-700 tabular-nums">{s.mean}</td>
+                      <td className="px-5 py-3 text-right text-gray-700 tabular-nums">{String(s.min)}</td>
+                      <td className="px-5 py-3 text-right text-gray-700 tabular-nums">{String(s.max)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
       )}
     </div>
   );

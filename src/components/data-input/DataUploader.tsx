@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { UploadCloud, FileSpreadsheet, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { useState, useRef, useId } from 'react';
+import { UploadCloud, FileSpreadsheet, Image as ImageIcon, Loader2, AlertCircle } from 'lucide-react';
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { useDataStore } from '../../store/useDataStore';
@@ -10,7 +10,10 @@ export function DataUploader() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+  const errorId = useId();
+  const hintId = useId();
+  const inputId = useId();
+
   const { setDataset, apiKey, setSettingsOpen } = useDataStore();
 
   const handleProcessData = (data: any[]) => {
@@ -84,52 +87,98 @@ export function DataUploader() {
     }
   };
 
+  // Keyboard-accessible drop zone activation
+  const handleDropZoneKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      fileInputRef.current?.click();
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-7rem)]" onPaste={handlePaste}>
+    <div
+      className="flex flex-col items-center justify-center h-[calc(100vh-7rem)]"
+      onPaste={handlePaste}
+    >
       <div className="card max-w-xl w-full p-8 flex flex-col items-center gap-6">
+        {/* Header */}
         <div className="text-center space-y-1">
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md">
+            <UploadCloud size={28} className="text-white" aria-hidden="true" />
+          </div>
           <h2 className="text-xl font-semibold text-gray-900">Import Your Data</h2>
-          <p className="text-sm text-gray-500">Upload a CSV, Excel file, or an image of a data table.</p>
+          <p className="text-sm text-gray-500">
+            Upload a CSV, Excel file, or an image of a data table.
+          </p>
         </div>
 
-        <div 
+        {/* Drop zone */}
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Upload file drop zone — click or press Enter to browse, or drag and drop a file"
+          aria-describedby={`${hintId}${error ? ` ${errorId}` : ''}`}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`w-full h-52 border-2 border-dashed rounded-xl flex flex-col items-center justify-center cursor-pointer transition-colors ${
-            isDragging ? 'border-primary bg-primary-light/50' : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+          onKeyDown={handleDropZoneKeyDown}
+          className={`w-full h-52 border-2 border-dashed rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
+            isDragging
+              ? 'border-primary bg-primary-light/60 scale-[1.01]'
+              : 'border-gray-300 hover:border-primary/50 hover:bg-slate-50'
           }`}
         >
           {isProcessing ? (
             <div className="flex flex-col items-center gap-3 text-primary">
-              <Loader2 size={36} className="animate-spin" />
+              <Loader2 size={36} className="animate-spin" aria-hidden="true" />
               <p className="text-sm font-medium text-gray-600">Analyzing data…</p>
+              <span className="sr-only" role="status">Processing your file, please wait.</span>
             </div>
           ) : (
             <>
-              <div className="flex gap-6 mb-4 text-gray-400">
-                <FileSpreadsheet size={28} />
-                <ImageIcon size={28} />
-                <UploadCloud size={28} />
+              <div className="flex gap-6 mb-4">
+                <div className="p-3 rounded-xl bg-slate-100 text-gray-400 hover:text-primary transition-colors">
+                  <FileSpreadsheet size={24} aria-hidden="true" />
+                </div>
+                <div className="p-3 rounded-xl bg-slate-100 text-gray-400 hover:text-primary transition-colors">
+                  <ImageIcon size={24} aria-hidden="true" />
+                </div>
+                <div className="p-3 rounded-xl bg-slate-100 text-gray-400 hover:text-primary transition-colors">
+                  <UploadCloud size={24} aria-hidden="true" />
+                </div>
               </div>
-              <p className="text-sm font-medium text-gray-700">Click or drag and drop to upload</p>
-              <p className="text-xs text-gray-400 mt-1">Ctrl+V to paste CSV text</p>
+              <p className="text-sm font-medium text-gray-700">
+                Click or drag and drop to upload
+              </p>
+              <p id={hintId} className="text-xs text-gray-400 mt-1">
+                CSV, Excel (.xlsx/.xls), or image — also <kbd className="px-1 py-0.5 bg-gray-100 rounded text-xs font-mono">Ctrl+V</kbd> to paste CSV text
+              </p>
             </>
           )}
         </div>
 
-        {error && (
-          <div className="w-full p-3 rounded-lg bg-danger-light border border-red-200 text-danger text-sm">
-            {error}
-          </div>
-        )}
+        {/* Error message — live region */}
+        <div aria-live="assertive" aria-atomic="true" className={error ? 'w-full' : 'sr-only'}>
+          {error && (
+            <div
+              id={errorId}
+              role="alert"
+              className="w-full p-3 rounded-lg bg-danger-light border border-red-200 text-danger text-sm flex items-start gap-2"
+            >
+              <AlertCircle size={16} className="flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
 
-        <input 
-          type="file" 
-          className="hidden" 
-          ref={fileInputRef} 
+        <input
+          id={inputId}
+          type="file"
+          className="hidden"
+          ref={fileInputRef}
           accept=".csv, .xlsx, .xls, image/*"
+          aria-label="File upload input"
           onChange={(e) => {
             if (e.target.files && e.target.files.length > 0) {
               processFile(e.target.files[0]);

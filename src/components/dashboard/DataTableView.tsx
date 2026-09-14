@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useId } from 'react';
 import { useDataStore } from '../../store/useDataStore';
-import { ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { cn } from '../layout/Sidebar';
 
 const PAGE_SIZE = 15;
@@ -10,6 +10,8 @@ export function DataTableView() {
   const [page, setPage] = useState(0);
   const [sortCol, setSortCol] = useState<string | null>(null);
   const [sortAsc, setSortAsc] = useState(true);
+  const tableId = useId();
+  const captionId = useId();
 
   const filteredData = useMemo(() => {
     let data = dataset;
@@ -47,31 +49,57 @@ export function DataTableView() {
     setPage(0);
   };
 
+  const getSortIcon = (colKey: string) => {
+    if (sortCol !== colKey) return <ArrowUpDown size={12} className="text-gray-300" aria-hidden="true" />;
+    return sortAsc
+      ? <ArrowUp size={12} className="text-primary" aria-hidden="true" />
+      : <ArrowDown size={12} className="text-primary" aria-hidden="true" />;
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div>
         <h1 className="text-xl font-semibold text-gray-900">Data Table</h1>
-        <p className="text-sm text-gray-500 mt-0.5">{filteredData.length} rows{searchQuery ? ' (filtered)' : ''}</p>
+        <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
+          {filteredData.length} rows{searchQuery ? ' (filtered)' : ''}
+        </p>
       </div>
 
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table
+            id={tableId}
+            className="w-full text-sm"
+            aria-label={`Data table with ${filteredData.length} rows${searchQuery ? ' (filtered)' : ''}`}
+            aria-describedby={captionId}
+          >
+            <caption id={captionId} className="sr-only">
+              {filteredData.length} records{searchQuery ? ` matching "${searchQuery}"` : ''}
+              {sortCol ? `, sorted by ${sortCol} ${sortAsc ? 'ascending' : 'descending'}` : ''}
+            </caption>
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">#</th>
+              <tr className="border-b border-gray-200 bg-slate-50">
+                <th
+                  scope="col"
+                  className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider w-12"
+                >
+                  #
+                </th>
                 {columns.map(col => (
-                  <th 
-                    key={col.key} 
+                  <th
+                    key={col.key}
+                    scope="col"
                     onClick={() => handleSort(col.key)}
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700 select-none"
+                    aria-sort={
+                      sortCol === col.key
+                        ? sortAsc ? 'ascending' : 'descending'
+                        : 'none'
+                    }
+                    className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-800 hover:bg-slate-100 select-none transition-colors"
                   >
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                       {col.label}
-                      <ArrowUpDown size={12} className={cn(
-                        "transition-colors",
-                        sortCol === col.key ? "text-primary" : "text-gray-300"
-                      )} />
+                      {getSortIcon(col.key)}
                     </div>
                   </th>
                 ))}
@@ -79,19 +107,36 @@ export function DataTableView() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {pageData.map((row, i) => (
-                <tr key={i} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-2.5 text-xs text-gray-400">{page * PAGE_SIZE + i + 1}</td>
+                <tr
+                  key={i}
+                  className="hover:bg-slate-50 transition-colors"
+                >
+                  <td className="px-4 py-2.5 text-xs text-gray-300 tabular-nums">
+                    {page * PAGE_SIZE + i + 1}
+                  </td>
                   {columns.map(col => (
-                    <td key={col.key} className="px-4 py-2.5 text-gray-700 whitespace-nowrap max-w-[200px] truncate">
-                      {row[col.key] != null ? String(row[col.key]) : <span className="text-gray-300 italic">null</span>}
+                    <td
+                      key={col.key}
+                      className="px-4 py-2.5 text-gray-700 whitespace-nowrap max-w-[200px] truncate"
+                    >
+                      {row[col.key] != null
+                        ? String(row[col.key])
+                        : <span className="text-gray-300 italic text-xs" aria-label="null value">—</span>
+                      }
                     </td>
                   ))}
                 </tr>
               ))}
               {pageData.length === 0 && (
                 <tr>
-                  <td colSpan={columns.length + 1} className="px-4 py-8 text-center text-gray-400">
-                    No matching records found.
+                  <td
+                    colSpan={columns.length + 1}
+                    className="px-4 py-12 text-center text-gray-400"
+                  >
+                    <div className="flex flex-col items-center gap-2">
+                      <span className="text-2xl">🔍</span>
+                      <span>No matching records found.</span>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -101,27 +146,84 @@ export function DataTableView() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-gray-50/50">
+          <nav
+            className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-slate-50/60"
+            aria-label="Table pagination"
+          >
             <span className="text-xs text-gray-500">
-              Page {page + 1} of {totalPages}
+              Page <span className="font-medium text-gray-700">{page + 1}</span> of{' '}
+              <span className="font-medium text-gray-700">{totalPages}</span>
+              <span className="hidden sm:inline ml-1 text-gray-400">
+                ({filteredData.length} total rows)
+              </span>
             </span>
-            <div className="flex gap-1">
-              <button 
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPage(0)}
+                disabled={page === 0}
+                aria-label="First page"
+                className="px-2 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                «
+              </button>
+              <button
                 onClick={() => setPage(Math.max(0, page - 1))}
                 disabled={page === 0}
+                aria-label="Previous page"
                 className="p-1.5 rounded-md hover:bg-gray-200 text-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft size={16} aria-hidden="true" />
               </button>
-              <button 
+
+              {/* Page number buttons */}
+              {Array.from({ length: Math.min(totalPages, 5) }, (_, idx) => {
+                // Show pages around current
+                let pageNum: number;
+                if (totalPages <= 5) {
+                  pageNum = idx;
+                } else if (page < 3) {
+                  pageNum = idx;
+                } else if (page > totalPages - 4) {
+                  pageNum = totalPages - 5 + idx;
+                } else {
+                  pageNum = page - 2 + idx;
+                }
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setPage(pageNum)}
+                    aria-label={`Page ${pageNum + 1}`}
+                    aria-current={page === pageNum ? 'page' : undefined}
+                    className={cn(
+                      "w-8 h-8 rounded-md text-xs font-medium transition-colors",
+                      page === pageNum
+                        ? "bg-primary text-white shadow-sm"
+                        : "text-gray-500 hover:bg-gray-200"
+                    )}
+                  >
+                    {pageNum + 1}
+                  </button>
+                );
+              })}
+
+              <button
                 onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
                 disabled={page >= totalPages - 1}
+                aria-label="Next page"
                 className="p-1.5 rounded-md hover:bg-gray-200 text-gray-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
-                <ChevronRight size={16} />
+                <ChevronRight size={16} aria-hidden="true" />
+              </button>
+              <button
+                onClick={() => setPage(totalPages - 1)}
+                disabled={page >= totalPages - 1}
+                aria-label="Last page"
+                className="px-2 py-1.5 rounded-md text-xs font-medium text-gray-500 hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                »
               </button>
             </div>
-          </div>
+          </nav>
         )}
       </div>
     </div>

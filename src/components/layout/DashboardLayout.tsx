@@ -10,12 +10,22 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+    <div className="flex min-h-screen bg-slate-50 overflow-hidden">
+      {/* Skip to main content — keyboard / screen-reader accessible */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      
+
       <div className="flex-1 flex flex-col relative max-h-screen overflow-y-auto">
         <Header />
-        <main className="p-4 sm:p-6 flex-1">
+        <main
+          id="main-content"
+          role="main"
+          aria-label="Dashboard content"
+          className="p-4 sm:p-6 flex-1"
+        >
           {children}
         </main>
       </div>

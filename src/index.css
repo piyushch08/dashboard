@@ -2,23 +2,57 @@
 
 @theme {
   --font-inter: 'Inter', sans-serif;
-  --color-primary: #2563eb;
-  --color-primary-light: #dbeafe;
-  --color-success: #16a34a;
-  --color-success-light: #dcfce7;
+  /* Primary - indigo */
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-light: #eef2ff;
+  --color-primary-border: #c7d2fe;
+  /* Success */
+  --color-success: #059669;
+  --color-success-light: #d1fae5;
+  /* Danger */
   --color-danger: #dc2626;
   --color-danger-light: #fee2e2;
+  /* Warning */
   --color-warning: #d97706;
   --color-warning-light: #fef3c7;
+  /* Violet accent */
+  --color-accent: #7c3aed;
+  --color-accent-light: #ede9fe;
 }
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-slate-50 text-gray-900 antialiased;
+  }
+
+  /* Global focus ring for keyboard nav */
+  :focus-visible {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
-/* Clean scrollbar */
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #4f46e5;
+  color: #fff;
+  border-radius: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Smooth scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -28,13 +62,43 @@
 }
 ::-webkit-scrollbar-thumb {
   background: #d1d5db;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
 
-/* Clean card utility */
+/* Card utility */
 .card {
-  @apply bg-white border border-gray-200 shadow-sm rounded-xl;
+  @apply bg-white border border-gray-200/80 shadow-sm rounded-xl transition-shadow duration-200;
+}
+.card:hover {
+  box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08);
+}
+
+/* Shimmer loading skeleton */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+
+/* KPI card hover lift */
+.kpi-card {
+  @apply transition-transform duration-200 ease-out;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Chart area accessible focus */
+.chart-container:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 4px;
+  border-radius: 12px;
 }
