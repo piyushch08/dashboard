@@ -1,4 +1,4 @@
-import { useMemo, useState, useId } from 'react';
+import { useMemo, useState, useId, useDeferredValue } from 'react';
 import { useDataStore } from '../../store/useDataStore';
 import { KpiCard } from './KpiCard';
 import { ScatterPlot } from './ScatterPlot';
@@ -6,6 +6,7 @@ import { Histogram } from './Histogram';
 import { InsightsPanel } from './InsightsPanel';
 import { MultiSeriesChart } from './MultiSeriesChart';
 import { BoxPlotSummary } from './BoxPlotSummary';
+import { DynamicPieChart } from './DynamicPieChart';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, Brush, Cell,
@@ -101,10 +102,14 @@ export function DynamicDashboard() {
     return data;
   }, [dataset, searchQuery, activeFilter]);
 
+  // Use deferred value for heavy chart rendering to keep UI snappy
+  const deferredFilteredData = useDeferredValue(filteredData);
+  const isPending = filteredData !== deferredFilteredData;
+
   // ─── KPIs ────────────────────────────────────────────────────────────────
   const kpis = useMemo(() => {
     return numericCols.slice(0, 4).map(col => {
-      const filtVals = filteredData.map(r => Number(r[col.key])).filter(n => !isNaN(n));
+      const filtVals = deferredFilteredData.map(r => Number(r[col.key])).filter(n => !isNaN(n));
       const allVals  = dataset.map(r => Number(r[col.key])).filter(n => !isNaN(n));
 
       const filtTotal = filtVals.reduce((a, b) => a + b, 0);
@@ -117,13 +122,12 @@ export function DynamicDashboard() {
         : n >= 1_000   ? `${(n / 1_000).toFixed(1)}k`
         : n.toLocaleString();
 
-      // Build sparkline: 10-point rolling sample across filtered data
       const step = Math.max(1, Math.floor(filtVals.length / 10));
       const sparkData = filtVals.filter((_, i) => i % step === 0).slice(0, 10);
 
       return { title: col.label, value: fmt(filtTotal), change, sparkData };
     });
-  }, [filteredData, numericCols, dataset]);
+  }, [deferredFilteredData, numericCols, dataset]);
 
   // ─── Dataset Metadata ────────────────────────────────────────────────────
   const completeness = useMemo(() => {
@@ -141,7 +145,7 @@ export function DynamicDashboard() {
 
   if (dataset.length === 0) return null;
 
-  const chartData = filteredData.slice(0, 40);
+  const chartData = deferredFilteredData.slice(0, 40);
   const isFiltered = !!(activeFilter || searchQuery);
 
   // ─── Click-to-filter handler (bar chart) ─────────────────────────────────
@@ -176,11 +180,18 @@ export function DynamicDashboard() {
 
       {/* ── Page header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold text-gray-900">Data Insights</h1>
-          <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
-            {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
-          </p>
+        <div className="flex items-center gap-3">
+          <div>
+            <h1 className="text-xl font-semibold text-gray-900">Data Insights</h1>
+            <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
+              {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
+            </p>
+          </div>
+          {isPending && (
+            <span className="text-xs font-semibold text-primary/70 animate-pulse bg-primary/10 px-2 py-1 rounded-md">
+              Calculating...
+            </span>
+          )}
         </div>
         <button
           onClick={clearData}
@@ -452,7 +463,7 @@ export function DynamicDashboard() {
             {/* ── Scatter plot ── */}
             {numericCols.length >= 2 ? (
               <div className="lg:col-span-2">
-                <ScatterPlot dataset={filteredData} numericCols={numericCols} />
+                <ScatterPlot dataset={deferredFilteredData} numericCols={numericCols} />
               </div>
             ) : (
               <div className="lg:col-span-2 card p-5 flex items-center justify-center text-gray-400 text-sm h-[380px]">
@@ -461,14 +472,31 @@ export function DynamicDashboard() {
             )}
           </div>
 
-          {/* ── Histogram + Insights row ── */}
+          {/* ── Pie Chart + Histogram row ── */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-4">
-            <div className="lg:col-span-3">
-              <Histogram dataset={filteredData} numericCols={numericCols} />
-            </div>
             <div className="lg:col-span-2">
-              <InsightsPanel dataset={filteredData} numericCols={numericCols} />
+              <DynamicPieChart 
+                dataset={deferredFilteredData} 
+                numericCols={numericCols} 
+                catCols={catCols} 
+                onSliceClick={(col, val) => {
+                  if (activeFilter?.value === val && activeFilter.column === col) {
+                    setActiveFilter(null);
+                  } else {
+                    const label = columns.find(c => c.key === col)?.label || col;
+                    setActiveFilter({ column: col, label, value: val });
+                  }
+                }}
+              />
             </div>
+            <div className="lg:col-span-3">
+              <Histogram dataset={deferredFilteredData} numericCols={numericCols} />
+            </div>
+          </div>
+
+          {/* ── Insights row ── */}
+          <div className="mt-4">
+            <InsightsPanel dataset={deferredFilteredData} numericCols={numericCols} />
           </div>
 
           {/* ── Multi-series + Box Plot row ── */}
@@ -476,13 +504,13 @@ export function DynamicDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-4">
               <div className="lg:col-span-3">
                 <MultiSeriesChart
-                  dataset={filteredData}
+                  dataset={deferredFilteredData}
                   xColKey={resolvedXKey}
                   numericCols={numericCols}
                 />
               </div>
               <div className="lg:col-span-2">
-                <BoxPlotSummary dataset={filteredData} numericCols={numericCols} />
+                <BoxPlotSummary dataset={deferredFilteredData} numericCols={numericCols} />
               </div>
             </div>
           )}
