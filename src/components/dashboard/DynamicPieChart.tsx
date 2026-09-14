@@ -71,7 +71,7 @@ export function DynamicPieChart({ dataset, numericCols, catCols, onSliceClick }:
           <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
             <PieIcon size={14} className="text-primary" />
           </div>
-          <h3 className="text-sm font-semibold text-gray-900 truncate">
+          <h3 className="text-sm font-semibold text-slate-800 truncate">
             Distribution
           </h3>
         </div>

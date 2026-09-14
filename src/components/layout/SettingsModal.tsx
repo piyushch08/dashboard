@@ -81,7 +81,7 @@ export function SettingsModal() {
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white border border-gray-200 p-6 rounded-2xl z-50 shadow-2xl"
       >
         <div className="flex justify-between items-center mb-5">
-          <h2 id={titleId} className="text-lg font-semibold text-gray-900">Settings</h2>
+          <h2 id={titleId} className="text-lg font-semibold text-slate-800">Settings</h2>
           <button
             ref={closeRef}
             onClick={() => setSettingsOpen(false)}
@@ -108,7 +108,7 @@ export function SettingsModal() {
             placeholder="AIzaSy..."
             autoComplete="off"
             aria-describedby={descId}
-            className="w-full bg-white border border-gray-300 rounded-lg py-2 px-3 text-sm text-gray-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+            className="w-full bg-white border border-gray-300 rounded-lg py-2 px-3 text-sm text-slate-800 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
           />
           <p id={descId} className="text-xs text-slate-500 mt-1.5">
             Required for image analysis. Stored locally in your browser only.

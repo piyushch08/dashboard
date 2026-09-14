@@ -182,7 +182,7 @@ export function DynamicDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">Data Insights</h1>
+            <h1 className="text-xl font-semibold text-slate-800">Data Insights</h1>
             <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
               {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
             </p>
@@ -366,7 +366,7 @@ export function DynamicDashboard() {
                 <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
                   <BarChart3 size={15} className="text-primary" />
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 truncate">
+                <h3 className="text-sm font-semibold text-slate-800 truncate">
                   {resolvedYLabel} by {resolvedXLabel}
                 </h3>
               </div>
@@ -527,7 +527,7 @@ export function DynamicDashboard() {
           {/* ── Data Preview Table ── */}
           <div className="mt-4 card overflow-hidden mb-6">
             <div className="px-5 py-3.5 border-b border-gray-100 bg-slate-50 flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-900">Recent Data Records</h3>
+              <h3 className="text-sm font-semibold text-slate-800">Recent Data Records</h3>
               <span className="text-xs text-slate-500">Showing first 10 of {filteredData.length.toLocaleString()}</span>
             </div>
             <div className="overflow-x-auto">

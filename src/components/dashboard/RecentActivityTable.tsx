@@ -51,15 +51,15 @@ export function RecentActivityTable() {
                 key={row.id} 
                 className="border-b border-slate-100 hover:bg-slate-50 transition-colors group"
               >
-                <td className="py-4 pl-2 text-sm font-medium text-slate-700 group-hover:text-[#7B3FE4] transition-colors">{row.id}</td>
-                <td className="py-4 text-sm text-slate-800 flex items-center gap-2">
+                <td className="py-4 pl-2 text-sm font-medium text-slate-800 group-hover:text-[#7B3FE4] transition-colors">{row.id}</td>
+                <td className="py-4 text-sm text-slate-600 flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">
                     {row.user.charAt(0)}
                   </div>
                   {row.user}
                 </td>
                 <td className="py-4 text-sm text-slate-600">{row.action}</td>
-                <td className="py-4 text-sm font-semibold text-slate-800">{row.amount}</td>
+                <td className="py-4 text-sm font-semibold text-slate-600">{row.amount}</td>
                 <td className="py-4">
                   <span className={cn(
                     "text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider",

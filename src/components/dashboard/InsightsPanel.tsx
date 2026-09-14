@@ -52,7 +52,7 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
         <div className="p-1.5 rounded-lg bg-amber-100" aria-hidden="true">
           <Lightbulb size={14} className="text-warning" />
         </div>
-        <h3 className="text-sm font-semibold text-gray-900">Auto Insights</h3>
+        <h3 className="text-sm font-semibold text-slate-800">Auto Insights</h3>
         <span className="ml-auto text-xs text-slate-500 tabular-nums">
           {insights.length} finding{insights.length !== 1 ? 's' : ''}
         </span>

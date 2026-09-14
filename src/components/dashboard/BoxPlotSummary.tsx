@@ -97,7 +97,7 @@ export function BoxPlotSummary({ dataset, numericCols }: BoxPlotProps) {
         <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
           <BoxSelect size={14} className="text-primary" />
         </div>
-        <h3 className="text-sm font-semibold text-gray-900">Five-Number Summary</h3>
+        <h3 className="text-sm font-semibold text-slate-800">Five-Number Summary</h3>
         <div className="ml-auto relative">
           <label htmlFor={colId} className="sr-only">Select column</label>
           <select
@@ -199,7 +199,7 @@ export function BoxPlotSummary({ dataset, numericCols }: BoxPlotProps) {
         ].map(({ label, value }) => (
           <div key={label} className="text-center">
             <p className="text-xs text-slate-500">{label}</p>
-            <p className="text-sm font-bold text-gray-900 tabular-nums">{value}</p>
+            <p className="text-sm font-bold text-slate-800 tabular-nums">{value}</p>
           </div>
         ))}
       </div>

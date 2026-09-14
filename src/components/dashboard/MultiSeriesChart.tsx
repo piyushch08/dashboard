@@ -63,7 +63,7 @@ export function MultiSeriesChart({ dataset, xColKey, numericCols }: MultiSeriesC
         <div className="p-1.5 rounded-lg bg-accent/10" aria-hidden="true">
           <Layers size={14} className="text-accent" />
         </div>
-        <h3 className="text-sm font-semibold text-gray-900">Combination Chart</h3>
+        <h3 className="text-sm font-semibold text-slate-800">Combination Chart</h3>
 
         <div className="ml-auto flex items-center bg-slate-100 rounded-lg p-0.5 gap-0.5" role="group" aria-label="Chart mode">
           {(['bar', 'line', 'combo'] as const).map(mode => (

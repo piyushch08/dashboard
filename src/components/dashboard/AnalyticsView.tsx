@@ -83,7 +83,7 @@ export function AnalyticsView() {
       {/* Page header + view toggle */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">Analytics</h1>
+          <h1 className="text-xl font-semibold text-slate-800">Analytics</h1>
           <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
             Column-level statistics for {filteredData.length.toLocaleString()} records
           </p>
@@ -145,7 +145,7 @@ export function AnalyticsView() {
                 {/* Column header */}
                 <div className="flex items-center gap-2 mb-4">
                   <TypeIcon size={14} className={cfg.iconClass} aria-hidden="true" />
-                  <h3 className="text-sm font-semibold text-gray-900 truncate">{s.col.label}</h3>
+                  <h3 className="text-sm font-semibold text-slate-800 truncate">{s.col.label}</h3>
                   <span className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full border ${cfg.className}`}>
                     {cfg.label}
                   </span>
@@ -176,11 +176,11 @@ export function AnalyticsView() {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-slate-600">Unique</span>
-                    <span className="font-medium text-gray-900">{s.uniqueCount.toLocaleString()}</span>
+                    <span className="font-medium text-slate-800">{s.uniqueCount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-600">Missing</span>
-                    <span className={`font-medium ${s.nullCount > 0 ? 'text-warning' : 'text-gray-900'}`}>
+                    <span className={`font-medium ${s.nullCount > 0 ? 'text-warning' : 'text-slate-800'}`}>
                       {s.nullCount}
                     </span>
                   </div>
@@ -189,27 +189,27 @@ export function AnalyticsView() {
                     <>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Mean</span>
-                        <span className="font-medium text-gray-900">{s.mean.toFixed(2)}</span>
+                        <span className="font-medium text-slate-800">{s.mean.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Median</span>
-                        <span className="font-medium text-gray-900">{s.median.toFixed(2)}</span>
+                        <span className="font-medium text-slate-800">{s.median.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Min</span>
-                        <span className="font-medium text-gray-900">{s.min.toLocaleString()}</span>
+                        <span className="font-medium text-slate-800">{s.min.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Max</span>
-                        <span className="font-medium text-gray-900">{s.max.toLocaleString()}</span>
+                        <span className="font-medium text-slate-800">{s.max.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Sum</span>
-                        <span className="font-medium text-gray-900">{s.sum.toLocaleString()}</span>
+                        <span className="font-medium text-slate-800">{s.sum.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Std Dev</span>
-                        <span className="font-medium text-gray-900">{s.stdDev.toFixed(2)}</span>
+                        <span className="font-medium text-slate-800">{s.stdDev.toFixed(2)}</span>
                       </div>
                     </>
                   )}

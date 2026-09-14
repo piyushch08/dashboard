@@ -59,7 +59,7 @@ function ExportCard({ label, description, icon: Icon, activeIcon: ActiveIcon, is
         }
       </div>
       <div>
-        <p className="text-sm font-semibold text-slate-800">{label}</p>
+        <p className="text-sm font-semibold text-slate-600">{label}</p>
         <p className="text-xs text-slate-600 mt-0.5">{description}</p>
       </div>
       {isActive && (
@@ -258,16 +258,16 @@ export function ReportsView() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">Total Records</p>
-                <p className="text-2xl font-bold text-slate-800 mt-1">{dataset.length.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-slate-600 mt-1">{dataset.length.toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">Columns</p>
-                <p className="text-2xl font-bold text-slate-800 mt-1">{columns.length}</p>
+                <p className="text-2xl font-bold text-slate-600 mt-1">{columns.length}</p>
               </div>
               <div className="col-span-2 pt-2 border-t border-slate-100">
                 <div className="flex justify-between items-end mb-1">
                   <p className="text-xs text-slate-600 uppercase tracking-wide font-medium">Data Completeness</p>
-                  <span className="text-sm font-bold text-slate-800">{overallCompleteness.toFixed(1)}%</span>
+                  <span className="text-sm font-bold text-slate-600">{overallCompleteness.toFixed(1)}%</span>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                   <div
@@ -360,7 +360,7 @@ export function ReportsView() {
                 <tbody className="divide-y divide-slate-100">
                   {numericSummary.map(s => (
                     <tr key={s.label} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-5 py-3 font-medium text-slate-800">{s.label}</td>
+                      <td className="px-5 py-3 font-medium text-slate-600">{s.label}</td>
                       <td className="px-5 py-3 text-right text-slate-600 tabular-nums">{s.missing}</td>
                       <td className="px-5 py-3 text-right text-slate-600 tabular-nums">{s.sum}</td>
                       <td className="px-5 py-3 text-right text-slate-600 tabular-nums">{s.mean}</td>
@@ -398,7 +398,7 @@ export function ReportsView() {
                     <tbody className="divide-y divide-slate-100">
                       {categoricalSummary.map(s => (
                         <tr key={s.label} className="hover:bg-slate-50 transition-colors">
-                          <td className="px-5 py-3 font-medium text-slate-800">{s.label}</td>
+                          <td className="px-5 py-3 font-medium text-slate-600">{s.label}</td>
                           <td className="px-5 py-3 text-right text-slate-600 tabular-nums">{s.missing}</td>
                           <td className="px-5 py-3 text-right text-slate-600 tabular-nums">{s.unique}</td>
                           <td className="px-5 py-3 text-right text-slate-600 truncate max-w-[200px]">{s.topValue}</td>

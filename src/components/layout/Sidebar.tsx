@@ -58,7 +58,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
               className="w-8 h-8 flex-shrink-0"
               aria-hidden="true"
             />
-            <span className="font-bold text-gray-900 text-base tracking-tight">DataFlow</span>
+            <span className="font-bold text-slate-800 text-base tracking-tight">DataFlow</span>
           </div>
         )}
         {!isOpen && (

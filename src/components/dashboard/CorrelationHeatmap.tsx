@@ -72,7 +72,7 @@ export function CorrelationHeatmap({ dataset, numericCols }: CorrelationHeatmapP
     >
       {/* Header */}
       <div className="mb-3">
-        <h3 className="text-sm font-semibold text-gray-900">Correlation Heatmap</h3>
+        <h3 className="text-sm font-semibold text-slate-800">Correlation Heatmap</h3>
         <p className="text-xs text-slate-500 mt-0.5">
           Pearson r — ranges from <span className="text-danger font-medium">−1</span> (red) to{' '}
           <span className="text-primary font-medium">+1</span> (blue)

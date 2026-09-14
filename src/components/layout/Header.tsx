@@ -65,7 +65,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
       {/* Mobile Menu Button */}
       <button 
         onClick={onOpenSidebar}
-        className="md:hidden p-2 -ml-2 mr-2 text-slate-600 hover:text-slate-700 transition-colors rounded-lg hover:bg-slate-100"
+        className="md:hidden p-2 -ml-2 mr-2 text-slate-600 hover:text-slate-800 transition-colors rounded-lg hover:bg-slate-100"
         aria-label="Open sidebar"
       >
         <Menu size={20} />
@@ -84,7 +84,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={hasData ? 'Filter data...' : 'Search...'}
           aria-label={hasData ? 'Filter data records' : 'Search'}
-          className="w-full bg-slate-50 border border-gray-200 rounded-lg py-1.5 pl-9 pr-8 text-sm text-gray-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+          className="w-full bg-slate-50 border border-gray-200 rounded-lg py-1.5 pl-9 pr-8 text-sm text-slate-800 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
         />
         {searchQuery && (
           <button
@@ -135,7 +135,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
               className="absolute right-0 top-full mt-2 w-72 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden"
             >
               <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-900">Notifications</span>
+                <span className="text-sm font-semibold text-slate-800">Notifications</span>
                 {unreadCount > 0 && (
                   <span className="text-xs font-medium text-white bg-primary rounded-full px-2 py-0.5">
                     {unreadCount} new
@@ -177,7 +177,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
               <User size={14} className="text-white" />
             </div>
             <div className="hidden md:flex items-center gap-1">
-              <span className="text-sm font-medium text-gray-900 leading-tight">Admin</span>
+              <span className="text-sm font-medium text-slate-800 leading-tight">Admin</span>
               <ChevronDown
                 size={14}
                 className={`text-slate-500 transition-transform duration-200 ${showProfile ? 'rotate-180' : ''}`}
@@ -194,7 +194,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
               className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden"
             >
               <div className="px-4 py-3 border-b border-gray-100">
-                <p className="text-sm font-medium text-gray-900">Admin User</p>
+                <p className="text-sm font-medium text-slate-800">Admin User</p>
                 <p className="text-xs text-slate-500">admin@dataflow.app</p>
               </div>
               <div className="py-1">

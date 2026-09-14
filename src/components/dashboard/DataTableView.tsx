@@ -59,7 +59,7 @@ export function DataTableView() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-xl font-semibold text-gray-900">Data Table</h1>
+        <h1 className="text-xl font-semibold text-slate-800">Data Table</h1>
         <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
           {filteredData.length} rows{searchQuery ? ' (filtered)' : ''}
         </p>

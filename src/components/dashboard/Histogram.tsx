@@ -77,7 +77,7 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
           <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
             <BarChart2 size={14} className="text-primary" />
           </div>
-          <h3 className="text-sm font-semibold text-gray-900">Distribution</h3>
+          <h3 className="text-sm font-semibold text-slate-800">Distribution</h3>
         </div>
         <label htmlFor={colId} className="sr-only">Select column for histogram</label>
         <select
@@ -149,7 +149,7 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
                   <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-xl text-xs">
                     <p className="text-slate-600 mb-1">
                       Range:{' '}
-                      <span className="font-bold text-gray-900">
+                      <span className="font-bold text-slate-800">
                         {bin.x0.toFixed(bin.x0 % 1 ? 1 : 0)} – {bin.x1.toFixed(bin.x1 % 1 ? 1 : 0)}
                       </span>
                     </p>

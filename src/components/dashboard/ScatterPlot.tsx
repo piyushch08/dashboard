@@ -102,7 +102,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
           <div className="p-1.5 rounded-lg bg-accent/10" aria-hidden="true">
             <GitBranch size={14} className="text-accent" />
           </div>
-          <h3 className="text-sm font-semibold text-gray-900">Scatter Plot</h3>
+          <h3 className="text-sm font-semibold text-slate-800">Scatter Plot</h3>
         </div>
 
         {/* Correlation badge */}
@@ -183,11 +183,11 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
                   <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-xl text-xs">
                     <p className="text-slate-600 mb-0.5">
                       {xCol?.label}:{' '}
-                      <span className="font-bold text-gray-900">{x.toLocaleString()}</span>
+                      <span className="font-bold text-slate-800">{x.toLocaleString()}</span>
                     </p>
                     <p className="text-slate-600">
                       {yCol?.label}:{' '}
-                      <span className="font-bold text-gray-900">{y.toLocaleString()}</span>
+                      <span className="font-bold text-slate-800">{y.toLocaleString()}</span>
                     </p>
                   </div>
                 );

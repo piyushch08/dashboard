@@ -164,7 +164,7 @@ export function DataUploader() {
                   <ImageIcon size={24} aria-hidden="true" />
                 </div>
               </div>
-              <p className="text-sm font-bold text-slate-700">
+              <p className="text-sm font-bold text-slate-800">
                 Click or drag & drop
               </p>
               <p id={hintId} className="text-xs text-slate-600 mt-2 text-center px-4 leading-relaxed">

@@ -45,7 +45,7 @@ export function KpiCard({
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate" aria-hidden="true">
             {title}
           </span>
-          <span className="text-2xl font-bold text-gray-900 tracking-tight" aria-hidden="true">
+          <span className="text-2xl font-bold text-primary tracking-tight" aria-hidden="true">
             {value}
           </span>
         </div>
