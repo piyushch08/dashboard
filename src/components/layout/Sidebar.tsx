@@ -3,6 +3,7 @@ import {
   BarChart2, 
   Table2, 
   FileDown, 
+  FileText,
   Settings, 
   LogOut,
   ChevronLeft
@@ -29,10 +30,11 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
     { icon: BarChart2, label: 'Analytics', page: 'analytics' },
     { icon: Table2, label: 'Data Table', page: 'data-table' },
     { icon: FileDown, label: 'Reports', page: 'reports' },
+    { icon: FileText, label: 'Invoices', page: 'invoices' },
   ];
 
   const handleNav = (page: PageView) => {
-    if (dataset.length > 0) {
+    if (dataset.length > 0 || page === 'invoices') {
       setCurrentPage(page);
     }
   };
@@ -82,7 +84,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       <nav className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-3" aria-label="Page navigation">
         {navItems.map((item) => {
           const isActive = currentPage === item.page;
-          const isDisabled = dataset.length === 0;
+          const isDisabled = dataset.length === 0 && item.page !== 'invoices';
           return (
             <button
               key={item.page}
