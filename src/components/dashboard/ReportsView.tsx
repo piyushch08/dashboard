@@ -1,5 +1,5 @@
 import { useDataStore } from '../../store/useDataStore';
-import { Download, FileSpreadsheet, FileText, Check, FileBarChart2, Info } from 'lucide-react';
+import { Download, FileSpreadsheet, FileText, Check, FileBarChart2, Info, AlertTriangle, TrendingUp, GitBranch } from 'lucide-react';
 import { useState, useId, useMemo } from 'react';
 import * as XLSX from 'xlsx';
 import { generateInsights } from '../../utils/statistics';
@@ -15,6 +15,34 @@ interface ExportCardProps {
   colorClass: string;
   bgClass: string;
 }
+
+const TYPE_ICON = {
+  outlier: AlertTriangle,
+  skew: TrendingUp,
+  correlation: GitBranch,
+  summary: Info,
+} as const;
+
+const SEVERITY_STYLE = {
+  critical: {
+    wrapper: 'bg-red-50 border-red-200',
+    icon: 'text-danger',
+    title: 'text-red-800',
+    body: 'text-red-600',
+  },
+  warning: {
+    wrapper: 'bg-amber-50 border-amber-200',
+    icon: 'text-warning',
+    title: 'text-amber-800',
+    body: 'text-amber-600',
+  },
+  info: {
+    wrapper: 'bg-primary-light border-primary-border',
+    icon: 'text-primary',
+    title: 'text-indigo-800',
+    body: 'text-indigo-600',
+  },
+} as const;
 
 function ExportCard({ label, description, icon: Icon, activeIcon: ActiveIcon, isActive, onClick, colorClass, bgClass }: ExportCardProps) {
   return (
@@ -254,13 +282,31 @@ export function ReportsView() {
             {insights.length === 0 ? (
               <p className="text-sm text-gray-500">Not enough numeric data to generate insights.</p>
             ) : (
-              <ul className="text-sm text-gray-600 space-y-2 list-disc pl-5">
-                {insights.map((insight, idx) => (
-                  <li key={idx} className="leading-relaxed">
-                    <strong className="text-gray-900 font-semibold">{insight.title}:</strong> {insight.body}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex-1 overflow-y-auto flex flex-col gap-3 pr-1 max-h-[300px]">
+                {insights.map((insight, idx) => {
+                  const IconComponent = TYPE_ICON[insight.type] ?? Info;
+                  const style = SEVERITY_STYLE[insight.severity];
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex gap-3 p-3.5 rounded-xl border ${style.wrapper} transition-all hover:shadow-sm`}
+                    >
+                      <IconComponent
+                        size={16}
+                        className={`flex-shrink-0 mt-0.5 ${style.icon}`}
+                      />
+                      <div className="min-w-0">
+                        <p className={`text-sm font-semibold leading-snug ${style.title}`}>
+                          {insight.title}
+                        </p>
+                        <p className={`text-xs mt-1 leading-relaxed ${style.body} opacity-80`}>
+                          {insight.body}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </section>

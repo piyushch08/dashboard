@@ -72,7 +72,7 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
             return (
               <div
                 key={i}
-                className={`flex gap-3 p-3 rounded-lg border ${style.wrapper}`}
+                className={`flex gap-3 p-3 rounded-lg border ${style.wrapper} transition-all duration-200 hover:shadow-md hover:scale-[1.01]`}
                 role="listitem"
               >
                 <Icon

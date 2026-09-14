@@ -236,31 +236,31 @@ export function DynamicDashboard() {
           
           {/* High-level dataset metadata */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="card p-4 flex items-center justify-between">
+            <div className="glass-panel p-4 flex items-center justify-between border-l-4 border-l-indigo-400 group hover:shadow-lg transition-all duration-300">
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Total Records</p>
-                <p className="text-xl font-bold text-gray-900">{dataset.length.toLocaleString()}</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Total Records</p>
+                <p className="text-2xl font-bold text-white tracking-tight">{dataset.length.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
-                <Database size={20} className="text-indigo-600" />
+              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
+                <Database size={24} className="text-indigo-400" />
               </div>
             </div>
-            <div className="card p-4 flex items-center justify-between">
+            <div className="glass-panel p-4 flex items-center justify-between border-l-4 border-l-emerald-400 group hover:shadow-lg transition-all duration-300">
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Total Columns</p>
-                <p className="text-xl font-bold text-gray-900">{columns.length}</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Total Columns</p>
+                <p className="text-2xl font-bold text-white tracking-tight">{columns.length}</p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
-                <Columns size={20} className="text-emerald-600" />
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                <Columns size={24} className="text-emerald-400" />
               </div>
             </div>
-            <div className="card p-4 flex items-center justify-between">
+            <div className="glass-panel p-4 flex items-center justify-between border-l-4 border-l-violet-400 group hover:shadow-lg transition-all duration-300">
               <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Data Health</p>
-                <p className="text-xl font-bold text-gray-900">{completeness.toFixed(1)}%</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Data Health</p>
+                <p className="text-2xl font-bold text-white tracking-tight">{completeness.toFixed(1)}%</p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center">
-                <CheckCircle2 size={20} className="text-violet-600" />
+              <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+                <CheckCircle2 size={24} className="text-violet-400" />
               </div>
             </div>
           </div>

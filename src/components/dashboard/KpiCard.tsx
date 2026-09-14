@@ -35,11 +35,12 @@ export function KpiCard({
 
   return (
     <article
-      className="kpi-card card p-5 flex flex-col gap-2 border-l-4 border-l-primary/25 hover:border-l-primary/70 overflow-hidden relative"
+      className="kpi-card glass-panel p-5 flex flex-col justify-between gap-3 min-h-[140px] border-l-4 border-l-primary/40 hover:border-l-primary hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 overflow-hidden relative group"
       aria-label={`${title}: ${value}, ${isNeutral ? 'unchanged' : (isPositive ? 'up' : 'down') + ' ' + Math.abs(change) + '%'}`}
     >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none" />
       {/* Row 1: title + icon */}
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start relative z-10">
         <div className="flex flex-col gap-1 min-w-0">
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider truncate" aria-hidden="true">
             {title}
@@ -65,7 +66,7 @@ export function KpiCard({
 
       {/* Row 2: sparkline (if data provided) */}
       {sparkPoints.length > 1 && (
-        <div className="h-10 w-full -mx-1" aria-hidden="true">
+        <div className="h-14 w-full -mx-1 relative z-10 group-hover:scale-[1.02] transition-transform duration-300" aria-hidden="true">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={sparkPoints} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
               <defs>
@@ -94,7 +95,7 @@ export function KpiCard({
       )}
 
       {/* Row 3: change badge */}
-      <div className="flex items-center gap-2" aria-hidden="true">
+      <div className="flex items-center gap-2 relative z-10" aria-hidden="true">
         <div
           className={cn(
             'flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md',
