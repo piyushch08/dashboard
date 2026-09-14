@@ -8,7 +8,15 @@ import {
 import { BarChart3, TrendingUp, Trash2, Hash } from 'lucide-react';
 
 export function DynamicDashboard() {
-  const { dataset, columns, clearData } = useDataStore();
+  const { dataset, columns, clearData, searchQuery } = useDataStore();
+
+  const filteredData = useMemo(() => {
+    if (!searchQuery) return dataset;
+    const q = searchQuery.toLowerCase();
+    return dataset.filter(row =>
+      Object.values(row).some(val => String(val).toLowerCase().includes(q))
+    );
+  }, [dataset, searchQuery]);
 
   const numericCols = columns.filter(c => c.type === 'number');
   const catCols = columns.filter(c => c.type === 'string' || c.type === 'date');
@@ -17,14 +25,14 @@ export function DynamicDashboard() {
   
   const kpis = useMemo(() => {
     return numericCols.slice(0, 4).map((col) => {
-      const total = dataset.reduce((sum, row) => sum + (Number(row[col.key]) || 0), 0);
+      const total = filteredData.reduce((sum, row) => sum + (Number(row[col.key]) || 0), 0);
       return {
         title: col.label,
         value: total > 1000 ? (total / 1000).toFixed(1) + 'k' : total.toLocaleString(),
         change: Math.floor(Math.random() * 20) - 10,
       };
     });
-  }, [dataset, numericCols]);
+  }, [filteredData, numericCols]);
 
   if (dataset.length === 0) return null;
 
@@ -41,7 +49,7 @@ export function DynamicDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold text-gray-900">Data Insights</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{dataset.length} records analyzed</p>
+          <p className="text-sm text-gray-500 mt-0.5">{filteredData.length} records{searchQuery ? ' (filtered)' : ''}</p>
         </div>
         
         <button 
@@ -78,7 +86,7 @@ export function DynamicDashboard() {
               <h3 className="text-sm font-semibold text-gray-900">{numericCols[0].label} — Bar Chart</h3>
             </div>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dataset.slice(0, 20)} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+              <BarChart data={filteredData.slice(0, 20)} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
                 <XAxis dataKey={xAxisCol} stroke="#9ca3af" fontSize={11} axisLine={false} tickLine={false} />
                 <YAxis stroke="#9ca3af" fontSize={11} axisLine={false} tickLine={false} />
