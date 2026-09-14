@@ -1,66 +1,170 @@
-import { useMemo, useId } from 'react';
+import { useMemo, useState, useId } from 'react';
 import { useDataStore } from '../../store/useDataStore';
 import { KpiCard } from './KpiCard';
+import { ScatterPlot } from './ScatterPlot';
+import { Histogram } from './Histogram';
+import { InsightsPanel } from './InsightsPanel';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  LineChart, Line
+  LineChart, Line, AreaChart, Area, Brush, Cell,
 } from 'recharts';
-import { BarChart3, TrendingUp, Trash2, Hash } from 'lucide-react';
+import {
+  BarChart3, TrendingUp, Activity, Trash2, Hash,
+  X as XIcon, ZoomIn, ChevronDown,
+} from 'lucide-react';
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+type ChartType = 'bar' | 'line' | 'area';
+
+interface ActiveFilter {
+  column: string;
+  label: string;
+  value: string;
+}
+
+// ─── Constants ───────────────────────────────────────────────────────────────
+
+const CHART_TABS: { type: ChartType; label: string; Icon: React.ElementType }[] = [
+  { type: 'bar',  label: 'Bar',  Icon: BarChart3 },
+  { type: 'line', label: 'Line', Icon: TrendingUp },
+  { type: 'area', label: 'Area', Icon: Activity },
+];
+
+const BAR_COLORS = ['#4f46e5', '#7c3aed', '#059669', '#d97706', '#0891b2', '#9333ea'];
+const ACTIVE_COLOR = '#7c3aed';
+
+const TOOLTIP_STYLE = {
+  backgroundColor: '#fff',
+  border: '1px solid #e5e7eb',
+  borderRadius: '10px',
+  boxShadow: '0 8px 24px -4px rgb(0 0 0 / 0.1)',
+  fontSize: '12px',
+};
+
+const AXIS_PROPS = {
+  stroke: '#94a3b8',
+  fontSize: 11,
+  axisLine: false as const,
+  tickLine: false as const,
+};
+
+const SELECT_CLASS =
+  'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 ' +
+  'focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer max-w-[140px] truncate ' +
+  'appearance-none pr-6 bg-no-repeat';
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 export function DynamicDashboard() {
   const { dataset, columns, clearData, searchQuery } = useDataStore();
-  const kpiSectionId = useId();
-  const barChartId = useId();
-  const lineChartId = useId();
 
-  const filteredData = useMemo(() => {
-    if (!searchQuery) return dataset;
-    const q = searchQuery.toLowerCase();
-    return dataset.filter(row =>
-      Object.values(row).some(val => String(val).toLowerCase().includes(q))
-    );
-  }, [dataset, searchQuery]);
+  const [chartType, setChartType]     = useState<ChartType>('bar');
+  const [xColKey, setXColKey]         = useState('');
+  const [yColKey, setYColKey]         = useState('');
+  const [activeFilter, setActiveFilter] = useState<ActiveFilter | null>(null);
 
+  const kpiId        = useId();
+  const mainChartId  = useId();
+
+  // ─── Derived column lists ────────────────────────────────────────────────
   const numericCols = columns.filter(c => c.type === 'number');
-  const catCols = columns.filter(c => c.type === 'string' || c.type === 'date');
+  const catCols     = columns.filter(c => c.type === 'string' || c.type === 'date');
+  const allXCols    = [...catCols, ...numericCols];
 
-  const xAxisCol = catCols.length > 0 ? catCols[0].key : (numericCols.length > 0 ? numericCols[0].key : '');
+  // Resolve selected columns (fall back to first available)
+  const resolvedXKey = xColKey || allXCols[0]?.key  || '';
+  const resolvedYKey = yColKey || numericCols[0]?.key || '';
 
+  const resolvedXLabel = columns.find(c => c.key === resolvedXKey)?.label ?? resolvedXKey;
+  const resolvedYLabel = numericCols.find(c => c.key === resolvedYKey)?.label ?? resolvedYKey;
+
+  // ─── Filtering ──────────────────────────────────────────────────────────
+  const filteredData = useMemo(() => {
+    let data = dataset;
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      data = data.filter(row =>
+        Object.values(row).some(val => String(val).toLowerCase().includes(q))
+      );
+    }
+
+    if (activeFilter) {
+      data = data.filter(
+        row => String(row[activeFilter.column]) === activeFilter.value
+      );
+    }
+
+    return data;
+  }, [dataset, searchQuery, activeFilter]);
+
+  // ─── KPIs ────────────────────────────────────────────────────────────────
   const kpis = useMemo(() => {
-    return numericCols.slice(0, 4).map((col) => {
-      const total = filteredData.reduce((sum, row) => sum + (Number(row[col.key]) || 0), 0);
-      return {
-        title: col.label,
-        value: total > 1000 ? (total / 1000).toFixed(1) + 'k' : total.toLocaleString(),
-        change: Math.floor(Math.random() * 20) - 10,
-      };
+    return numericCols.slice(0, 4).map(col => {
+      const filtVals = filteredData.map(r => Number(r[col.key])).filter(n => !isNaN(n));
+      const allVals  = dataset.map(r => Number(r[col.key])).filter(n => !isNaN(n));
+
+      const filtTotal = filtVals.reduce((a, b) => a + b, 0);
+      const allMean   = allVals.length > 0 ? allVals.reduce((a, b) => a + b, 0) / allVals.length : 0;
+      const filtMean  = filtVals.length > 0 ? filtTotal / filtVals.length : 0;
+      const change    = allMean > 0 ? Math.round(((filtMean - allMean) / allMean) * 100) : 0;
+
+      const fmt = (n: number) =>
+        n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M`
+        : n >= 1_000   ? `${(n / 1_000).toFixed(1)}k`
+        : n.toLocaleString();
+
+      return { title: col.label, value: fmt(filtTotal), change };
     });
-  }, [filteredData, numericCols]);
+  }, [filteredData, numericCols, dataset]);
 
   if (dataset.length === 0) return null;
 
-  const tooltipStyle = {
-    backgroundColor: '#fff',
-    border: '1px solid #e5e7eb',
-    borderRadius: '10px',
-    boxShadow: '0 8px 24px -4px rgb(0 0 0 / 0.1)',
-    fontSize: '12px',
+  const chartData = filteredData.slice(0, 40);
+  const isFiltered = !!(activeFilter || searchQuery);
+
+  // ─── Click-to-filter handler (bar chart) ─────────────────────────────────
+  const handleBarClick = (barData: any) => {
+    if (!barData) return;
+    const clickedVal = String(barData[resolvedXKey]);
+    if (activeFilter?.value === clickedVal && activeFilter.column === resolvedXKey) {
+      setActiveFilter(null); // Toggle off
+    } else {
+      setActiveFilter({
+        column: resolvedXKey,
+        label: resolvedXLabel,
+        value: clickedVal,
+      });
+    }
   };
 
+  // ─── Helpers ─────────────────────────────────────────────────────────────
+  const barColor = (entry: any) => {
+    if (!activeFilter) return BAR_COLORS[0];
+    return String(entry[resolvedXKey]) === activeFilter.value ? ACTIVE_COLOR : BAR_COLORS[0];
+  };
+
+  const barOpacity = (entry: any) => {
+    if (!activeFilter) return 1;
+    return String(entry[resolvedXKey]) === activeFilter.value ? 1 : 0.3;
+  };
+
+  // ─── Render ──────────────────────────────────────────────────────────────
   return (
     <div className="flex flex-col gap-6">
-      {/* Page header */}
+
+      {/* ── Page header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold text-gray-900">Data Insights</h1>
           <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
-            {filteredData.length} records{searchQuery ? ' (filtered)' : ''}
+            {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
           </p>
         </div>
-
         <button
           onClick={clearData}
-          aria-label="Clear all data and return to upload screen"
+          aria-label="Clear all data and return to upload"
           className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-danger hover:bg-danger-light transition-colors border border-red-200"
         >
           <Trash2 size={14} aria-hidden="true" />
@@ -68,16 +172,42 @@ export function DynamicDashboard() {
         </button>
       </div>
 
-      {/* KPI Grid */}
+      {/* ── Active filter badge ── */}
+      {activeFilter && (
+        <div
+          className="flex items-center gap-2 flex-wrap"
+          role="status"
+          aria-label={`Active filter: ${activeFilter.label} equals ${activeFilter.value}`}
+        >
+          <span className="text-xs text-gray-500 font-medium">Filtered by:</span>
+          <div className="flex items-center gap-1.5 bg-primary-light border border-primary-border rounded-full px-3 py-1">
+            <span className="text-xs text-primary/70">{activeFilter.label}</span>
+            <span className="text-xs text-primary">=</span>
+            <span className="text-xs font-bold text-primary">{activeFilter.value}</span>
+            <button
+              onClick={() => setActiveFilter(null)}
+              aria-label="Remove filter"
+              className="ml-1 text-primary/60 hover:text-danger transition-colors"
+            >
+              <XIcon size={11} aria-hidden="true" />
+            </button>
+          </div>
+          <span className="text-xs text-gray-400">
+            {filteredData.length.toLocaleString()} of {dataset.length.toLocaleString()} records
+          </span>
+        </div>
+      )}
+
+      {/* ── KPI Grid ── */}
       {kpis.length > 0 && (
-        <section aria-labelledby={kpiSectionId}>
-          <h2 id={kpiSectionId} className="sr-only">Key Performance Indicators</h2>
+        <section aria-labelledby={kpiId}>
+          <h2 id={kpiId} className="sr-only">Key Performance Indicators</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {kpis.map((kpi, i) => (
               <KpiCard
                 key={i}
                 title={kpi.title}
-                value={kpi.value.toString()}
+                value={kpi.value}
                 change={kpi.change}
                 icon={Hash}
                 iconColorClass="text-primary"
@@ -87,64 +217,209 @@ export function DynamicDashboard() {
         </section>
       )}
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Bar Chart */}
-        {numericCols.length > 0 && xAxisCol && (
-          <section
-            aria-labelledby={barChartId}
-            className="chart-container card p-5 flex flex-col h-[380px]"
-            tabIndex={0}
-            aria-label={`Bar chart showing ${numericCols[0].label} values`}
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
-                <BarChart3 size={15} className="text-primary" />
-              </div>
-              <h3 id={barChartId} className="text-sm font-semibold text-gray-900">
-                {numericCols[0].label} — Bar Chart
-              </h3>
-            </div>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={filteredData.slice(0, 20)} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                <XAxis dataKey={xAxisCol} stroke="#94a3b8" fontSize={11} axisLine={false} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={11} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={tooltipStyle} />
-                <Bar dataKey={numericCols[0].key} fill="#4f46e5" radius={[5, 5, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </section>
-        )}
+      {/* ── Main chart section ── */}
+      {numericCols.length > 0 && resolvedXKey && resolvedYKey && (
+        <section aria-labelledby={mainChartId}>
+          <h2 id={mainChartId} className="sr-only">Interactive Charts</h2>
 
-        {/* Line Chart */}
-        {numericCols.length > 1 && xAxisCol && (
-          <section
-            aria-labelledby={lineChartId}
-            className="chart-container card p-5 flex flex-col h-[380px]"
-            tabIndex={0}
-            aria-label={`Line chart showing ${numericCols[1].label} trend`}
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-1.5 rounded-lg bg-accent/10" aria-hidden="true">
-                <TrendingUp size={15} className="text-accent" />
-              </div>
-              <h3 id={lineChartId} className="text-sm font-semibold text-gray-900">
-                {numericCols[1].label} — Trend
-              </h3>
+          {/* Chart controls toolbar */}
+          <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-slate-50 rounded-xl border border-gray-100">
+
+            {/* Type switcher pill */}
+            <div
+              className="flex items-center bg-white border border-gray-200 rounded-lg p-0.5 gap-0.5 shadow-sm"
+              role="group"
+              aria-label="Chart type"
+            >
+              {CHART_TABS.map(({ type, label, Icon }) => (
+                <button
+                  key={type}
+                  onClick={() => setChartType(type)}
+                  aria-pressed={chartType === type}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 ${
+                    chartType === type
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'text-gray-500 hover:text-gray-800 hover:bg-slate-100'
+                  }`}
+                >
+                  <Icon size={12} aria-hidden="true" />
+                  {label}
+                </button>
+              ))}
             </div>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={dataset.slice(0, 20)} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                <XAxis dataKey={xAxisCol} stroke="#94a3b8" fontSize={11} axisLine={false} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={11} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Line type="monotone" dataKey={numericCols[1].key} stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 3.5, fill: '#7c3aed', strokeWidth: 0 }} activeDot={{ r: 5 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </section>
-        )}
-      </div>
+
+            {/* Axis pickers */}
+            <div className="flex items-center gap-1.5 relative">
+              <span className="text-xs text-gray-500 font-semibold">X:</span>
+              <div className="relative">
+                <select
+                  value={resolvedXKey}
+                  onChange={e => { setXColKey(e.target.value); setActiveFilter(null); }}
+                  className={SELECT_CLASS}
+                  aria-label="X axis column"
+                >
+                  {allXCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
+                </select>
+                <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" aria-hidden="true" />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-gray-500 font-semibold">Y:</span>
+              <div className="relative">
+                <select
+                  value={resolvedYKey}
+                  onChange={e => setYColKey(e.target.value)}
+                  className={SELECT_CLASS}
+                  aria-label="Y axis column"
+                >
+                  {numericCols.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
+                </select>
+                <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" aria-hidden="true" />
+              </div>
+            </div>
+
+            {/* Contextual hint */}
+            <div className="ml-auto text-xs text-gray-400 flex items-center gap-1.5">
+              {chartType === 'bar' ? (
+                <><BarChart3 size={11} aria-hidden="true" /><span>Click a bar to filter all charts</span></>
+              ) : (
+                <><ZoomIn size={11} aria-hidden="true" /><span>Drag the brush below to zoom</span></>
+              )}
+            </div>
+          </div>
+
+          {/* Charts row — main chart (3/5) + scatter (2/5) */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+            {/* ── Switchable main chart ── */}
+            <div
+              className="chart-container card p-5 flex flex-col h-[380px] lg:col-span-3"
+              tabIndex={0}
+              aria-label={`${chartType} chart: ${resolvedYLabel} by ${resolvedXLabel}`}
+            >
+              <div className="flex items-center gap-2 mb-4 flex-shrink-0">
+                <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
+                  <BarChart3 size={15} className="text-primary" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 truncate">
+                  {resolvedYLabel} by {resolvedXLabel}
+                </h3>
+              </div>
+
+              <ResponsiveContainer width="100%" height="100%">
+                {chartType === 'bar' ? (
+                  <BarChart
+                    data={chartData}
+                    margin={{ top: 4, right: 5, left: -20, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                    <XAxis dataKey={resolvedXKey} {...AXIS_PROPS} />
+                    <YAxis {...AXIS_PROPS} />
+                    <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={TOOLTIP_STYLE} />
+                    <Bar
+                      dataKey={resolvedYKey}
+                      radius={[5, 5, 0, 0]}
+                      onClick={handleBarClick}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {chartData.map((entry, idx) => (
+                        <Cell
+                          key={idx}
+                          fill={barColor(entry)}
+                          opacity={barOpacity(entry)}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                ) : chartType === 'line' ? (
+                  <LineChart
+                    data={chartData}
+                    margin={{ top: 4, right: 5, left: -20, bottom: 28 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                    <XAxis dataKey={resolvedXKey} {...AXIS_PROPS} />
+                    <YAxis {...AXIS_PROPS} />
+                    <Tooltip contentStyle={TOOLTIP_STYLE} />
+                    <Brush
+                      dataKey={resolvedXKey}
+                      height={22}
+                      stroke="#e2e8f0"
+                      fill="#f8fafc"
+                      travellerWidth={7}
+                      aria-label="Zoom brush"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey={resolvedYKey}
+                      stroke="#4f46e5"
+                      strokeWidth={2.5}
+                      dot={{ r: 3, fill: '#4f46e5', strokeWidth: 0 }}
+                      activeDot={{ r: 5, strokeWidth: 0 }}
+                    />
+                  </LineChart>
+                ) : (
+                  <AreaChart
+                    data={chartData}
+                    margin={{ top: 4, right: 5, left: -20, bottom: 28 }}
+                  >
+                    <defs>
+                      <linearGradient id={`areaGrad-${mainChartId}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%"  stopColor="#4f46e5" stopOpacity={0.28} />
+                        <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                    <XAxis dataKey={resolvedXKey} {...AXIS_PROPS} />
+                    <YAxis {...AXIS_PROPS} />
+                    <Tooltip contentStyle={TOOLTIP_STYLE} />
+                    <Brush
+                      dataKey={resolvedXKey}
+                      height={22}
+                      stroke="#e2e8f0"
+                      fill="#f8fafc"
+                      travellerWidth={7}
+                      aria-label="Zoom brush"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey={resolvedYKey}
+                      stroke="#4f46e5"
+                      strokeWidth={2.5}
+                      fillOpacity={1}
+                      fill={`url(#areaGrad-${mainChartId})`}
+                      dot={{ r: 2.5, fill: '#4f46e5', strokeWidth: 0 }}
+                      activeDot={{ r: 5, strokeWidth: 0 }}
+                    />
+                  </AreaChart>
+                )}
+              </ResponsiveContainer>
+            </div>
+
+            {/* ── Scatter plot ── */}
+            {numericCols.length >= 2 ? (
+              <div className="lg:col-span-2">
+                <ScatterPlot dataset={filteredData} numericCols={numericCols} />
+              </div>
+            ) : (
+              <div className="lg:col-span-2 card p-5 flex items-center justify-center text-gray-400 text-sm h-[380px]">
+                Need ≥ 2 numeric columns for scatter plot.
+              </div>
+            )}
+          </div>
+
+          {/* ── Histogram + Insights row ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-4">
+            <div className="lg:col-span-3">
+              <Histogram dataset={filteredData} numericCols={numericCols} />
+            </div>
+            <div className="lg:col-span-2">
+              <InsightsPanel dataset={filteredData} numericCols={numericCols} />
+            </div>
+          </div>
+
+        </section>
+      )}
     </div>
   );
 }

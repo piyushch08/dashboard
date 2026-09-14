@@ -1,6 +1,7 @@
-import { useMemo, useId } from 'react';
+import { useMemo, useId, useState } from 'react';
 import { useDataStore } from '../../store/useDataStore';
-import { Hash, Type, Calendar } from 'lucide-react';
+import { Hash, Type, Calendar, LayoutGrid, Grid3x3 } from 'lucide-react';
+import { CorrelationHeatmap } from './CorrelationHeatmap';
 
 // Color-coded type badge config
 const TYPE_CONFIG = {
@@ -24,9 +25,13 @@ const TYPE_CONFIG = {
   },
 } as const;
 
+type AnalyticsTab = 'stats' | 'heatmap';
+
 export function AnalyticsView() {
   const { dataset, columns, searchQuery } = useDataStore();
   const sectionId = useId();
+  const [activeTab, setActiveTab] = useState<AnalyticsTab>('stats');
+  const numericCols = columns.filter(c => c.type === 'number');
 
   const filteredData = useMemo(() => {
     if (!searchQuery) return dataset;
@@ -75,13 +80,54 @@ export function AnalyticsView() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Analytics</h1>
-        <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
-          Column-level statistics for {filteredData.length} records
-        </p>
+      {/* Page header + view toggle */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <div>
+          <h1 className="text-xl font-semibold text-gray-900">Analytics</h1>
+          <p className="text-sm text-gray-500 mt-0.5" aria-live="polite">
+            Column-level statistics for {filteredData.length.toLocaleString()} records
+          </p>
+        </div>
+
+        {/* View switcher */}
+        <div
+          className="flex items-center bg-slate-100 border border-gray-200 rounded-lg p-0.5 gap-0.5 ml-auto"
+          role="group"
+          aria-label="Analytics view"
+        >
+          <button
+            onClick={() => setActiveTab('stats')}
+            aria-pressed={activeTab === 'stats'}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              activeTab === 'stats' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <LayoutGrid size={12} aria-hidden="true" />
+            Stats
+          </button>
+          <button
+            onClick={() => setActiveTab('heatmap')}
+            disabled={numericCols.length < 2}
+            aria-pressed={activeTab === 'heatmap'}
+            aria-disabled={numericCols.length < 2}
+            title={numericCols.length < 2 ? 'Need at least 2 numeric columns' : 'Correlation heatmap'}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+              activeTab === 'heatmap' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Grid3x3 size={12} aria-hidden="true" />
+            Heatmap
+          </button>
+        </div>
       </div>
 
+      {/* Heatmap view */}
+      {activeTab === 'heatmap' && (
+        <CorrelationHeatmap dataset={filteredData} numericCols={numericCols} />
+      )}
+
+      {/* Stats cards view */}
+      {activeTab === 'stats' && (
       <section aria-labelledby={sectionId}>
         <h2 id={sectionId} className="sr-only">Column statistics</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -199,6 +245,7 @@ export function AnalyticsView() {
           })}
         </div>
       </section>
+      )}
     </div>
   );
 }
