@@ -10,9 +10,9 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, Brush, Cell,
 } from 'recharts';
-import {
-  BarChart3, TrendingUp, Activity, Trash2, Hash,
-  X as XIcon, ZoomIn, ChevronDown,
+import { 
+  BarChart3, TrendingUp, Activity, Trash2, Hash, X as XIcon, ZoomIn, 
+  ChevronDown, Database, Columns, CheckCircle2 
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -125,6 +125,20 @@ export function DynamicDashboard() {
     });
   }, [filteredData, numericCols, dataset]);
 
+  // ─── Dataset Metadata ────────────────────────────────────────────────────
+  const completeness = useMemo(() => {
+    if (dataset.length === 0) return 100;
+    const totalCells = dataset.length * columns.length;
+    let missing = 0;
+    dataset.forEach(row => {
+      columns.forEach(col => {
+        const val = row[col.key];
+        if (val == null || val === '') missing++;
+      });
+    });
+    return ((totalCells - missing) / totalCells) * 100;
+  }, [dataset, columns]);
+
   if (dataset.length === 0) return null;
 
   const chartData = filteredData.slice(0, 40);
@@ -208,6 +222,38 @@ export function DynamicDashboard() {
       {kpis.length > 0 && (
         <section aria-labelledby={kpiId}>
           <h2 id={kpiId} className="sr-only">Key Performance Indicators</h2>
+          
+          {/* High-level dataset metadata */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className="card p-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Total Records</p>
+                <p className="text-xl font-bold text-gray-900">{dataset.length.toLocaleString()}</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
+                <Database size={20} className="text-indigo-600" />
+              </div>
+            </div>
+            <div className="card p-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Total Columns</p>
+                <p className="text-xl font-bold text-gray-900">{columns.length}</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
+                <Columns size={20} className="text-emerald-600" />
+              </div>
+            </div>
+            <div className="card p-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Data Health</p>
+                <p className="text-xl font-bold text-gray-900">{completeness.toFixed(1)}%</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center">
+                <CheckCircle2 size={20} className="text-violet-600" />
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {kpis.map((kpi, i) => (
               <KpiCard
@@ -440,6 +486,44 @@ export function DynamicDashboard() {
               </div>
             </div>
           )}
+
+          {/* ── Data Preview Table ── */}
+          <div className="mt-4 card overflow-hidden mb-6">
+            <div className="px-5 py-3.5 border-b border-gray-100 bg-slate-50 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-900">Recent Data Records</h3>
+              <span className="text-xs text-gray-400">Showing first 10 of {filteredData.length.toLocaleString()}</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-white">
+                    {columns.slice(0, 8).map(c => (
+                      <th key={c.key} className="px-4 py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                        {c.label}
+                      </th>
+                    ))}
+                    {columns.length > 8 && (
+                      <th className="px-4 py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">...</th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {filteredData.slice(0, 10).map((row, i) => (
+                    <tr key={i} className="hover:bg-slate-50 transition-colors">
+                      {columns.slice(0, 8).map(c => (
+                        <td key={c.key} className="px-4 py-3 text-gray-600 truncate max-w-[150px]">
+                          {String(row[c.key] ?? '')}
+                        </td>
+                      ))}
+                      {columns.length > 8 && (
+                        <td className="px-4 py-3 text-gray-400 italic">+{columns.length - 8} more</td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
         </section>
       )}

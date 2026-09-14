@@ -89,7 +89,6 @@ export function BoxPlotSummary({ dataset, numericCols }: BoxPlotProps) {
   const meanPct   = pct(stats.mean);
 
   const iqr = stats.q3 - stats.q1;
-  const cv  = stats.mean !== 0 ? (Math.sqrt(iqr) / Math.abs(stats.mean) * 100).toFixed(1) : '—';
 
   return (
     <section className="card p-5 flex flex-col gap-4" aria-label={`Box plot summary for ${col?.label}`}>

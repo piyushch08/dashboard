@@ -1,10 +1,10 @@
-import { useMemo, useState, useId } from 'react';
+import { useMemo, useState } from 'react';
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Legend,
+  Tooltip, ResponsiveContainer,
 } from 'recharts';
 import type { ColumnMeta } from '../../store/useDataStore';
-import { Layers, ChevronDown } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 interface MultiSeriesChartProps {
   dataset: any[];
@@ -22,10 +22,6 @@ const TOOLTIP_STYLE = {
   fontSize: '12px',
 };
 
-const SELECT_CLASS =
-  'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 ' +
-  'focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer max-w-[130px] truncate appearance-none pr-6';
-
 /**
  * Overlays up to 4 numeric series on a single Composed chart.
  * Users toggle series on/off individually.
@@ -38,7 +34,6 @@ export function MultiSeriesChart({ dataset, xColKey, numericCols }: MultiSeriesC
     () => new Set(available.slice(0, 2).map(c => c.key))
   );
   const [chartMode, setChartMode] = useState<'bar' | 'line'>('bar');
-  const chartModeId = useId();
 
   const chartData = useMemo(() => dataset.slice(0, 30), [dataset]);
 

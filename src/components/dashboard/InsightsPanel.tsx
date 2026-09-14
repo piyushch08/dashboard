@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { ColumnMeta } from '../../store/useDataStore';
 import { generateInsights } from '../../utils/statistics';
-import { Lightbulb, AlertTriangle, AlertCircle, Info, TrendingUp, GitBranch } from 'lucide-react';
+import { Lightbulb, AlertTriangle, Info, TrendingUp, GitBranch } from 'lucide-react';
 
 interface InsightsPanelProps {
   dataset: any[];

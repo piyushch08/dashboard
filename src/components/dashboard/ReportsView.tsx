@@ -16,7 +16,7 @@ interface ExportCardProps {
   bgClass: string;
 }
 
-function ExportCard({ id, label, description, icon: Icon, activeIcon: ActiveIcon, isActive, onClick, colorClass, bgClass }: ExportCardProps) {
+function ExportCard({ label, description, icon: Icon, activeIcon: ActiveIcon, isActive, onClick, colorClass, bgClass }: ExportCardProps) {
   return (
     <button
       onClick={onClick}
