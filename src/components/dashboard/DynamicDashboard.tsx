@@ -4,6 +4,8 @@ import { KpiCard } from './KpiCard';
 import { ScatterPlot } from './ScatterPlot';
 import { Histogram } from './Histogram';
 import { InsightsPanel } from './InsightsPanel';
+import { MultiSeriesChart } from './MultiSeriesChart';
+import { BoxPlotSummary } from './BoxPlotSummary';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, Brush, Cell,
@@ -115,7 +117,11 @@ export function DynamicDashboard() {
         : n >= 1_000   ? `${(n / 1_000).toFixed(1)}k`
         : n.toLocaleString();
 
-      return { title: col.label, value: fmt(filtTotal), change };
+      // Build sparkline: 10-point rolling sample across filtered data
+      const step = Math.max(1, Math.floor(filtVals.length / 10));
+      const sparkData = filtVals.filter((_, i) => i % step === 0).slice(0, 10);
+
+      return { title: col.label, value: fmt(filtTotal), change, sparkData };
     });
   }, [filteredData, numericCols, dataset]);
 
@@ -209,6 +215,7 @@ export function DynamicDashboard() {
                 title={kpi.title}
                 value={kpi.value}
                 change={kpi.change}
+                sparkData={kpi.sparkData}
                 icon={Hash}
                 iconColorClass="text-primary"
               />
@@ -417,6 +424,22 @@ export function DynamicDashboard() {
               <InsightsPanel dataset={filteredData} numericCols={numericCols} />
             </div>
           </div>
+
+          {/* ── Multi-series + Box Plot row ── */}
+          {numericCols.length >= 2 && (
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-4">
+              <div className="lg:col-span-3">
+                <MultiSeriesChart
+                  dataset={filteredData}
+                  xColKey={resolvedXKey}
+                  numericCols={numericCols}
+                />
+              </div>
+              <div className="lg:col-span-2">
+                <BoxPlotSummary dataset={filteredData} numericCols={numericCols} />
+              </div>
+            </div>
+          )}
 
         </section>
       )}

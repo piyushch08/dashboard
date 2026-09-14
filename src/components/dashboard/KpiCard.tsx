@@ -1,5 +1,9 @@
+import { useMemo } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '../layout/Sidebar';
+import {
+  ResponsiveContainer, AreaChart, Area, Tooltip,
+} from 'recharts';
 
 interface KpiCardProps {
   title: string;
@@ -7,20 +11,37 @@ interface KpiCardProps {
   change: number;
   icon: React.ElementType;
   iconColorClass?: string;
-  delay?: number;
+  sparkData?: number[];   // Optional: raw values for sparkline
 }
 
-export function KpiCard({ title, value, change, icon: Icon, iconColorClass = "text-primary" }: KpiCardProps) {
+export function KpiCard({
+  title,
+  value,
+  change,
+  icon: Icon,
+  iconColorClass = 'text-primary',
+  sparkData,
+}: KpiCardProps) {
   const isPositive = change >= 0;
+  const isNeutral  = change === 0;
+
+  // Build mini sparkline dataset
+  const sparkPoints = useMemo(() => {
+    if (!sparkData?.length) return [];
+    return sparkData.map((v, i) => ({ i, v }));
+  }, [sparkData]);
+
+  const sparkColor = isNeutral ? '#94a3b8' : isPositive ? '#059669' : '#dc2626';
 
   return (
     <article
-      className="kpi-card card p-5 flex flex-col gap-3 border-l-4 border-l-primary/20 hover:border-l-primary/60"
-      aria-label={`${title}: ${value}, ${isPositive ? 'up' : 'down'} ${Math.abs(change)}% versus last month`}
+      className="kpi-card card p-5 flex flex-col gap-2 border-l-4 border-l-primary/25 hover:border-l-primary/70 overflow-hidden relative"
+      aria-label={`${title}: ${value}, ${isNeutral ? 'unchanged' : (isPositive ? 'up' : 'down') + ' ' + Math.abs(change) + '%'}`}
     >
+      {/* Row 1: title + icon */}
       <div className="flex justify-between items-start">
-        <div className="flex flex-col gap-1">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider" aria-hidden="true">
+        <div className="flex flex-col gap-1 min-w-0">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider truncate" aria-hidden="true">
             {title}
           </span>
           <span className="text-2xl font-bold text-gray-900 tracking-tight" aria-hidden="true">
@@ -29,12 +50,12 @@ export function KpiCard({ title, value, change, icon: Icon, iconColorClass = "te
         </div>
         <div
           className={cn(
-            "w-10 h-10 rounded-xl flex items-center justify-center",
-            "bg-gradient-to-br shadow-sm",
-            iconColorClass === "text-primary"
-              ? "from-primary/10 to-primary/20"
-              : "from-accent/10 to-accent/20",
-            iconColorClass
+            'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
+            'bg-gradient-to-br shadow-sm',
+            iconColorClass === 'text-primary'
+              ? 'from-primary/10 to-primary/20'
+              : 'from-accent/10 to-accent/20',
+            iconColorClass,
           )}
           aria-hidden="true"
         >
@@ -42,18 +63,54 @@ export function KpiCard({ title, value, change, icon: Icon, iconColorClass = "te
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* Row 2: sparkline (if data provided) */}
+      {sparkPoints.length > 1 && (
+        <div className="h-10 w-full -mx-1" aria-hidden="true">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={sparkPoints} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id={`spark-${title}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={sparkColor} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={sparkColor} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <Tooltip
+                contentStyle={{ display: 'none' }}
+                cursor={false}
+              />
+              <Area
+                type="monotone"
+                dataKey="v"
+                stroke={sparkColor}
+                strokeWidth={1.5}
+                fill={`url(#spark-${title})`}
+                dot={false}
+                isAnimationActive={true}
+                animationDuration={600}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Row 3: change badge */}
+      <div className="flex items-center gap-2" aria-hidden="true">
         <div
           className={cn(
-            "flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md",
-            isPositive ? "bg-success-light text-success" : "bg-danger-light text-danger"
+            'flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md',
+            isNeutral
+              ? 'bg-slate-100 text-gray-400'
+              : isPositive
+              ? 'bg-success-light text-success'
+              : 'bg-danger-light text-danger',
           )}
-          aria-hidden="true"
         >
-          {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-          <span>{Math.abs(change)}%</span>
+          {!isNeutral && (isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />)}
+          <span>{isNeutral ? '—' : `${Math.abs(change)}%`}</span>
         </div>
-        <span className="text-xs text-gray-400" aria-hidden="true">vs last month</span>
+        <span className="text-xs text-gray-400">
+          {sparkData ? 'trend' : 'vs avg'}
+        </span>
       </div>
     </article>
   );

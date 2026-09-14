@@ -46,17 +46,24 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       {/* Logo / branding */}
       <div className="flex items-center justify-between px-4 h-16 border-b border-gray-100">
         {isOpen && (
-          <div className="flex items-center gap-2.5 font-semibold text-gray-900">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
-              <BarChart2 size={16} className="text-white" aria-hidden="true" />
-            </div>
-            <span>DataFlow</span>
+          <div className="flex items-center gap-2.5">
+            {/* DataFlow brand mark — matches browser tab favicon */}
+            <img
+              src="/favicon.svg"
+              alt="DataFlow logo"
+              className="w-8 h-8 flex-shrink-0"
+              aria-hidden="true"
+            />
+            <span className="font-bold text-gray-900 text-base tracking-tight">DataFlow</span>
           </div>
         )}
         {!isOpen && (
-          <div className="w-8 h-8 mx-auto rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-sm">
-            <BarChart2 size={16} className="text-white" aria-hidden="true" />
-          </div>
+          <img
+            src="/favicon.svg"
+            alt="DataFlow logo"
+            className="w-8 h-8 mx-auto flex-shrink-0"
+            aria-label="DataFlow"
+          />
         )}
         <button
           onClick={() => setIsOpen(!isOpen)}
