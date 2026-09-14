@@ -110,10 +110,10 @@ export function MultiSeriesChart({ dataset, xColKey, numericCols }: MultiSeriesC
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={chartData} margin={{ top: 4, right: 5, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-            <XAxis dataKey={xColKey} stroke="#94a3b8" fontSize={10} axisLine={false} tickLine={false} />
-            <YAxis yAxisId="left" stroke="#94a3b8" fontSize={10} axisLine={false} tickLine={false} orientation="left" />
+            <XAxis dataKey={xColKey} stroke="#475569" fontSize={10} axisLine={false} tickLine={false} />
+            <YAxis yAxisId="left" stroke="#475569" fontSize={10} axisLine={false} tickLine={false} orientation="left" />
             {chartMode === 'combo' && (
-              <YAxis yAxisId="right" stroke="#94a3b8" fontSize={10} axisLine={false} tickLine={false} orientation="right" />
+              <YAxis yAxisId="right" stroke="#475569" fontSize={10} axisLine={false} tickLine={false} orientation="right" />
             )}
             <Tooltip contentStyle={TOOLTIP_STYLE} />
             

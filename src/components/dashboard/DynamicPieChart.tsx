@@ -12,7 +12,7 @@ interface DynamicPieChartProps {
   onSliceClick?: (col: string, val: string) => void;
 }
 
-const COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA', '#ec4899', '#f97316', '#14b8a6', '#64748b'];
+const COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA', '#ec4899', '#f97316', '#14b8a6', '#475569'];
 
 const SELECT_CLASS =
   'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 ' +

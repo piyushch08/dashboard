@@ -158,7 +158,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
               type="number"
               dataKey="x"
               name={xCol?.label}
-              stroke="#94a3b8"
+              stroke="#475569"
               fontSize={10}
               axisLine={false}
               tickLine={false}
@@ -167,14 +167,14 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
               type="number"
               dataKey="y"
               name={yCol?.label}
-              stroke="#94a3b8"
+              stroke="#475569"
               fontSize={10}
               axisLine={false}
               tickLine={false}
             />
             <ZAxis range={[30, 30]} />
             <Tooltip
-              cursor={{ strokeDasharray: '3 3', stroke: '#94a3b8' }}
+              cursor={{ strokeDasharray: '3 3', stroke: '#475569' }}
               contentStyle={TOOLTIP_STYLE}
               content={({ payload }) => {
                 if (!payload?.length) return null;

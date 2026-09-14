@@ -31,7 +31,7 @@ export function KpiCard({
     return sparkData.map((v, i) => ({ i, v }));
   }, [sparkData]);
 
-  const sparkColor = isNeutral ? '#94a3b8' : isPositive ? '#059669' : '#dc2626';
+  const sparkColor = isNeutral ? '#475569' : isPositive ? '#059669' : '#dc2626';
 
   return (
     <article

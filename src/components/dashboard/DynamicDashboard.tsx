@@ -46,7 +46,7 @@ const TOOLTIP_STYLE = {
 };
 
 const AXIS_PROPS = {
-  stroke: '#94a3b8',
+  stroke: '#475569',
   fontSize: 11,
   axisLine: false as const,
   tickLine: false as const,

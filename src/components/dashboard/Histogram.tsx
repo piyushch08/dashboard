@@ -125,14 +125,14 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
             <XAxis
               dataKey="label"
-              stroke="#94a3b8"
+              stroke="#475569"
               fontSize={10}
               axisLine={false}
               tickLine={false}
               interval="preserveStartEnd"
             />
             <YAxis
-              stroke="#94a3b8"
+              stroke="#475569"
               fontSize={10}
               axisLine={false}
               tickLine={false}

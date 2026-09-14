@@ -92,14 +92,14 @@ export function RealTimeChart() {
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
             <XAxis 
               dataKey="time" 
-              stroke="#64748b" 
+              stroke="#475569" 
               fontSize={10} 
               tickMargin={10} 
               axisLine={false} 
               tickLine={false} 
             />
             <YAxis 
-              stroke="#64748b" 
+              stroke="#475569" 
               fontSize={10} 
               tickMargin={10} 
               axisLine={false} 
@@ -108,7 +108,7 @@ export function RealTimeChart() {
             <Tooltip 
               contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }}
               itemStyle={{ color: '#7B3FE4', fontSize: '12px' }}
-              labelStyle={{ color: '#64748b', marginBottom: '4px', fontSize: '12px' }}
+              labelStyle={{ color: '#475569', marginBottom: '4px', fontSize: '12px' }}
             />
             <Area 
               type="monotone" 

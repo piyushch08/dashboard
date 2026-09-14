@@ -38,14 +38,14 @@ export function RevenueBarChart() {
             <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
             <XAxis 
               dataKey="name" 
-              stroke="#64748b" 
+              stroke="#475569" 
               fontSize={10} 
               tickMargin={10} 
               axisLine={false} 
               tickLine={false} 
             />
             <YAxis 
-              stroke="#64748b" 
+              stroke="#475569" 
               fontSize={10} 
               tickMargin={10} 
               axisLine={false} 
@@ -56,7 +56,7 @@ export function RevenueBarChart() {
               cursor={{ fill: '#f8fafc' }}
               contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }}
               itemStyle={{ color: '#7B3FE4', fontSize: '14px', fontWeight: 'bold' }}
-              labelStyle={{ color: '#64748b', marginBottom: '4px', fontSize: '12px' }}
+              labelStyle={{ color: '#475569', marginBottom: '4px', fontSize: '12px' }}
             />
             <Bar 
               dataKey="revenue" 
