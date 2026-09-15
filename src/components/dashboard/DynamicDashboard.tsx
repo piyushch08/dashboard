@@ -182,8 +182,8 @@ export function DynamicDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Data Insights</h1>
-            <p className="text-base font-medium text-slate-700 mt-1" aria-live="polite">
+            <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Data Insights</h1>
+            <p className="text-base font-semibold text-slate-800 mt-1" aria-live="polite">
               {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
             </p>
           </div>
@@ -196,9 +196,9 @@ export function DynamicDashboard() {
         <button
           onClick={clearData}
           aria-label="Clear all data and return to upload"
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-danger hover:bg-danger-light transition-colors border border-red-200"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
         >
-          <Trash2 size={14} aria-hidden="true" />
+          <Trash2 size={16} aria-hidden="true" />
           Clear Data
         </button>
       </div>
