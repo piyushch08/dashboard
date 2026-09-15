@@ -35,17 +35,17 @@ export function KpiCard({
 
   return (
     <article
-      className="kpi-card card flex flex-col justify-between min-h-[140px] group"
+      className="kpi-card card flex flex-col justify-between min-h-[140px] group transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
       aria-label={`${title}: ${value}, ${isNeutral ? 'unchanged' : (isPositive ? 'up' : 'down') + ' ' + Math.abs(change) + '%'}`}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none" />
       {/* Row 1: title + icon */}
       <div className="flex justify-between items-start relative z-10">
         <div className="flex flex-col gap-1 min-w-0">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate" aria-hidden="true">
+          <span className="text-sm font-bold text-slate-600 uppercase tracking-wider truncate" aria-hidden="true">
             {title}
           </span>
-          <span className="text-2xl font-bold text-primary tracking-tight" aria-hidden="true">
+          <span className="text-3xl font-extrabold text-primary tracking-tight" aria-hidden="true">
             {value}
           </span>
         </div>

@@ -182,8 +182,8 @@ export function DynamicDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div>
-            <h1 className="text-xl font-semibold text-slate-800">Data Insights</h1>
-            <p className="text-sm text-slate-600 mt-0.5" aria-live="polite">
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Data Insights</h1>
+            <p className="text-base font-medium text-slate-700 mt-1" aria-live="polite">
               {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
             </p>
           </div>
@@ -236,31 +236,31 @@ export function DynamicDashboard() {
           
           {/* High-level dataset metadata */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="card flex items-center justify-between group hover:shadow-md transition-all duration-300">
+            <div className="card flex items-center justify-between p-5 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-default">
               <div>
-                <p className="text-xs text-slate-600 font-bold mb-1">Total Records</p>
-                <p className="text-2xl font-bold text-[#7B3FE4]">{dataset.length.toLocaleString()}</p>
+                <p className="text-sm text-slate-700 font-bold mb-1">Total Records</p>
+                <p className="text-3xl font-extrabold text-[#7B3FE4]">{dataset.length.toLocaleString()}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-                <Database size={24} className="text-[#7B3FE4]" />
+              <div className="w-14 h-14 rounded-xl bg-[#f3f0ff] flex items-center justify-center transition-transform group-hover:scale-110">
+                <Database size={28} className="text-[#7B3FE4]" />
               </div>
             </div>
-            <div className="card flex items-center justify-between group hover:shadow-md transition-all duration-300">
+            <div className="card flex items-center justify-between p-5 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-default">
               <div>
-                <p className="text-xs text-slate-600 font-bold mb-1">Total Columns</p>
-                <p className="text-2xl font-bold text-[#7B3FE4]">{columns.length}</p>
+                <p className="text-sm text-slate-700 font-bold mb-1">Total Columns</p>
+                <p className="text-3xl font-extrabold text-[#7B3FE4]">{columns.length}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-                <Columns size={24} className="text-[#7B3FE4]" />
+              <div className="w-14 h-14 rounded-xl bg-[#f3f0ff] flex items-center justify-center transition-transform group-hover:scale-110">
+                <Columns size={28} className="text-[#7B3FE4]" />
               </div>
             </div>
-            <div className="card flex items-center justify-between group hover:shadow-md transition-all duration-300">
+            <div className="card flex items-center justify-between p-5 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-default">
               <div>
-                <p className="text-xs text-slate-600 font-bold mb-1">Data Health</p>
-                <p className="text-2xl font-bold text-[#7B3FE4]">{completeness.toFixed(1)}%</p>
+                <p className="text-sm text-slate-700 font-bold mb-1">Data Health</p>
+                <p className="text-3xl font-extrabold text-[#7B3FE4]">{completeness.toFixed(1)}%</p>
               </div>
-              <div className="w-12 h-12 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-                <CheckCircle2 size={24} className="text-[#7B3FE4]" />
+              <div className="w-14 h-14 rounded-xl bg-[#f3f0ff] flex items-center justify-center transition-transform group-hover:scale-110">
+                <CheckCircle2 size={28} className="text-[#7B3FE4]" />
               </div>
             </div>
           </div>

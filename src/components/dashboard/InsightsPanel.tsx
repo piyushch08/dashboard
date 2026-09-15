@@ -50,10 +50,10 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
       {/* Header */}
       <div className="flex items-center gap-2 mb-4 flex-shrink-0">
         <div className="p-1.5 rounded-lg bg-amber-100" aria-hidden="true">
-          <Lightbulb size={14} className="text-warning" />
+          <Lightbulb size={16} className="text-warning" />
         </div>
-        <h3 className="text-sm font-semibold text-slate-800">Auto Insights</h3>
-        <span className="ml-auto text-xs text-slate-500 tabular-nums">
+        <h3 className="text-base font-bold text-slate-800">Auto Insights</h3>
+        <span className="ml-auto text-sm font-medium text-slate-600 tabular-nums">
           {insights.length} finding{insights.length !== 1 ? 's' : ''}
         </span>
       </div>
@@ -72,19 +72,19 @@ export function InsightsPanel({ dataset, numericCols }: InsightsPanelProps) {
             return (
               <div
                 key={i}
-                className={`flex gap-3 p-3 rounded-lg border ${style.wrapper} transition-all duration-200 hover:shadow-md hover:scale-[1.01]`}
+                className={`flex gap-3 p-4 rounded-xl border ${style.wrapper} transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}
                 role="listitem"
               >
                 <Icon
-                  size={14}
+                  size={16}
                   className={`flex-shrink-0 mt-0.5 ${style.icon}`}
                   aria-hidden="true"
                 />
                 <div className="min-w-0">
-                  <p className={`text-xs font-semibold leading-snug ${style.title}`}>
+                  <p className={`text-sm font-bold leading-snug ${style.title}`}>
                     {insight.title}
                   </p>
-                  <p className={`text-xs mt-0.5 leading-relaxed ${style.body} opacity-80`}>
+                  <p className={`text-sm mt-1 leading-relaxed ${style.body} font-medium`}>
                     {insight.body}
                   </p>
                 </div>
