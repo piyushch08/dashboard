@@ -38,19 +38,22 @@ export function inferDataTypes(data: any[]): ColumnMeta[] {
   return columns;
 }
 
-// Ensure numeric strings are parsed as numbers for charts
 export function sanitizeData(data: any[], columns: ColumnMeta[]): any[] {
   const numericKeys = columns.filter(c => c.type === 'number').map(c => c.key);
   
-  return data.map(row => {
-    const newRow = { ...row };
-    numericKeys.forEach(k => {
-      if (newRow[k] !== undefined && newRow[k] !== null) {
-        newRow[k] = Number(newRow[k]);
+  if (numericKeys.length === 0) return data;
+
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
+    for (let j = 0; j < numericKeys.length; j++) {
+      const k = numericKeys[j];
+      if (row[k] !== undefined && row[k] !== null && row[k] !== '') {
+        row[k] = Number(row[k]);
       }
-    });
-    return newRow;
-  });
+    }
+  }
+  
+  return data;
 }
 
 // Convert File to base64 for Gemini

@@ -28,23 +28,27 @@ export function DataUploader() {
     const cols = inferDataTypes(data);
     const cleanData = sanitizeData(data, cols);
     
-    try {
-      // Upload to Firebase Storage
-      const storageRef = ref(storage, 'datasets/global_dataset.json');
-      await uploadString(storageRef, JSON.stringify(cleanData), 'raw', { contentType: 'application/json' });
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      // Update Firestore session
-      await setDoc(doc(db, "sessions", "global"), {
-        dataUrl: downloadURL,
-        columns: cols,
-        updatedAt: new Date().toISOString()
-      });
-      
-      setDataset(cleanData, cols);
-    } catch (err: any) {
-      setError("Failed to sync to Firebase: " + err.message);
-    }
+    // 1. Show the dashboard immediately for instant feedback!
+    setDataset(cleanData, cols);
+    
+    // 2. Defer the heavy stringify and network upload so it doesn't block the UI render
+    setTimeout(() => {
+      try {
+        const storageRef = ref(storage, 'datasets/global_dataset.json');
+        uploadString(storageRef, JSON.stringify(cleanData), 'raw', { contentType: 'application/json' })
+          .then(() => getDownloadURL(storageRef))
+          .then(downloadURL => {
+            setDoc(doc(db, "sessions", "global"), {
+              dataUrl: downloadURL,
+              columns: cols,
+              updatedAt: new Date().toISOString()
+            });
+          })
+          .catch(err => console.error("Firebase sync failed:", err));
+      } catch (err: any) {
+        console.error("Failed to sync to Firebase: " + err.message);
+      }
+    }, 100);
   };
 
   const processFile = async (file: File) => {
@@ -56,6 +60,7 @@ export function DataUploader() {
         Papa.parse(file, {
           header: true,
           skipEmptyLines: true,
+          worker: true,
           complete: async (results) => {
             await handleProcessData(results.data);
             setIsProcessing(false);
