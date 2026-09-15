@@ -34,6 +34,9 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const handleNav = (page: PageView) => {
     if (dataset.length > 0) {
       setCurrentPage(page);
+      if (window.innerWidth < 768) {
+        setIsOpen(false);
+      }
     }
   };
 
