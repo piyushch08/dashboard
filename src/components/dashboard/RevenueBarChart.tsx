@@ -27,7 +27,7 @@ export function RevenueBarChart() {
           <DollarSign size={18} className="text-[#7B3FE4]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-800 leading-tight">Revenue Overview</h3>
+          <h3 className="text-lg font-bold text-slate-900 leading-tight">Revenue Overview</h3>
           <p className="text-xs text-slate-600">Monthly breakdown</p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export function RevenueBarChart() {
               radius={[4, 4, 0, 0]} 
               barSize={30}
               isAnimationActive={true}
-              animationDuration={1000} animationBegin={0}
+              animationDuration={400} animationBegin={0}
               animationEasing="ease-out"
             />
           </BarChart>

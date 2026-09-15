@@ -24,7 +24,7 @@ export function TrafficSourcePieChart() {
           <Globe size={18} className="text-[#7B3FE4]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-800 leading-tight">Traffic Sources</h3>
+          <h3 className="text-lg font-bold text-slate-900 leading-tight">Traffic Sources</h3>
           <p className="text-xs text-slate-600">Distribution by channel</p>
         </div>
       </div>
@@ -43,7 +43,7 @@ export function TrafficSourcePieChart() {
                 dataKey="value"
                 stroke="none"
                 isAnimationActive={true}
-                animationDuration={1000} animationBegin={0}
+                animationDuration={400} animationBegin={0}
                 animationEasing="ease-out"
               >
                 {data.map((entry, index) => (

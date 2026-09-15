@@ -182,7 +182,7 @@ export function DynamicDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div>
-            <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Data Insights</h1>
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Data Insights</h1>
             <p className="text-base font-semibold text-slate-800 mt-1" aria-live="polite">
               {filteredData.length.toLocaleString()} records{isFiltered ? ' (filtered)' : ''}
             </p>
@@ -196,7 +196,7 @@ export function DynamicDashboard() {
         <button
           onClick={clearData}
           aria-label="Clear all data and return to upload"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white bg-red-700 hover:bg-red-800 transition-colors shadow-sm"
         >
           <Trash2 size={16} aria-hidden="true" />
           Clear Data
@@ -366,7 +366,7 @@ export function DynamicDashboard() {
                 <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
                   <BarChart3 size={15} className="text-primary" />
                 </div>
-                <h3 className="text-sm font-semibold text-slate-800 truncate">
+                <h3 className="text-sm font-bold text-slate-900 truncate">
                   {resolvedYLabel} by {resolvedXLabel}
                 </h3>
               </div>
@@ -387,7 +387,7 @@ export function DynamicDashboard() {
                       onClick={handleBarClick}
                       style={{ cursor: 'pointer' }}
                       isAnimationActive={true}
-                      animationDuration={1000} animationBegin={0}
+                      animationDuration={400} animationBegin={0}
                       animationEasing="ease-out"
                     >
                       {chartData.map((entry, idx) => (
@@ -424,7 +424,7 @@ export function DynamicDashboard() {
                       dot={{ r: 3, fill: '#7B3FE4', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
                       isAnimationActive={true}
-                      animationDuration={1000} animationBegin={0}
+                      animationDuration={400} animationBegin={0}
                       animationEasing="ease-out"
                     />
                   </LineChart>
@@ -461,7 +461,7 @@ export function DynamicDashboard() {
                       dot={{ r: 2.5, fill: '#7B3FE4', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
                       isAnimationActive={true}
-                      animationDuration={1000} animationBegin={0}
+                      animationDuration={400} animationBegin={0}
                       animationEasing="ease-out"
                     />
                   </AreaChart>
@@ -527,7 +527,7 @@ export function DynamicDashboard() {
           {/* ── Data Preview Table ── */}
           <div className="mt-4 card overflow-hidden mb-6">
             <div className="px-5 py-3.5 border-b border-gray-100 bg-slate-50 flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-800">Recent Data Records</h3>
+              <h3 className="text-sm font-bold text-slate-900">Recent Data Records</h3>
               <span className="text-xs text-slate-500">Showing first 10 of {filteredData.length.toLocaleString()}</span>
             </div>
             <div className="overflow-x-auto">

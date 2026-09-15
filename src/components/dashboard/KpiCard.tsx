@@ -87,7 +87,7 @@ export function KpiCard({
                 fill={`url(#spark-${title})`}
                 dot={false}
                 isAnimationActive={true}
-                animationDuration={800} animationEasing="ease-out"
+                animationDuration={400} animationEasing="ease-out"
               />
             </AreaChart>
           </ResponsiveContainer>

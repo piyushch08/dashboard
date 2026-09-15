@@ -71,7 +71,7 @@ export function DynamicPieChart({ dataset, numericCols, catCols, onSliceClick }:
           <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
             <PieIcon size={14} className="text-primary" />
           </div>
-          <h3 className="text-sm font-semibold text-slate-800 truncate">
+          <h3 className="text-sm font-bold text-slate-900 truncate">
             Distribution
           </h3>
         </div>
@@ -117,7 +117,7 @@ export function DynamicPieChart({ dataset, numericCols, catCols, onSliceClick }:
               dataKey="value"
               stroke="none"
               isAnimationActive={true}
-              animationDuration={1000} animationBegin={0}
+              animationDuration={400} animationBegin={0}
               animationEasing="ease-out"
               onClick={(e: any) => {
                 if (e && e.name !== 'Other' && onSliceClick) {

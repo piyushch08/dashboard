@@ -102,7 +102,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
           <div className="p-1.5 rounded-lg bg-accent/10" aria-hidden="true">
             <GitBranch size={14} className="text-accent" />
           </div>
-          <h3 className="text-sm font-semibold text-slate-800">Scatter Plot</h3>
+          <h3 className="text-sm font-bold text-slate-900">Scatter Plot</h3>
         </div>
 
         {/* Correlation badge */}
@@ -200,7 +200,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
               data={scatterData}
               fill="#7B3FE4"
               isAnimationActive={true}
-              animationDuration={1000} animationBegin={0}
+              animationDuration={400} animationBegin={0}
               animationEasing="ease-out"
               fillOpacity={0.65}
             />

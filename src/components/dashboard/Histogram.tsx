@@ -77,7 +77,7 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
           <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
             <BarChart2 size={14} className="text-primary" />
           </div>
-          <h3 className="text-sm font-semibold text-slate-800">Distribution</h3>
+          <h3 className="text-sm font-bold text-slate-900">Distribution</h3>
         </div>
         <label htmlFor={colId} className="sr-only">Select column for histogram</label>
         <select
@@ -169,7 +169,7 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
               radius={[4, 4, 0, 0]} 
               opacity={0.85} 
               isAnimationActive={true}
-              animationDuration={1000} animationBegin={0}
+              animationDuration={400} animationBegin={0}
               animationEasing="ease-out"
             />
 
