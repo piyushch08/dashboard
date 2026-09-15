@@ -5,6 +5,9 @@ import * as XLSX from 'xlsx';
 import { motion } from 'motion/react';
 import { useDataStore } from '../../store/useDataStore';
 import { extractDataFromImage, inferDataTypes, sanitizeData } from '../../utils/dataProcessor';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { doc, setDoc } from 'firebase/firestore';
+import { db, storage } from '../../lib/firebase';
 
 export function DataUploader() {
   const [isDragging, setIsDragging] = useState(false);
@@ -17,14 +20,31 @@ export function DataUploader() {
 
   const { setDataset, apiKey, setSettingsOpen } = useDataStore();
 
-  const handleProcessData = (data: any[]) => {
+  const handleProcessData = async (data: any[]) => {
     if (data.length === 0) {
       setError("No valid data found.");
       return;
     }
     const cols = inferDataTypes(data);
     const cleanData = sanitizeData(data, cols);
-    setDataset(cleanData, cols);
+    
+    try {
+      // Upload to Firebase Storage
+      const storageRef = ref(storage, 'datasets/global_dataset.json');
+      await uploadString(storageRef, JSON.stringify(cleanData), 'raw', { contentType: 'application/json' });
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      // Update Firestore session
+      await setDoc(doc(db, "sessions", "global"), {
+        dataUrl: downloadURL,
+        columns: cols,
+        updatedAt: new Date().toISOString()
+      });
+      
+      setDataset(cleanData, cols);
+    } catch (err: any) {
+      setError("Failed to sync to Firebase: " + err.message);
+    }
   };
 
   const processFile = async (file: File) => {
@@ -36,16 +56,23 @@ export function DataUploader() {
         Papa.parse(file, {
           header: true,
           skipEmptyLines: true,
-          complete: (results) => handleProcessData(results.data),
-          error: (err) => setError(err.message)
+          complete: async (results) => {
+            await handleProcessData(results.data);
+            setIsProcessing(false);
+          },
+          error: (err) => {
+            setError(err.message);
+            setIsProcessing(false);
+          }
         });
+        return; // return early because papa parse is callback based
       } else if (file.name.match(/\.(xlsx|xls)$/)) {
         const buffer = await file.arrayBuffer();
         const workbook = XLSX.read(buffer);
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-        handleProcessData(json);
+        await handleProcessData(json);
       } else if (file.type.startsWith('image/')) {
         if (!apiKey) {
           setError("Gemini API key is required to analyze images. Please configure it in settings.");
@@ -54,15 +81,15 @@ export function DataUploader() {
           return;
         }
         const data = await extractDataFromImage(file, apiKey);
-        handleProcessData(data);
+        await handleProcessData(data);
       } else {
         setError("Unsupported file format. Please upload CSV, Excel, or an Image.");
       }
     } catch (err: any) {
       setError(err.message || "An error occurred during processing.");
-    } finally {
-      setIsProcessing(false);
     }
+    
+    setIsProcessing(false);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -80,8 +107,8 @@ export function DataUploader() {
       Papa.parse(text, {
         header: true,
         skipEmptyLines: true,
-        complete: (results) => {
-          handleProcessData(results.data);
+        complete: async (results) => {
+          await handleProcessData(results.data);
           setIsProcessing(false);
         }
       });

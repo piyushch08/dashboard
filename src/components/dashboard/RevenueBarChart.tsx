@@ -64,8 +64,8 @@ export function RevenueBarChart() {
               radius={[4, 4, 0, 0]} 
               barSize={30}
               isAnimationActive={true}
-              animationDuration={1500}
-              animationEasing="ease-in-out"
+              animationDuration={1000} animationBegin={0}
+              animationEasing="ease-out"
             />
           </BarChart>
         </ResponsiveContainer>

@@ -387,8 +387,8 @@ export function DynamicDashboard() {
                       onClick={handleBarClick}
                       style={{ cursor: 'pointer' }}
                       isAnimationActive={true}
-                      animationDuration={1500}
-                      animationEasing="ease-in-out"
+                      animationDuration={1000} animationBegin={0}
+                      animationEasing="ease-out"
                     >
                       {chartData.map((entry, idx) => (
                         <Cell
@@ -424,8 +424,8 @@ export function DynamicDashboard() {
                       dot={{ r: 3, fill: '#7B3FE4', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
                       isAnimationActive={true}
-                      animationDuration={1500}
-                      animationEasing="ease-in-out"
+                      animationDuration={1000} animationBegin={0}
+                      animationEasing="ease-out"
                     />
                   </LineChart>
                 ) : (
@@ -461,8 +461,8 @@ export function DynamicDashboard() {
                       dot={{ r: 2.5, fill: '#7B3FE4', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
                       isAnimationActive={true}
-                      animationDuration={1500}
-                      animationEasing="ease-in-out"
+                      animationDuration={1000} animationBegin={0}
+                      animationEasing="ease-out"
                     />
                   </AreaChart>
                 )}

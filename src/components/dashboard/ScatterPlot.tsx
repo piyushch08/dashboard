@@ -200,8 +200,8 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
               data={scatterData}
               fill="#7B3FE4"
               isAnimationActive={true}
-              animationDuration={1500}
-              animationEasing="ease-in-out"
+              animationDuration={1000} animationBegin={0}
+              animationEasing="ease-out"
               fillOpacity={0.65}
             />
 

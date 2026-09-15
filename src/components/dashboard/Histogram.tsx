@@ -169,8 +169,8 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
               radius={[4, 4, 0, 0]} 
               opacity={0.85} 
               isAnimationActive={true}
-              animationDuration={1500}
-              animationEasing="ease-in-out"
+              animationDuration={1000} animationBegin={0}
+              animationEasing="ease-out"
             />
 
             {/* Mean reference line */}

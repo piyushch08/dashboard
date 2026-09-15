@@ -43,8 +43,8 @@ export function TrafficSourcePieChart() {
                 dataKey="value"
                 stroke="none"
                 isAnimationActive={true}
-                animationDuration={1500}
-                animationEasing="ease-in-out"
+                animationDuration={1000} animationBegin={0}
+                animationEasing="ease-out"
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
