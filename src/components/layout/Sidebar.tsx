@@ -45,7 +45,7 @@ export function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       aria-label="Main navigation"
       style={{ width: isOpen ? 240 : 72 }}
       className={cn(
-        "h-screen flex flex-col bg-white border-r border-slate-200/80 z-40 transition-all duration-300",
+        "h-screen flex flex-col bg-white/50 backdrop-blur-xl border-r border-white/50 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-40 transition-all duration-300",
         "absolute md:sticky top-0 left-0",
         !isOpen && "-translate-x-full md:translate-x-0"
       )}

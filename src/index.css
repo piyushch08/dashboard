@@ -23,7 +23,17 @@
 
 @layer base {
   body {
-    @apply bg-[#FAFAFA] text-slate-800 antialiased font-sans;
+    @apply text-slate-800 antialiased font-sans min-h-screen;
+    background-color: #eef2ff;
+    background-image: 
+      radial-gradient(at 27% 37%, hsla(256, 98%, 89%, 1) 0px, transparent 50%),
+      radial-gradient(at 97% 21%, hsla(200, 98%, 89%, 1) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, hsla(354, 98%, 89%, 1) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, hsla(256, 96%, 89%, 1) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, hsla(22, 100%, 89%, 1) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, hsla(222, 67%, 89%, 1) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, hsla(343, 68%, 89%, 1) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 
   /* Global focus ring for keyboard nav */
@@ -74,9 +84,13 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Card utility with minimal styling */
+/* Card utility with glassmorphism styling */
 .card {
-  @apply bg-white rounded-xl p-5 border border-gray-200 transition-colors duration-200 shadow-[0_1px_2px_rgba(0,0,0,0.02)];
+  @apply rounded-xl p-5 border transition-all duration-200 shadow-[0_4px_30px_rgba(0,0,0,0.05)];
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: rgba(255, 255, 255, 0.5);
   animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
@@ -88,7 +102,8 @@
 .card:nth-child(n+5) { animation-delay: 0.25s; }
 
 .card:hover {
-  @apply border-gray-300;
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 /* Shimmer loading skeleton */

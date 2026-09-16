@@ -10,7 +10,6 @@ interface KpiCardProps {
   value: string;
   change: number;
   icon: React.ElementType;
-  iconColorClass?: string;
   sparkData?: number[];   // Optional: raw values for sparkline
 }
 
@@ -19,7 +18,6 @@ export function KpiCard({
   value,
   change,
   icon: Icon,
-  iconColorClass = 'text-primary',
   sparkData,
 }: KpiCardProps) {
   const isPositive = change >= 0;

@@ -17,19 +17,19 @@ const TYPE_ICON = {
 
 const SEVERITY_STYLE = {
   critical: {
-    wrapper: 'bg-white border-gray-200 hover:border-gray-300',
+    wrapper: 'bg-white/40 border-white/50 hover:border-white/80',
     icon: 'text-red-500',
     title: 'text-slate-800',
     body: 'text-slate-500',
   },
   warning: {
-    wrapper: 'bg-white border-gray-200 hover:border-gray-300',
+    wrapper: 'bg-white/40 border-white/50 hover:border-white/80',
     icon: 'text-amber-500',
     title: 'text-slate-800',
     body: 'text-slate-500',
   },
   info: {
-    wrapper: 'bg-white border-primary-border hover:border-primary/40',
+    wrapper: 'bg-white/40 border-primary-border hover:border-primary/40',
     icon: 'text-primary',
     title: 'text-slate-800',
     body: 'text-slate-500',

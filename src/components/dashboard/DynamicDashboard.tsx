@@ -281,7 +281,6 @@ export function DynamicDashboard() {
                 change={kpi.change}
                 sparkData={kpi.sparkData}
                 icon={Hash}
-                iconColorClass="text-primary"
               />
             ))}
           </div>
@@ -294,11 +293,11 @@ export function DynamicDashboard() {
           <h2 id={mainChartId} className="sr-only">Interactive Charts</h2>
 
           {/* Chart controls toolbar */}
-          <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-slate-50 rounded-xl border border-gray-100">
+          <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-white/40 rounded-xl border border-white/50">
 
             {/* Type switcher pill */}
             <div
-              className="flex items-center bg-white border border-gray-200 rounded-lg p-0.5 gap-0.5 shadow-sm"
+              className="flex items-center bg-white/60 border border-white/60 rounded-lg p-0.5 gap-0.5 shadow-sm"
               role="group"
               aria-label="Chart type"
             >
@@ -532,15 +531,15 @@ export function DynamicDashboard() {
           )}
 
           {/* ── Data Preview Table ── */}
-          <div className="mt-4 card overflow-hidden mb-6">
-            <div className="px-5 py-3.5 border-b border-gray-100 bg-slate-50 flex items-center justify-between">
+          <div className="mt-4 card overflow-hidden mb-6 p-0">
+            <div className="px-5 py-3.5 border-b border-white/50 bg-white/30 flex items-center justify-between">
               <h3 className="text-sm font-bold text-slate-900">Recent Data Records</h3>
               <span className="text-xs text-slate-500">Showing first 10 of {filteredData.length.toLocaleString()}</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-white">
+                  <tr className="border-b border-white/50 bg-white/40">
                     {columns.slice(0, 8).map(c => (
                       <th key={c.key} className="px-4 py-2.5 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                         {c.label}
@@ -551,9 +550,9 @@ export function DynamicDashboard() {
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-white/40">
                   {filteredData.slice(0, 10).map((row, i) => (
-                    <tr key={i} className="hover:bg-slate-50 transition-colors">
+                    <tr key={i} className="hover:bg-white/50 transition-colors">
                       {columns.slice(0, 8).map(c => (
                         <td key={c.key} className="px-4 py-3 text-gray-600 truncate max-w-[150px]">
                           {String(row[c.key] ?? '')}
