@@ -12,7 +12,7 @@ interface MultiSeriesChartProps {
   numericCols: ColumnMeta[];
 }
 
-const SERIES_COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA'];
+const SERIES_COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#6366f1'];
 
 const TOOLTIP_STYLE = {
   backgroundColor: '#fff',

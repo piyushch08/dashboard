@@ -23,8 +23,8 @@ export function RevenueBarChart() {
       className="card flex flex-col h-[350px]"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-          <DollarSign size={18} className="text-[#7B3FE4]" />
+        <div className="w-8 h-8 rounded-lg bg-[#f5f3ff] flex items-center justify-center">
+          <DollarSign size={18} className="text-[#8b5cf6]" />
         </div>
         <div>
           <h3 className="text-lg font-bold text-slate-900 leading-tight">Revenue Overview</h3>
@@ -35,7 +35,7 @@ export function RevenueBarChart() {
       <div className="flex-1 w-full relative">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#7c3aed" vertical={false} />
             <XAxis 
               dataKey="name" 
               stroke="#475569" 
@@ -53,14 +53,14 @@ export function RevenueBarChart() {
               tickFormatter={(value) => `$${value}`}
             />
             <Tooltip 
-              cursor={{ fill: '#f8fafc' }}
+              cursor={{ fill: '#f5f3ff' }}
               contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }}
-              itemStyle={{ color: '#7B3FE4', fontSize: '14px', fontWeight: 'bold' }}
+              itemStyle={{ color: '#8b5cf6', fontSize: '14px', fontWeight: 'bold' }}
               labelStyle={{ color: '#475569', marginBottom: '4px', fontSize: '12px' }}
             />
             <Bar 
               dataKey="revenue" 
-              fill="#7B3FE4" 
+              fill="#8b5cf6" 
               radius={[4, 4, 0, 0]} 
               barSize={30}
               isAnimationActive={true}

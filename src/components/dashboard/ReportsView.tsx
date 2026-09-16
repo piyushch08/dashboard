@@ -250,9 +250,9 @@ export function ReportsView() {
       {/* Overall Report Status & AI Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section aria-label="Dataset status" className="lg:col-span-1">
-          <div className="card p-5 h-full flex flex-col gap-4 bg-gradient-to-br from-[#f3f0ff] to-white">
+          <div className="card p-5 h-full flex flex-col gap-4 bg-gradient-to-br from-[#f5f3ff] to-white">
             <div className="flex items-center gap-2">
-              <FileBarChart2 size={16} className="text-[#7B3FE4]" />
+              <FileBarChart2 size={16} className="text-[#8b5cf6]" />
               <h2 className="text-sm font-semibold text-slate-800">Dataset Overview</h2>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -271,7 +271,7 @@ export function ReportsView() {
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-[#7B3FE4] to-accent transition-all duration-1000"
+                    className="h-full bg-gradient-to-r from-[#8b5cf6] to-accent transition-all duration-1000"
                     style={{ width: `${overallCompleteness}%` }}
                   />
                 </div>
@@ -283,7 +283,7 @@ export function ReportsView() {
         <section aria-label="Executive Summary" className="lg:col-span-2">
           <div className="card p-5 h-full flex flex-col">
             <div className="flex items-center gap-2 mb-3">
-              <Info size={16} className="text-[#7B3FE4]" />
+              <Info size={16} className="text-[#8b5cf6]" />
               <h2 className="text-sm font-semibold text-slate-800">Executive Summary</h2>
             </div>
             {insights.length === 0 ? (
@@ -323,7 +323,7 @@ export function ReportsView() {
         <h2 className="text-lg font-semibold text-slate-800">Detailed Attributes Breakdown</h2>
         <button 
           onClick={() => setShowDetails(!showDetails)}
-          className="text-sm font-medium text-[#7B3FE4] hover:text-[#6c32d4] transition-colors"
+          className="text-sm font-medium text-[#8b5cf6] hover:text-[#7c3aed] transition-colors"
         >
           {showDetails ? 'Hide Details' : 'Show Details'}
         </button>

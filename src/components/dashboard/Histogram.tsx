@@ -165,7 +165,7 @@ export function Histogram({ dataset, numericCols }: HistogramProps) {
             />
             <Bar 
               dataKey="count" 
-              fill="#7B3FE4" 
+              fill="#8b5cf6" 
               radius={[4, 4, 0, 0]} 
               opacity={0.85} 
               isAnimationActive={true}

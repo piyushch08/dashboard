@@ -198,7 +198,7 @@ export function ScatterPlot({ dataset, numericCols }: ScatterPlotProps) {
             <Scatter
               name="Data"
               data={scatterData}
-              fill="#7B3FE4"
+              fill="#8b5cf6"
               isAnimationActive={true}
               animationDuration={400} animationBegin={0}
               animationEasing="ease-out"

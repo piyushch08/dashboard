@@ -141,8 +141,8 @@ export function DataUploader() {
       >
         {/* Header Information */}
         <div className="flex-1 space-y-4 text-center md:text-left">
-          <div className="w-16 h-16 mx-auto md:mx-0 rounded-2xl bg-[#f3f0ff] flex items-center justify-center shadow-sm">
-            <UploadCloud size={32} className="text-[#7B3FE4]" aria-hidden="true" />
+          <div className="w-16 h-16 mx-auto md:mx-0 rounded-2xl bg-[#f5f3ff] flex items-center justify-center shadow-sm">
+            <UploadCloud size={32} className="text-[#8b5cf6]" aria-hidden="true" />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Import Your Data</h2>
@@ -152,9 +152,9 @@ export function DataUploader() {
           </div>
           <div className="pt-2 hidden md:block">
             <ul className="text-xs text-slate-600 space-y-2 text-left">
-              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#7B3FE4]"></span> Supports CSV up to 50MB</li>
-              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#7B3FE4]"></span> Supports XLSX / XLS</li>
-              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#7B3FE4]"></span> AI Vision for Data Tables</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]"></span> Supports CSV up to 50MB</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]"></span> Supports XLSX / XLS</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]"></span> AI Vision for Data Tables</li>
             </ul>
           </div>
         </div>
@@ -173,8 +173,8 @@ export function DataUploader() {
             onKeyDown={handleDropZoneKeyDown}
             className={`w-full h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group ${
               isDragging
-                ? 'border-[#7B3FE4] bg-[#f3f0ff] scale-[1.02] shadow-md'
-                : 'border-slate-300 hover:border-[#7B3FE4] hover:bg-[#f3f0ff]/50'
+                ? 'border-[#8b5cf6] bg-[#f5f3ff] scale-[1.02] shadow-md'
+                : 'border-slate-300 hover:border-[#8b5cf6] hover:bg-[#f5f3ff]/50'
             }`}
           >
           {isProcessing ? (
@@ -186,13 +186,13 @@ export function DataUploader() {
           ) : (
             <>
               <div className="flex gap-4 mb-5">
-                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#7B3FE4] group-hover:bg-white transition-all shadow-sm">
+                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#8b5cf6] group-hover:bg-white transition-all shadow-sm">
                   <FileSpreadsheet size={24} aria-hidden="true" />
                 </div>
-                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#7B3FE4] group-hover:bg-white transition-all shadow-sm translate-y-2">
+                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#8b5cf6] group-hover:bg-white transition-all shadow-sm translate-y-2">
                   <UploadCloud size={24} aria-hidden="true" />
                 </div>
-                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#7B3FE4] group-hover:bg-white transition-all shadow-sm">
+                <div className="p-3 rounded-xl bg-slate-100 text-slate-500 group-hover:text-[#8b5cf6] group-hover:bg-white transition-all shadow-sm">
                   <ImageIcon size={24} aria-hidden="true" />
                 </div>
               </div>

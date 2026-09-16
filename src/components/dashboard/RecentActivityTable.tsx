@@ -20,15 +20,15 @@ export function RecentActivityTable() {
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-            <List size={18} className="text-[#7B3FE4]" />
+          <div className="w-8 h-8 rounded-lg bg-[#f5f3ff] flex items-center justify-center">
+            <List size={18} className="text-[#8b5cf6]" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-slate-800 leading-tight">Recent Activity</h3>
             <p className="text-xs text-slate-600">Latest transactions and events</p>
           </div>
         </div>
-        <button className="text-xs font-semibold text-[#7B3FE4] hover:text-[#6c32d4] transition-colors">
+        <button className="text-xs font-semibold text-[#8b5cf6] hover:text-[#7c3aed] transition-colors">
           View All
         </button>
       </div>
@@ -51,7 +51,7 @@ export function RecentActivityTable() {
                 key={row.id} 
                 className="border-b border-slate-100 hover:bg-slate-50 transition-colors group"
               >
-                <td className="py-4 pl-2 text-sm font-medium text-slate-800 group-hover:text-[#7B3FE4] transition-colors">{row.id}</td>
+                <td className="py-4 pl-2 text-sm font-medium text-slate-800 group-hover:text-[#8b5cf6] transition-colors">{row.id}</td>
                 <td className="py-4 text-sm text-slate-600 flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">
                     {row.user.charAt(0)}

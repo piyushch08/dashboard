@@ -55,8 +55,8 @@ export function RealTimeChart() {
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-            <Activity size={18} className="text-[#7B3FE4]" />
+          <div className="w-8 h-8 rounded-lg bg-[#f5f3ff] flex items-center justify-center">
+            <Activity size={18} className="text-[#8b5cf6]" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-slate-800 leading-tight">Live Server Traffic</h3>
@@ -66,11 +66,11 @@ export function RealTimeChart() {
         
         <div className="flex items-center gap-4 text-xs font-medium">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#7B3FE4]"></div>
+            <div className="w-3 h-3 rounded-full bg-[#8b5cf6]"></div>
             <span className="text-slate-600">Active Users</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#A580F2]"></div>
+            <div className="w-3 h-3 rounded-full bg-[#94a3b8]"></div>
             <span className="text-slate-600">Requests/sec</span>
           </div>
         </div>
@@ -81,12 +81,12 @@ export function RealTimeChart() {
           <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#7B3FE4" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#7B3FE4" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorReqs" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#A580F2" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#A580F2" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#94a3b8" stopOpacity={0}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -107,13 +107,13 @@ export function RealTimeChart() {
             />
             <Tooltip 
               contentStyle={{ backgroundColor: '#fff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }}
-              itemStyle={{ color: '#7B3FE4', fontSize: '12px' }}
+              itemStyle={{ color: '#8b5cf6', fontSize: '12px' }}
               labelStyle={{ color: '#475569', marginBottom: '4px', fontSize: '12px' }}
             />
             <Area 
               type="monotone" 
               dataKey="users" 
-              stroke="#7B3FE4" 
+              stroke="#8b5cf6" 
               strokeWidth={3}
               fillOpacity={1} 
               fill="url(#colorUsers)" 
@@ -122,7 +122,7 @@ export function RealTimeChart() {
             <Area 
               type="monotone" 
               dataKey="requests" 
-              stroke="#A580F2" 
+              stroke="#94a3b8" 
               strokeWidth={3}
               fillOpacity={1} 
               fill="url(#colorReqs)" 

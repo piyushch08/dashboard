@@ -34,8 +34,8 @@ const CHART_TABS: { type: ChartType; label: string; Icon: React.ElementType }[] 
   { type: 'area', label: 'Area', Icon: Activity },
 ];
 
-const BAR_COLORS = ['#7B3FE4', '#A580F2', '#CBD5E1', '#C9B6F8', '#6875F5', '#8651EA'];
-const ACTIVE_COLOR = '#7B3FE4';
+const BAR_COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#6366f1'];
+const ACTIVE_COLOR = '#8b5cf6';
 
 const TOOLTIP_STYLE = {
   backgroundColor: '#fff',
@@ -203,7 +203,7 @@ export function DynamicDashboard() {
         <button
           onClick={clearData}
           aria-label="Clear all data and return to upload"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white bg-red-700 hover:bg-red-800 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-white border border-gray-200 hover:bg-gray-50 hover:text-red-600 transition-colors shadow-sm"
         >
           <Trash2 size={16} aria-hidden="true" />
           Clear Data
@@ -243,31 +243,31 @@ export function DynamicDashboard() {
           
           {/* High-level dataset metadata */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="card flex items-center justify-between p-5 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-default">
+            <div className="card flex items-center justify-between p-5 cursor-default">
               <div>
-                <p className="text-sm text-slate-700 font-bold mb-1">Total Records</p>
-                <p className="text-3xl font-extrabold text-[#7B3FE4]">{dataset.length.toLocaleString()}</p>
+                <p className="text-sm text-slate-500 font-medium mb-1">Total Records</p>
+                <p className="text-3xl font-extrabold text-slate-900">{dataset.length.toLocaleString()}</p>
               </div>
-              <div className="w-14 h-14 rounded-xl bg-[#f3f0ff] flex items-center justify-center transition-transform group-hover:scale-110">
-                <Database size={28} className="text-[#7B3FE4]" />
+              <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">
+                <Database size={24} className="text-slate-400" />
               </div>
             </div>
-            <div className="card flex items-center justify-between p-5 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-default">
+            <div className="card flex items-center justify-between p-5 cursor-default">
               <div>
-                <p className="text-sm text-slate-700 font-bold mb-1">Total Columns</p>
-                <p className="text-3xl font-extrabold text-[#7B3FE4]">{columns.length}</p>
+                <p className="text-sm text-slate-500 font-medium mb-1">Total Columns</p>
+                <p className="text-3xl font-extrabold text-slate-900">{columns.length}</p>
               </div>
-              <div className="w-14 h-14 rounded-xl bg-[#f3f0ff] flex items-center justify-center transition-transform group-hover:scale-110">
-                <Columns size={28} className="text-[#7B3FE4]" />
+              <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">
+                <Columns size={24} className="text-slate-400" />
               </div>
             </div>
-            <div className="card flex items-center justify-between p-5 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-default">
+            <div className="card flex items-center justify-between p-5 cursor-default">
               <div>
-                <p className="text-sm text-slate-700 font-bold mb-1">Data Health</p>
-                <p className="text-3xl font-extrabold text-[#7B3FE4]">{completeness.toFixed(1)}%</p>
+                <p className="text-sm text-slate-500 font-medium mb-1">Data Health</p>
+                <p className="text-3xl font-extrabold text-slate-900">{completeness.toFixed(1)}%</p>
               </div>
-              <div className="w-14 h-14 rounded-xl bg-[#f3f0ff] flex items-center justify-center transition-transform group-hover:scale-110">
-                <CheckCircle2 size={28} className="text-[#7B3FE4]" />
+              <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">
+                <CheckCircle2 size={24} className="text-slate-400" />
               </div>
             </div>
           </div>
@@ -370,10 +370,10 @@ export function DynamicDashboard() {
               aria-label={`${chartType} chart: ${resolvedYLabel} by ${resolvedXLabel}`}
             >
               <div className="flex items-center gap-2 mb-4 flex-shrink-0">
-                <div className="p-1.5 rounded-lg bg-primary/10" aria-hidden="true">
-                  <BarChart3 size={15} className="text-primary" />
+                <div className="p-1.5 rounded-md bg-slate-100" aria-hidden="true">
+                  <BarChart3 size={15} className="text-slate-600" />
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 truncate">
+                <h3 className="text-sm font-semibold text-slate-800 truncate">
                   {resolvedYLabel} by {resolvedXLabel}
                 </h3>
               </div>
@@ -426,9 +426,9 @@ export function DynamicDashboard() {
                     <Line
                       type="monotone"
                       dataKey={resolvedYKey}
-                      stroke="#7B3FE4"
+                      stroke="#8b5cf6"
                       strokeWidth={2.5}
-                      dot={{ r: 3, fill: '#7B3FE4', strokeWidth: 0 }}
+                      dot={{ r: 3, fill: '#8b5cf6', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
                       isAnimationActive={true}
                       animationDuration={400} animationBegin={0}
@@ -442,8 +442,8 @@ export function DynamicDashboard() {
                   >
                     <defs>
                       <linearGradient id={`areaGrad-${mainChartId}`} x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%"  stopColor="#7B3FE4" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#7B3FE4" stopOpacity={0} />
+                        <stop offset="5%"  stopColor="#8b5cf6" stopOpacity={0.6} />
+                        <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0.05} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -461,11 +461,11 @@ export function DynamicDashboard() {
                     <Area
                       type="monotone"
                       dataKey={resolvedYKey}
-                      stroke="#7B3FE4"
+                      stroke="#8b5cf6"
                       strokeWidth={2.5}
                       fillOpacity={1}
                       fill={`url(#areaGrad-${mainChartId})`}
-                      dot={{ r: 2.5, fill: '#7B3FE4', strokeWidth: 0 }}
+                      dot={{ r: 0, fill: '#8b5cf6', strokeWidth: 0 }}
                       activeDot={{ r: 5, strokeWidth: 0 }}
                       isAnimationActive={true}
                       animationDuration={400} animationBegin={0}

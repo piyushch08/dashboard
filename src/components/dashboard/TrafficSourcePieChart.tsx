@@ -5,10 +5,10 @@ import { Globe } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const data = [
-  { name: 'Organic Search', value: 45, color: '#7B3FE4' },
-  { name: 'Direct', value: 25, color: '#A580F2' },
-  { name: 'Social', value: 20, color: '#CBD5E1' },
-  { name: 'Referral', value: 10, color: '#C9B6F8' },
+  { name: 'Organic Search', value: 45, color: '#8b5cf6' },
+  { name: 'Direct', value: 25, color: '#94a3b8' },
+  { name: 'Social', value: 20, color: '#cbd5e1' },
+  { name: 'Referral', value: 10, color: '#e2e8f0' },
 ];
 
 export function TrafficSourcePieChart() {
@@ -20,8 +20,8 @@ export function TrafficSourcePieChart() {
       className="card flex flex-col h-[350px]"
     >
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-8 h-8 rounded-lg bg-[#f3f0ff] flex items-center justify-center">
-          <Globe size={18} className="text-[#7B3FE4]" />
+        <div className="w-8 h-8 rounded-lg bg-[#f5f3ff] flex items-center justify-center">
+          <Globe size={18} className="text-[#8b5cf6]" />
         </div>
         <div>
           <h3 className="text-lg font-bold text-slate-900 leading-tight">Traffic Sources</h3>
@@ -51,7 +51,7 @@ export function TrafficSourcePieChart() {
                 ))}
               </Pie>
               <Tooltip 
-                contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: '#334155', borderRadius: '8px', color: '#fff' }}
+                contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderColor: '#7c3aed', borderRadius: '8px', color: '#fff' }}
                 itemStyle={{ fontSize: '14px', fontWeight: 'bold' }}
               />
             </PieChart>

@@ -2,33 +2,33 @@
 
 @theme {
   --font-inter: 'Inter', sans-serif;
-  /* Primary - purple */
-  --color-primary: #7B3FE4;
-  --color-primary-hover: #6c32d4;
-  --color-primary-light: #f3f0ff;
-  --color-primary-border: #dcd0fa;
+  /* Primary - Vibrant Violet for colorful minimalism */
+  --color-primary: #8b5cf6;
+  --color-primary-hover: #7c3aed;
+  --color-primary-light: #f5f3ff;
+  --color-primary-border: #ede9fe;
   /* Success */
-  --color-success: #059669;
-  --color-success-light: #d1fae5;
+  --color-success: #10b981;
+  --color-success-light: #ecfdf5;
   /* Danger */
-  --color-danger: #dc2626;
-  --color-danger-light: #fee2e2;
+  --color-danger: #f43f5e;
+  --color-danger-light: #fff1f2;
   /* Warning */
-  --color-warning: #d97706;
-  --color-warning-light: #fef3c7;
-  /* Violet accent */
-  --color-accent: #A580F2;
-  --color-accent-light: #ede9fe;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fffbeb;
+  /* Accent - Hot Pink */
+  --color-accent: #ec4899;
+  --color-accent-light: #fdf2f8;
 }
 
 @layer base {
   body {
-    @apply bg-[#E5E9F0] text-[#1E2024] antialiased font-sans;
+    @apply bg-[#FAFAFA] text-slate-800 antialiased font-sans;
   }
 
   /* Global focus ring for keyboard nav */
   :focus-visible {
-    outline: 2px solid #7B3FE4;
+    outline: 2px solid #0f172a;
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -41,7 +41,7 @@
   top: 0;
   z-index: 9999;
   padding: 0.5rem 1rem;
-  background: #7B3FE4;
+  background: #0f172a;
   color: #fff;
   border-radius: 0 0 0.5rem 0;
   font-size: 0.875rem;
@@ -61,22 +61,22 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #cbd5e1;
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #94a3b8;
 }
 
-/* Premium UI Animations */
+/* Premium UI Animations - keep minimal fade */
 @keyframes slideUpFade {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 /* Card utility with minimal styling */
 .card {
-  @apply bg-white rounded-lg p-4 shadow-sm border border-slate-100 transition-all duration-300;
+  @apply bg-white rounded-xl p-5 border border-gray-200 transition-colors duration-200 shadow-[0_1px_2px_rgba(0,0,0,0.02)];
   animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
@@ -88,9 +88,7 @@
 .card:nth-child(n+5) { animation-delay: 0.25s; }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -8px rgb(0 0 0 / 0.08), 0 4px 8px -4px rgb(0 0 0 / 0.04);
-  border-color: var(--color-primary-border);
+  @apply border-gray-300;
 }
 
 /* Shimmer loading skeleton */
@@ -99,18 +97,15 @@
   100% { background-position: 400px 0; }
 }
 .skeleton {
-  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+  background: linear-gradient(90deg, #f8fafc 25%, #f1f5f9 37%, #f8fafc 63%);
   background-size: 800px 100%;
   animation: shimmer 1.4s infinite linear;
   border-radius: 6px;
 }
 
-/* KPI card hover lift */
+/* KPI card hover lift - removed for flat UI */
 .kpi-card {
-  @apply transition-transform duration-200 ease-out;
-}
-.kpi-card:hover {
-  transform: translateY(-2px);
+  @apply transition-colors duration-200;
 }
 
 /* Chart area accessible focus */
