@@ -88,9 +88,16 @@ export function DynamicDashboard() {
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      data = data.filter(row =>
-        Object.values(row).some(val => String(val).toLowerCase().includes(q))
-      );
+      const colKeys = columns.map(c => c.key);
+      data = data.filter(row => {
+        for (let i = 0; i < colKeys.length; i++) {
+          const val = row[colKeys[i]];
+          if (val != null && String(val).toLowerCase().includes(q)) {
+            return true;
+          }
+        }
+        return false;
+      });
     }
 
     if (activeFilter) {

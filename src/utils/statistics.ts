@@ -153,7 +153,12 @@ export function generateInsights(dataset: any[], numericCols: ColumnMeta[]): Dat
 
   // Per-column outlier & skewness
   for (const col of numericCols) {
-    const values = dataset.map(r => Number(r[col.key])).filter(n => !isNaN(n));
+    const values: number[] = [];
+    for (let k = 0; k < dataset.length; k++) {
+      const val = Number(dataset[k][col.key]);
+      if (!isNaN(val)) values.push(val);
+    }
+    
     if (values.length < 4) continue;
 
     const mean = values.reduce((a, b) => a + b, 0) / values.length;
@@ -191,11 +196,22 @@ export function generateInsights(dataset: any[], numericCols: ColumnMeta[]): Dat
   // Pairwise correlation insights
   for (let i = 0; i < numericCols.length; i++) {
     for (let j = i + 1; j < numericCols.length; j++) {
-      const xs = dataset.map(r => Number(r[numericCols[i].key])).filter(n => !isNaN(n));
-      const ys = dataset.map(r => Number(r[numericCols[j].key])).filter(n => !isNaN(n));
-      const minLen = Math.min(xs.length, ys.length);
+      const xs: number[] = [];
+      const ys: number[] = [];
+      
+      // Extract pairwise complete observations
+      for (let k = 0; k < dataset.length; k++) {
+        const x = Number(dataset[k][numericCols[i].key]);
+        const y = Number(dataset[k][numericCols[j].key]);
+        if (!isNaN(x) && !isNaN(y)) {
+          xs.push(x);
+          ys.push(y);
+        }
+      }
+      
+      const minLen = xs.length;
       if (minLen < 5) continue;
-      const r = pearsonCorrelation(xs.slice(0, minLen), ys.slice(0, minLen));
+      const r = pearsonCorrelation(xs, ys);
       if (Math.abs(r) >= 0.7) {
         insights.push({
           type: 'correlation',
@@ -210,7 +226,11 @@ export function generateInsights(dataset: any[], numericCols: ColumnMeta[]): Dat
   // Dataset summary
   if (numericCols.length > 0 && dataset.length > 0) {
     const col = numericCols[0];
-    const vals = dataset.map(r => Number(r[col.key])).filter(n => !isNaN(n));
+    const vals: number[] = [];
+    for (let k = 0; k < dataset.length; k++) {
+      const val = Number(dataset[k][col.key]);
+      if (!isNaN(val)) vals.push(val);
+    }
     if (vals.length > 0) {
       insights.push({
         type: 'summary',
